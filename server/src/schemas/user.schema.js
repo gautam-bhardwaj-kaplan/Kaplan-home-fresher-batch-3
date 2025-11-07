@@ -34,8 +34,18 @@ const updateProfileSchema = z.object({
     .optional()
 });
 
+const statsChartQuerySchema = z.object({
+  period: z.enum(['week', 'month', 'year'])
+    .default('month')
+    .optional(),
+  metric: z.enum(['accuracy', 'attempts', 'points'])
+    .default('accuracy')
+    .optional()
+});
+
 exports.UserSchema = {
   createUserSchema,
   loginSchema,
-  updateProfileSchema
+  updateProfileSchema,
+  statsChartQuerySchema
 };

@@ -27,4 +27,15 @@ router.patch('/me',
   UserController.updateUserProfile
 );
 
+router.get('/me/progress',
+  authenticate,
+  UserController.getUserProgress
+);
+
+router.get('/me/stats/chart',
+  authenticate,
+  validateRequest(UserSchema.statsChartQuerySchema, 'query'),
+  UserController.getUserStatsChart
+);
+
 module.exports = router;

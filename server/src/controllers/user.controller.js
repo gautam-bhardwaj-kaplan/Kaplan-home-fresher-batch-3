@@ -71,9 +71,46 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+const getUserProgress = async (req, res) => {
+  try {
+    const progress = await UserService.getUserProgress(req.user.userId);
+    res.status(200).json({
+      success: true,
+      data: progress
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      error: {
+        code: 'NOT_FOUND',
+        message: error.message
+      }
+    });
+  }
+};
+
+const getUserStatsChart = async (req, res) => {
+  try {
+    const chart_data = await UserService.getUserStatsChart(req.user.userId, req.query);
+    res.status(200).json({
+      success: true,
+      data: chart_data
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: {
+        message: error.message
+      }
+    });
+  }
+};
+
 exports.UserController = {
   createUser,
   loginUser,
   getUserProfile,
-  updateUserProfile
+  updateUserProfile,
+  getUserProgress,
+  getUserStatsChart
 };
