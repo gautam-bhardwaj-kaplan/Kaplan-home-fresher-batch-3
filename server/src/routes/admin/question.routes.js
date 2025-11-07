@@ -6,14 +6,14 @@ const {
   createQuestionSchema,
   updateQuestionSchema,
   listQuestionsSchema,
-} = require('../../schemas/question.schema');
+} = require('../../schemas/admin/question.schema');
 const {
   createQuestion,
   listQuestions,
   getQuestionById,
   updateQuestion,
   deleteQuestion,
-} = require('../../controllers/admin/questions.controller');
+} = require('../../controllers/admin/question.controller');
 
 router.use(isAdmin);
 
