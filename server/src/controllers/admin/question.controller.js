@@ -1,66 +1,64 @@
-const questionsService = require('../../services/admin/question.service');
+const {
+  createQuestion: createQuestionService,
+  listQuestions: listQuestionsService,
+  getQuestionById: getQuestionByIdService,
+  updateQuestion: updateQuestionService,
+  deleteQuestion: deleteQuestionService,
+} = require('../../services/admin/question.service');
+
+const handleError = (res, error, message, status = 500) => {
+  console.error(message, error);
+  res.status(status).json({
+    success: false,
+    error: {
+      message,
+    },
+  });
+};
 
 const createQuestion = async (req, res) => {
   try {
-    const question = await questionsService.createQuestion(req.body, req.user.id);
+    const question = await createQuestionService(req.body, req.user.id);
     res.status(201).json({
       success: true,
       data: { question },
       message: 'Question scheduled successfully',
     });
   } catch (error) {
-    console.error('Error creating question:', error);
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Error creating question',
-      },
-    });
+    handleError(res, error, 'Error creating question', 500);
   }
 };
 
 const listQuestions = async (req, res) => {
   try {
-    const result = await questionsService.listQuestions(req.query);
+    const result = await listQuestionsService(req.query);
     res.json({
       success: true,
       data: result,
     });
   } catch (error) {
-    console.error('Error listing questions:', error);
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Error retrieving questions',
-      },
-    });
+    handleError(res, error, 'Error retrieving questions', 500);
   }
 };
 
 const getQuestionById = async (req, res) => {
   try {
     const { questionId } = req.params;
-    const result = await questionsService.getQuestionById(questionId);
+    const result = await getQuestionByIdService(questionId);
     
     res.json({
       success: true,
       data: result,
     });
   } catch (error) {
-    console.error('Error retrieving question:', error);
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Error retrieving question',
-      },
-    });
+    handleError(res, error, 'Error retrieving question', 500);
   }
 };
 
 const updateQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
-    const question = await questionsService.updateQuestion(questionId, req.body);
+    const question = await updateQuestionService(questionId, req.body);
     
     res.json({
       success: true,
@@ -68,33 +66,21 @@ const updateQuestion = async (req, res) => {
       message: 'Question updated successfully',
     });
   } catch (error) {
-    console.error('Error updating question:', error);
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Error updating question',
-      },
-    });
+    handleError(res, error, 'Error updating question', 500);
   }
 };
 
 const deleteQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
-    await questionsService.deleteQuestion(questionId);
+    await deleteQuestionService(questionId);
     
     res.json({
       success: true,
       message: 'Question deleted successfully',
     });
   } catch (error) {
-    console.error('Error deleting question:', error);
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Error deleting question',
-      },
-    });
+    handleError(res, error, 'Error deleting question', 500);
   }
 };
 

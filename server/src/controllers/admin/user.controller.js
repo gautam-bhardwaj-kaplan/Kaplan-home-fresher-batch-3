@@ -1,8 +1,11 @@
-const usersService = require('../../services/admin/user.service');
+const {
+  getAllUsers: getAllUsersService,
+  updateUserRole: updateUserRoleService,
+} = require('../../services/admin/user.service');
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await usersService.getAllUsers();
+    const users = await getAllUsersService();
     res.status(200).json({ success: true, data: users });
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -18,7 +21,7 @@ exports.updateUserRole = async (req, res) => {
     const { id } = req.params;
     const { role } = req.body;
 
-    const updatedUser = await usersService.updateUserRole(id, role);
+    const updatedUser = await updateUserRoleService(id, role);
     res.status(200).json({
       success: true,
       message: `User role updated to ${role}`,

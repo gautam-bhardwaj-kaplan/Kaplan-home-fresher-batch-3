@@ -4,8 +4,29 @@ const QuestionCategory = z.enum(['MATH', 'ENGLISH', 'CODING', 'SCIENCE', 'GENERA
 const Difficulty = z.enum(['EASY', 'MEDIUM', 'HARD']);
 const QuestionType = z.enum(['MCQ', 'SHORT_ANSWER']);
 
+const dateValidationRefine = (date) => {
+  if (!date) return true;
+  const [year, month, day] = date.split('-').map(Number);
+  const parsedDate = new Date(year, month - 1, day);
+  return (
+    parsedDate.getFullYear() === year &&
+    parsedDate.getMonth() === month - 1 &&
+    parsedDate.getDate() === day
+  );
+};
+
+const requiredValidDateString = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format').refine(
+  dateValidationRefine,
+  { message: 'Invalid date format or invalid date value' }
+);
+
+const validDateString = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().refine(
+  dateValidationRefine,
+  { message: 'Invalid date format or invalid date value' }
+);
+
 const createQuestionSchema = z.object({
-  scheduledDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format'),
+  scheduledDate: requiredValidDateString,
   category: QuestionCategory,
   difficulty: Difficulty.optional(),
   questionText: z.string().min(1, 'Question text is required').max(1000),
@@ -26,8 +47,8 @@ const listQuestionsSchema = z.object({
   page: z.string().regex(/^\d+$/).transform(Number).optional(),
   limit: z.string().regex(/^\d+$/).transform(Number).optional(),
   category: QuestionCategory.optional(),
-  dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-  dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  dateFrom: validDateString,
+  dateTo: validDateString,
   difficulty: Difficulty.optional(),
   status: z.enum(['active', 'inactive']).optional(),
 });
