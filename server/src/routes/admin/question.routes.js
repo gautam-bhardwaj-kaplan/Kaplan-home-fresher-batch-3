@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { validateRequest } = require('../../middlewares/validate-request');
-const { isAdmin } = require('../../middlewares/authenticate');
+const { authenticate, isAdmin } = require('../../middlewares/authenticate');
 const {
   createQuestionSchema,
   updateQuestionSchema,
@@ -15,6 +15,7 @@ const {
   deleteQuestion,
 } = require('../../controllers/admin/question.controller');
 
+router.use(authenticate);
 router.use(isAdmin);
 
 router.post(
