@@ -1,24 +1,9 @@
-const {
-  createQuestion: createQuestionService,
-  listQuestions: listQuestionsService,
-  getQuestionById: getQuestionByIdService,
-  updateQuestion: updateQuestionService,
-  deleteQuestion: deleteQuestionService,
-} = require('../../services/admin/question.service');
-
-const handleError = (res, error, message, status = 500) => {
-  console.error(message, error);
-  res.status(status).json({
-    success: false,
-    error: {
-      message,
-    },
-  });
-};
+const questionService = require('../../services/admin/question.service');
+const { handleError } = require('../../utils/handleErrors');
 
 const createQuestion = async (req, res) => {
   try {
-    const question = await createQuestionService(req.body, req.user.id);
+    const question = await questionService.createQuestion(req.body, req.user.id);
     res.status(201).json({
       success: true,
       data: { question },
@@ -31,7 +16,7 @@ const createQuestion = async (req, res) => {
 
 const listQuestions = async (req, res) => {
   try {
-    const result = await listQuestionsService(req.query);
+    const result = await questionService.listQuestions(req.query);
     res.json({
       success: true,
       data: result,
@@ -44,7 +29,7 @@ const listQuestions = async (req, res) => {
 const getQuestionById = async (req, res) => {
   try {
     const { questionId } = req.params;
-    const result = await getQuestionByIdService(questionId);
+    const result = await questionService.getQuestionById(questionId);
     
     res.json({
       success: true,
@@ -58,7 +43,7 @@ const getQuestionById = async (req, res) => {
 const updateQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
-    const question = await updateQuestionService(questionId, req.body);
+    const question = await questionService.updateQuestion(questionId, req.body);
     
     res.json({
       success: true,
@@ -73,7 +58,7 @@ const updateQuestion = async (req, res) => {
 const deleteQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
-    await deleteQuestionService(questionId);
+    await questionService.deleteQuestion(questionId);
     
     res.json({
       success: true,

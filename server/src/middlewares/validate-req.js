@@ -1,5 +1,5 @@
 const validateRequest = (schemas) => {
-  return async (req, res, next) => {
+  return (req, res, next) => {
     try {
       if (schemas.body) {
         req.body = schemas.body.parse(req.body);

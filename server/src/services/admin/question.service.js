@@ -40,7 +40,7 @@ const createQuestion = async (questionData, userId) => {
       caseSensitive,
       explanation,
       points,
-    //  createdById: userId,
+      createdById: userId,
     },
   });
 };

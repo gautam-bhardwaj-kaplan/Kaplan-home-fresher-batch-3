@@ -1,37 +1,32 @@
-const {
-  getAllUsers: getAllUsersService,
-  updateUserRole: updateUserRoleService,
-} = require('../../services/admin/user.service');
+const userService = require('../../services/admin/user.service');
+const { handleError } = require('../../utils/handleErrors');
 
-exports.getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
-    const users = await getAllUsersService();
+    const users = await userService.getAllUsers();
     res.status(200).json({ success: true, data: users });
   } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).json({
-      success: false,
-      error: { message: "Error fetching users" }
-    });
+    handleError(res, error, 'Error fetching users', 500);
   }
 };
 
-exports.updateUserRole = async (req, res) => {
+const updateUserRole = async (req, res) => {
   try {
     const { id } = req.params;
     const { role } = req.body;
 
-    const updatedUser = await updateUserRoleService(id, role);
+    const updatedUser = await userService.updateUserRole(id, role);
     res.status(200).json({
       success: true,
       message: `User role updated to ${role}`,
       data: updatedUser
     });
   } catch (error) {
-    console.error("Error updating user role:", error);
-    res.status(400).json({
-      success: false,
-      error: { message: error.message || "Error updating role" }
-    });
+    handleError(res, error, 'Error updating user role', 400);
   }
+};
+
+module.exports = {
+  getAllUsers,
+  updateUserRole,
 };
