@@ -5,6 +5,9 @@ dotenv.config();
 const PORT = process.env.PORT;
 const adminQuestionsRouter = require('./src/routes/admin/question.routes');
 const adminUsersRouter = require('./src/routes/admin/user.routes');
+const userRoutes = require("./src/routes/user.routes");
+const questionRoutes = require("./src/routes/question.routes");
+const leaderboardRoutes = require("./src/routes/leaderboard.routes");
 
 const app = express();
 app.use(express.json());
@@ -15,5 +18,8 @@ app.get("/ping", (_req, res) => {
 
 app.use('/admin/questions',adminQuestionsRouter);
 app.use('/admin/users',adminUsersRouter);
+app.use("/api/users", userRoutes);
+app.use("/api/questions", questionRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
