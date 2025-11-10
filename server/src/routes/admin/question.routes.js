@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { validateRequest } = require('../../middlewares/validate-req');
-const { isAdmin } = require('../../middlewares/auth');
+const { validateRequest } = require('../../middlewares/validate-request');
+const { isAdmin } = require('../../middlewares/authenticate');
 const {
   createQuestionSchema,
   updateQuestionSchema,
@@ -19,13 +19,13 @@ router.use(isAdmin);
 
 router.post(
   '/',
-  validateRequest({ body: createQuestionSchema }),
+  validateRequest(createQuestionSchema, 'body'),
   createQuestion
 );
 
 router.get(
   '/',
-  validateRequest({ query: listQuestionsSchema }),
+  validateRequest(listQuestionsSchema, 'query'),
   listQuestions
 );
 
@@ -33,7 +33,7 @@ router.get('/:questionId', getQuestionById);
 
 router.patch(
   '/:questionId',
-  validateRequest({ body: updateQuestionSchema }),
+  validateRequest(updateQuestionSchema, 'body'),
   updateQuestion
 );
 

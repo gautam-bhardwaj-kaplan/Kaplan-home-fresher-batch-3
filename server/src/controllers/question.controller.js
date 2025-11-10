@@ -1,4 +1,5 @@
 const { QuestionService } = require('../services/question.service');
+const { handleError } = require('../utils/handleErrors');
 
 
 const getTodayQuestion = async (req, res) => {
@@ -9,12 +10,7 @@ const getTodayQuestion = async (req, res) => {
       data: result
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: {
-        message: error.message
-      }
-    });
+    handleError(res, error, 'Failed to get today question', 500);
   }
 };
 
@@ -34,12 +30,7 @@ const submitAnswer = async (req, res) => {
       message: 'Answer submitted successfully'
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: {
-        message: error.message
-      }
-    });
+    handleError(res, error, 'Failed to submit answer', 500);
   }
 };
 
@@ -61,12 +52,7 @@ const getHistory = async (req, res) => {
       data: result
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: {
-        message: error.message
-      }
-    });
+    handleError(res, error, 'Failed to get question history', 500);
   }
 };
 
