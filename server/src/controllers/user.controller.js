@@ -1,4 +1,5 @@
 const { UserService } = require('../services/user.service');
+const { handleError } = require('../utils/handleErrors');
 
 const createUser = async (req, res) => {
   try {
@@ -9,12 +10,7 @@ const createUser = async (req, res) => {
       message: 'Account created successfully'
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: {
-        message: error.message
-      }
-    });
+    handleError(res, error, 'Failed to create user', 400);
   }
 };
 
@@ -26,12 +22,7 @@ const loginUser = async (req, res) => {
       data: result
     });
   } catch (error) {
-    res.status(401).json({
-      success: false,
-      error: {
-        message: error.message
-      }
-    });
+    handleError(res, error, 'Authentication failed', 401);
   }
 };
 
@@ -43,13 +34,7 @@ const getUserProfile = async (req, res) => {
       data: profile
     });
   } catch (error) {
-    res.status(404).json({
-      success: false,
-      error: {
-        code: 'NOT_FOUND',
-        message: error.message
-      }
-    });
+    handleError(res, error, 'User profile not found', 404);
   }
 };
 
@@ -62,12 +47,7 @@ const updateUserProfile = async (req, res) => {
       message: 'Profile updated successfully'
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: {
-        message: error.message
-      }
-    });
+    handleError(res, error, 'Failed to update profile', 400);
   }
 };
 
@@ -79,13 +59,7 @@ const getUserProgress = async (req, res) => {
       data: progress
     });
   } catch (error) {
-    res.status(404).json({
-      success: false,
-      error: {
-        code: 'NOT_FOUND',
-        message: error.message
-      }
-    });
+    handleError(res, error, 'User progress not found', 404);
   }
 };
 
@@ -97,12 +71,7 @@ const getUserStatsChart = async (req, res) => {
       data: chart_data
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: {
-        message: error.message
-      }
-    });
+    handleError(res, error, 'Failed to get user stats', 500);
   }
 };
 

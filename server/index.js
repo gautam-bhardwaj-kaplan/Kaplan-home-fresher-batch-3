@@ -16,8 +16,8 @@ app.get("/ping", (_req, res) => {
   res.send("pong");
 });
 
-app.use('/admin/questions',adminQuestionsRouter);
-app.use('/admin/users',adminUsersRouter);
+app.use('/api/admin/questions',adminQuestionsRouter);
+app.use('/api/admin/users',adminUsersRouter);
 app.use("/api/users", userRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);

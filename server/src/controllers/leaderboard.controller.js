@@ -1,4 +1,5 @@
 const { LeaderboardService } = require('../services/leaderboard.service');
+const { handleError } = require('../utils/handleErrors');
 
 const getStreakLeaderboard = async (req, res) => {
   try {
@@ -11,12 +12,7 @@ const getStreakLeaderboard = async (req, res) => {
       data: result
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: {
-        message: error.message
-      }
-    });
+    handleError(res, error, 'Failed to get streak leaderboard', 500);
   }
 };
 
@@ -31,12 +27,7 @@ const getPointsLeaderboard = async (req, res) => {
       data: result
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: {
-        message: error.message
-      }
-    });
+    handleError(res, error, 'Failed to get points leaderboard', 500);
   }
 };
 
