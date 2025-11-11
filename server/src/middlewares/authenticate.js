@@ -1,16 +1,17 @@
 const jwt = require('jsonwebtoken');
+const { handleError } = require('../utils/handleErrors');
 
 const authenticate = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
-        success: false,
-        error: {
-          message: 'Authentication token is required'
-        }
-      });
+      return handleError(
+        res,
+        new Error('Authentication token is required'),
+        'Authentication token is required',
+        401
+      );
     }
 
     const token = authHeader.split(' ')[1];
@@ -19,23 +20,18 @@ const authenticate = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(401).json({
-      success: false,
-      error: {
-        message: 'Invalid or expired token'
-      }
-    });
+    return handleError(res, error, 'Invalid or expired token', 401);
   }
 };
 
 const isAdmin = (req, res, next) => {
-  if (!req.user || req.user.role !== 'ADMIN') {
-    return res.status(403).json({
-      success: false,
-      error: {
-        message: 'Admin access required',
-      },
-    });
+  if (req.user?.role !== 'ADMIN') {
+    return handleError(
+      res,
+      new Error('Admin access required'),
+      'Admin access required',
+      403
+    );
   }
   next();
 };
