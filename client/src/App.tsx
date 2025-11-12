@@ -6,16 +6,9 @@ function App() {
       <header className="landing-header">
         <div className="landing-logo">QUIZLY</div>
 
-        <nav className="landing-nav">
-          <a className="landing-nav-link">Features ▾</a>
-          <a className="landing-nav-link">Categories</a>
-          <a className="landing-nav-link">Leaderboard ▾</a>
-          <a className="landing-nav-link">About ▾</a>
-        </nav>
-
         <div className="landing-header-actions">
           <button className="landing-login-button">Log in</button>
-          <button className="landing-primary-button">Start quiz for free</button>
+          <button className="landing-primary-button">Start for free</button>
         </div>
       </header>
 
@@ -36,7 +29,7 @@ function App() {
             </svg>
             Demo video
           </button>
-          <button className="landing-primary-button">Start quiz for free</button>
+          <button className="landing-primary-button">Start for free</button>
         </div>
       </main>
     </div>
