@@ -18,6 +18,17 @@ const dateValidationRefine = (date) => {
 const requiredValidDateString = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format').refine(
   dateValidationRefine,
   { message: 'Invalid date format or invalid date value' }
+).refine(
+  (date) => {
+    if (!date) return true;
+    const [year, month, day] = date.split('-').map(Number);
+    const scheduledDate = new Date(year, month - 1, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    scheduledDate.setHours(0, 0, 0, 0);
+    return scheduledDate >= today;
+  },
+  { message: 'Scheduled date cannot be in the past' }
 );
 
 const validDateString = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().refine(
