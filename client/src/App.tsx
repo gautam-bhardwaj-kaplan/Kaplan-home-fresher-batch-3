@@ -1,26 +1,13 @@
 import './App.css'
+import asset1 from './assets/asset1.png'
+import asset2 from './assets/asset2.png'
 
 function App() {
   return (
     <div className="landing-container">
       <header className="landing-header-shell">
         <div className="landing-header">
-          <div className="landing-logo">HOMERUN</div>
-
-          <nav className="landing-nav">
-            <a className="landing-nav-link has-dropdown" href="#">
-              Product
-            </a>
-            <a className="landing-nav-link" href="#">
-              Pricing
-            </a>
-            <a className="landing-nav-link has-dropdown" href="#">
-              Use cases
-            </a>
-            <a className="landing-nav-link has-dropdown" href="#">
-              Learn
-            </a>
-          </nav>
+          <div className="landing-logo">QUIZLY</div>
 
           <div className="landing-header-actions">
             <button className="landing-login-button">Log in</button>
@@ -31,8 +18,14 @@ function App() {
 
       <main className="landing-hero">
         <h1 className="landing-headline">
-        Make every <br />
-       question count
+          <span className="landing-headline-row">
+            <img src={asset1} alt="" className="landing-headline-icon" />
+            Make every
+          </span>
+          <span className="landing-headline-row">
+            question count
+            <img src={asset2} alt="" className="landing-headline-icon" />
+          </span>
         </h1>
 
         <p className="landing-subheadline">
@@ -40,9 +33,7 @@ function App() {
         </p>
 
         <div className="landing-cta-buttons">
-          <button className="landing-secondary-button">
-            Log in
-          </button>
+          <button className="landing-login-button">Log in</button>
           <button className="landing-primary-button">Sign up</button>
         </div>
       </main>
