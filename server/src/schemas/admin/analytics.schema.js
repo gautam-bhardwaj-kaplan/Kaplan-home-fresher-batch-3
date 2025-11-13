@@ -1,15 +1,7 @@
 const { z } = require('zod');
+const { isValidYMDDate } = require('../../utils/dateUtils');
 
-const dateValidationRefine = (date) => {
-  if (!date) return true;
-  const [year, month, day] = date.split('-').map(Number);
-  const parsedDate = new Date(year, month - 1, day);
-  return (
-    parsedDate.getFullYear() === year &&
-    parsedDate.getMonth() === month - 1 &&
-    parsedDate.getDate() === day
-  );
-};
+const dateValidationRefine = (date) => !date || isValidYMDDate(date);
 
 const validDateString = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().refine(
   dateValidationRefine,
