@@ -51,10 +51,10 @@
   padding: 0.85rem 2.1rem;
   border-radius: 9999px;
   transition: transform 0.2s;
-}
 
-.landing-login-button:hover {
-  transform: scale(1.04);
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 .landing-primary-button {
@@ -67,10 +67,10 @@
   font-weight: 400;
   cursor: pointer;
   transition: transform 0.2s;
-}
 
-.landing-primary-button:hover {
-  transform: scale(1.04);
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 .landing-hero {

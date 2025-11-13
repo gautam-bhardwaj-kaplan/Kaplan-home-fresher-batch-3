@@ -25,6 +25,8 @@ export const SignupPage = () => {
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
+      setPassword('');
+      setConfirmPassword('');
       return;
     }
 
@@ -74,12 +76,14 @@ export const SignupPage = () => {
               id="name"
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value.replace(/\d+/g, ''))}
               className="auth-input"
               placeholder="Enter your name"
               required
               minLength={2}
               maxLength={50}
+              pattern="^[^0-9]*$"
+              title="Name cannot contain numbers"
               disabled={isSubmitting || authLoading}
             />
           </div>

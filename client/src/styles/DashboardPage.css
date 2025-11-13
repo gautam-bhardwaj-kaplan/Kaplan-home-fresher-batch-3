@@ -76,10 +76,10 @@
   padding: 0.65rem 1.5rem;
   border-radius: 9999px;
   transition: transform 0.2s;
-}
 
-.dashboard-logout-button:hover {
-  transform: scale(1.04);
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 .dashboard-main {
@@ -134,11 +134,11 @@
   box-shadow: 0 10px 30px rgba(26, 26, 26, 0.06);
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
-}
 
-.dashboard-stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 40px rgba(26, 26, 26, 0.1);
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(26, 26, 26, 0.1);
+  }
 }
 
 .dashboard-stat-label {
@@ -183,10 +183,10 @@
   cursor: pointer;
   transition: transform 0.2s;
   min-width: 180px;
-}
 
-.dashboard-primary-button:hover {
-  transform: scale(1.04);
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 .dashboard-secondary-button {
@@ -200,10 +200,10 @@
   cursor: pointer;
   transition: transform 0.2s;
   min-width: 180px;
-}
 
-.dashboard-secondary-button:hover {
-  transform: scale(1.04);
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 @media (max-width: 768px) {
