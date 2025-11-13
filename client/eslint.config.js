@@ -19,5 +19,16 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      'no-multiple-empty-lines': [
+        'error',
+        {
+          max: 1,
+          maxBOF: 0,
+          maxEOF: 0,
+        },
+      ],
+      'padded-blocks': ['error', 'never'],
+    },
   },
 ])
