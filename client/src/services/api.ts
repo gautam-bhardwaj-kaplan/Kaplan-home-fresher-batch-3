@@ -75,4 +75,3 @@ export const apiCall = async <T>(
 };
 
 export default apiClient;
-

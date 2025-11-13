@@ -36,4 +36,3 @@ export const getUserStatsChart = async (
   );
   return response.data;
 };
-

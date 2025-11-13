@@ -79,4 +79,3 @@ export interface StatsChartData {
   labels: string[];
   values: number[];
 }
-

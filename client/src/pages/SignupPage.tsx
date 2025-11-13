@@ -155,4 +155,3 @@ export const SignupPage = () => {
     </div>
   );
 };
-

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getUserProgress } from '../services/auth.service';
 import type { UserProgress } from '../types';
+import { Oval } from 'react-loader-spinner';
 import '../styles/DashboardPage.css';
 
 export const DashboardPage = () => {
@@ -37,7 +38,18 @@ export const DashboardPage = () => {
   if (isLoading) {
     return (
       <div className="dashboard-container">
-        <div className="dashboard-loading">Loading...</div>
+        <div className="dashboard-loading" role="status" aria-live="polite" aria-busy="true">
+          <Oval
+            height={56}
+            width={56}
+            color="#1f2937"
+            secondaryColor="#9ca3af"
+            strokeWidth={4}
+            strokeWidthSecondary={4}
+            ariaLabel="loading"
+            visible
+          />
+        </div>
       </div>
     );
   }
@@ -105,17 +117,11 @@ export const DashboardPage = () => {
         <div className="dashboard-actions">
           <button
             className="dashboard-primary-button"
-            onClick={() => {
-              console.log('Start Quiz');
-            }}
           >
             Start Quiz
           </button>
           <button
             className="dashboard-secondary-button"
-            onClick={() => {
-              console.log('View Leaderboard');
-            }}
           >
             View Leaderboard
           </button>
@@ -124,4 +130,3 @@ export const DashboardPage = () => {
     </div>
   );
 };
-
