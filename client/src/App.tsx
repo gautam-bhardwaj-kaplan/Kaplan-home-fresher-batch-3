@@ -1,44 +1,32 @@
-import './App.css'
-import asset1 from './assets/asset1.png'
-import asset2 from './assets/asset2.png'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { LandingPage } from './pages/LandingPage';
+import { LoginPage } from './pages/LoginPage';
+import { SignupPage } from './pages/SignupPage';
+import { DashboardPage } from './pages/DashboardPage';
 
 function App() {
   return (
-    <div className="landing-container">
-      <header className="landing-header-shell">
-        <div className="landing-header">
-          <div className="landing-logo">QUIZLY</div>
-
-          <div className="landing-header-actions">
-            <button className="landing-login-button">Log in</button>
-            <button className="landing-primary-button">Start for free</button>
-          </div>
-        </div>
-      </header>
-
-      <main className="landing-hero">
-        <h1 className="landing-headline">
-          <span className="landing-headline-row">
-            <img src={asset1} alt="" className="landing-headline-icon" />
-            Make every
-          </span>
-          <span className="landing-headline-row">
-            question count
-            <img src={asset2} alt="" className="landing-headline-icon" />
-          </span>
-        </h1>
-
-        <p className="landing-subheadline">
-          Don't let your brain fall asleep from boredom. Challenge yourself daily with engaging quizzes and track your progress in minutes with Quizly.
-        </p>
-
-        <div className="landing-cta-buttons">
-          <button className="landing-login-button">Log in</button>
-          <button className="landing-primary-button">Sign up</button>
-        </div>
-      </main>
-    </div>
-  )
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
