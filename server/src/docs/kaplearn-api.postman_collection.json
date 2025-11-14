@@ -748,6 +748,81 @@
             },
             "description": "Update a user's role. Admin privileges required."
           }
+        },
+        {
+          "name": "Analytics Overview",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/analytics/overview?dateFrom=&dateTo=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "analytics",
+                "overview"
+              ],
+              "query": [
+                {
+                  "key": "dateFrom",
+                  "value": "",
+                  "description": "Optional YYYY-MM-DD format",
+                  "disabled": true
+                },
+                {
+                  "key": "dateTo",
+                  "value": "",
+                  "description": "Optional YYYY-MM-DD format",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get platform-wide analytics overview with optional date filtering. Admin privileges required."
+          }
+        },
+        {
+          "name": "Daily Analytics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/analytics/daily/{{analyticsDate}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "analytics",
+                "daily",
+                "{{analyticsDate}}"
+              ]
+            },
+            "description": "Get detailed analytics for a specific date. Date format: YYYY-MM-DD. Admin privileges required."
+          }
         }
       ]
     }
@@ -781,6 +856,12 @@
       "value": "",
       "type": "string",
       "description": "User identifier used in admin user management endpoints."
+    },
+    {
+      "key": "analyticsDate",
+      "value": "2025-11-03",
+      "type": "string",
+      "description": "Date in YYYY-MM-DD format for daily analytics endpoint."
     }
   ]
 }
