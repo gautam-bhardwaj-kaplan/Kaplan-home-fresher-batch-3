@@ -55,6 +55,14 @@ export const DashboardPage = () => {
   }
 
   const accuracy = progress?.overview.accuracy || 0;
+  const totalPoints = progress?.overview.totalPoints || 0;
+  const submissionHistory = (progress?.recentActivity ?? []).slice(0, 6);
+  const streakPreview = (progress?.streakHistory ?? []).slice(-5);
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
 
   return (
     <div className="dashboard-container">
@@ -96,56 +104,98 @@ export const DashboardPage = () => {
             {error}
           </div>
         )}
-        
-        <div className="dashboard-hero">
-          <h1 className="dashboard-welcome">
-            Welcome back, {user?.name}!
-          </h1>
-          <p className="dashboard-subtitle">
-            Continue your learning journey and track your progress
-          </p>
-        </div>
 
-        <div className="dashboard-stats-grid">
-          <div className="dashboard-stat-card">
-            <div className="dashboard-stat-label">Current Streak</div>
-            <div className="dashboard-stat-value">{progress?.overview.currentStreak || 0}</div>
-            <div className="dashboard-stat-unit">days</div>
+        <section className="dashboard-content-shell">
+          <div className="dashboard-primary-layout">
+            <article className="dashboard-quiz-card">
+              <div className="dashboard-quiz-header">
+                <div>
+                  <p className="dashboard-quiz-label">Quiz</p>
+                  <h1 className="dashboard-quiz-title">Question {Math.max((progress?.overview.totalAttempts || 0) + 1, 1)}</h1>
+                </div>
+                <button
+                  className="dashboard-quiz-button"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  Take Quiz
+                </button>
+              </div>
+              <div className="dashboard-quiz-illustration">
+                <img
+                  src="https://illustrations.popsy.co/violet/group-chat.svg"
+                  alt="Quiz friends"
+                  loading="lazy"
+                />
+              </div>
+            </article>
+
+            <aside className="dashboard-side-stack">
+              <div className="dashboard-streak-card">
+                <div className="dashboard-streak-value">
+                  <span>{progress?.overview.currentStreak || 0}</span>
+                  <span className="dashboard-streak-icon" aria-hidden="true">⚡</span>
+                </div>
+                <p className="dashboard-streak-subtitle">Solve 3 problems to start a streak</p>
+                <div className="dashboard-week-row">
+                  {streakPreview.length === 0 && (
+                    ['M', 'T', 'W', 'Th', 'F'].map((day) => (
+                      <span key={day} className="dashboard-week-day">{day}</span>
+                    ))
+                  )}
+                  {streakPreview.length > 0 &&
+                    streakPreview.map((day) => (
+                      <span
+                        key={day.date}
+                        className={`dashboard-week-day ${day.hasAttempt ? 'dashboard-week-day-active' : ''}`}
+                      >
+                        {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                      </span>
+                    ))}
+                </div>
+              </div>
+
+              <div className="dashboard-pill-grid">
+                <div className="dashboard-pill-card">
+                  <p className="dashboard-pill-label">Total Points</p>
+                  <p className="dashboard-pill-value">{totalPoints}</p>
+                </div>
+                <div className="dashboard-pill-card">
+                  <p className="dashboard-pill-label">Accuracy</p>
+                  <p className="dashboard-pill-value">{Math.round(accuracy)}%</p>
+                </div>
+              </div>
+            </aside>
           </div>
 
-          <div className="dashboard-stat-card">
-            <div className="dashboard-stat-label">Longest Streak</div>
-            <div className="dashboard-stat-value">{progress?.overview.longestStreak || 0}</div>
-            <div className="dashboard-stat-unit">days</div>
-          </div>
-
-          <div className="dashboard-stat-card">
-            <div className="dashboard-stat-label">Total Points</div>
-            <div className="dashboard-stat-value">{progress?.overview.totalPoints || 0}</div>
-            <div className="dashboard-stat-unit">points</div>
-          </div>
-
-          <div className="dashboard-stat-card">
-            <div className="dashboard-stat-label">Accuracy</div>
-            <div className="dashboard-stat-value">{Math.round(accuracy)}%</div>
-            <div className="dashboard-stat-unit">
-              {progress?.overview.totalAttempts || 0} questions
+          <section className="dashboard-history-section">
+            <div className="dashboard-history-header">
+              <h2>Submission History</h2>
+              <p>Last {submissionHistory.length || '0'} attempts</p>
             </div>
-          </div>
-        </div>
-
-        <div className="dashboard-actions">
-          <button
-            className="dashboard-primary-button"
-          >
-            Start Quiz
-          </button>
-          <button
-            className="dashboard-secondary-button"
-          >
-            View Leaderboard
-          </button>
-        </div>
+            {submissionHistory.length === 0 ? (
+              <div className="dashboard-history-empty">
+                No submissions yet. Take a quiz to see your progress grow.
+              </div>
+            ) : (
+              <ul className="dashboard-history-list">
+                {submissionHistory.map((attempt, index) => (
+                  <li key={`${attempt.date}-${index}`} className="dashboard-history-item">
+                    <div>
+                      <p className="dashboard-history-category">{attempt.category}</p>
+                      <span className="dashboard-history-date">{formatDate(attempt.date)}</span>
+                    </div>
+                    <div className="dashboard-history-meta">
+                      <span className="dashboard-history-points">+{attempt.points} pts</span>
+                      <span className={`dashboard-history-status ${attempt.isCorrect ? 'correct' : 'incorrect'}`}>
+                        {attempt.isCorrect ? 'Correct' : 'Incorrect'}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </section>
       </main>
     </div>
   );
