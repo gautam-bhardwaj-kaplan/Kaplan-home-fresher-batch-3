@@ -58,9 +58,29 @@ export const DashboardPage = () => {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
+      <header className="dashboard-header-shell">
         <div className="dashboard-header-content">
           <div className="dashboard-logo">QUIZLY</div>
+          <div className="dashboard-header-actions"> 
+            <button
+              className="dashboard-nav-button dashboard-nav-button-active"
+              onClick={() => navigate('/dashboard')}
+            >
+              Dashboard
+            </button>
+            <button
+              className="dashboard-nav-button"
+              onClick={() => navigate('/leaderboard')}
+            >
+              Leaderboard
+            </button>
+            <button
+              className="dashboard-nav-button"
+              onClick={() => navigate('/profile')}
+            >
+              Profile
+            </button>
+          </div>
           <div className="dashboard-header-actions">
             <span className="dashboard-user-name">{user?.name}</span>
             <button className="dashboard-logout-button" onClick={handleLogout}>
