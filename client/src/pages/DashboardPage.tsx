@@ -57,13 +57,7 @@ export const DashboardPage = () => {
 
   const accuracy = progress?.overview.accuracy || 0;
   const totalPoints = progress?.overview.totalPoints || 0;
-  const submissionHistory = (progress?.recentActivity ?? []).slice(0, 6);
   const streakPreview = (progress?.streakHistory ?? []).slice(-5);
-  const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric'
-    });
 
   return (
     <div className="dashboard-container">
@@ -173,35 +167,6 @@ export const DashboardPage = () => {
               </div>
             </aside>
           </div>
-
-          <section className="dashboard-history-section">
-            <div className="dashboard-history-header">
-              <h2>Submission History</h2>
-              <p>Last {submissionHistory.length || '0'} attempts</p>
-            </div>
-            {submissionHistory.length === 0 ? (
-              <div className="dashboard-history-empty">
-                No submissions yet. Take a quiz to see your progress grow.
-              </div>
-            ) : (
-              <ul className="dashboard-history-list">
-                {submissionHistory.map((attempt, index) => (
-                  <li key={`${attempt.date}-${index}`} className="dashboard-history-item">
-                    <div>
-                      <p className="dashboard-history-category">{attempt.category}</p>
-                      <span className="dashboard-history-date">{formatDate(attempt.date)}</span>
-                    </div>
-                    <div className="dashboard-history-meta">
-                      <span className="dashboard-history-points">+{attempt.points} pts</span>
-                      <span className={`dashboard-history-status ${attempt.isCorrect ? 'correct' : 'incorrect'}`}>
-                        {attempt.isCorrect ? 'Correct' : 'Incorrect'}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
         </section>
       </main>
     </div>
