@@ -112,15 +112,18 @@ export const DashboardPage = () => {
               <div className="dashboard-quiz-content">
                 <div className="dashboard-quiz-text-section">
                   <h1 className="dashboard-quiz-title">Quiz of the Day</h1>
-                  <p className="dashboard-quiz-description">Play our daily general knowledge trivia quiz.</p>
-                  <p className="dashboard-quiz-description">Today's quiz is Quiz of the Day no.{' '}
-                    <strong>{Math.max(progress?.overview.totalAttempts || 0, 1)}</strong>
-                  </p>
+                  <div className="dashboard-quiz-description-container">
+                    <p className="dashboard-quiz-description">Play our daily general knowledge trivia quiz.</p>
+                    <p className="dashboard-quiz-description">Today's quiz is Quiz of the Day no.{' '}
+                      {progress?.overview.totalAttempts || 0}.
+                    </p>
+                  </div>
+                  <div className="dashboard-quiz-plays">Plays: {progress?.overview.totalAttempts || 0}</div>
                   <button
                     className="dashboard-quiz-button"
                     onClick={() => navigate('/dashboard')}
                   >
-                    Play Quiz
+                    Play Now
                   </button>
                 </div>
                 <div className="dashboard-quiz-illustration">
