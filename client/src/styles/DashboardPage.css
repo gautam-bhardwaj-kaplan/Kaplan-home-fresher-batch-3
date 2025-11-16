@@ -107,7 +107,7 @@
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  background-color: #FBF9F5;
+  background-color: white;
   border-radius: 36px 36px 0 0;
   margin-top: -3.55rem;
   padding: 3rem 2.5rem 4rem;
@@ -118,7 +118,6 @@
   background-color: #ffffff;
   border-radius: 32px;
   padding: 2.5rem 3rem 3rem;
-  box-shadow: 0 25px 60px rgba(26, 26, 26, 0.08);
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
@@ -141,25 +140,35 @@
   box-shadow: inset 0 -20px 60px rgba(255, 255, 255, 0.35);
 }
 
-.dashboard-quiz-header {
+.dashboard-quiz-content {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
+  align-items: stretch;
+  gap: 2rem;
+  height: 100%;
 }
 
-.dashboard-quiz-label {
-  font-size: 1.1rem;
-  margin: 0;
-  color: #2D2323;
-  font-weight: 600;
+.dashboard-quiz-text-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: 1.5rem;
 }
 
 .dashboard-quiz-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin: 0.25rem 0 0;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin: 0;
   color: #0f0f0f;
   font-weight: 700;
+  line-height: 1.2;
+}
+
+.dashboard-quiz-description {
+  margin: 0;
+  color: #2d2323;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .dashboard-quiz-button {
@@ -167,15 +176,21 @@
   color: #1a1a1a;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 9999px;
-  padding: 0.65rem 1.75rem;
-  font-size: 0.95rem;
-  font-weight: 500;
+  padding: 0.85rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
+  align-self: flex-start;
+  margin-top: auto;
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(56, 37, 37, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
@@ -183,11 +198,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1.75rem;
+  flex-shrink: 0;
 }
 
 .dashboard-quiz-illustration img {
-  width: min(220px, 100%);
+  width: 140px;
+  height: auto;
+  object-fit: contain;
 }
 
 .dashboard-side-stack {
@@ -392,6 +409,29 @@
 
   .dashboard-primary-layout {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-quiz-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .dashboard-quiz-illustration {
+    order: -1;
+    align-self: center;
+  }
+
+  .dashboard-quiz-illustration img {
+    width: 120px;
+  }
+
+  .dashboard-quiz-text-section {
+    gap: 1rem;
+  }
+
+  .dashboard-quiz-button {
+    width: 100%;
+    margin-top: 1rem;
   }
 
   .dashboard-week-row {

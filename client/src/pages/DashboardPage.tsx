@@ -5,6 +5,7 @@ import { getUserProgress } from '../services/auth.service';
 import type { UserProgress } from '../types';
 import { Oval } from 'react-loader-spinner';
 import '../styles/DashboardPage.css';
+import mainCard from '../assets/maincard.png';
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
@@ -108,24 +109,27 @@ export const DashboardPage = () => {
         <section className="dashboard-content-shell">
           <div className="dashboard-primary-layout">
             <article className="dashboard-quiz-card">
-              <div className="dashboard-quiz-header">
-                <div>
-                  <p className="dashboard-quiz-label">Quiz</p>
-                  <h1 className="dashboard-quiz-title">Question {Math.max((progress?.overview.totalAttempts || 0) + 1, 1)}</h1>
+              <div className="dashboard-quiz-content">
+                <div className="dashboard-quiz-text-section">
+                  <h1 className="dashboard-quiz-title">Quiz of the Day</h1>
+                  <p className="dashboard-quiz-description">Play our daily general knowledge trivia quiz.</p>
+                  <p className="dashboard-quiz-description">Today's quiz is Quiz of the Day no.{' '}
+                    <strong>{Math.max(progress?.overview.totalAttempts || 0, 1)}</strong>
+                  </p>
+                  <button
+                    className="dashboard-quiz-button"
+                    onClick={() => navigate('/dashboard')}
+                  >
+                    Play Quiz
+                  </button>
                 </div>
-                <button
-                  className="dashboard-quiz-button"
-                  onClick={() => navigate('/dashboard')}
-                >
-                  Take Quiz
-                </button>
-              </div>
-              <div className="dashboard-quiz-illustration">
-                <img
-                  src="https://illustrations.popsy.co/violet/group-chat.svg"
-                  alt="Quiz friends"
-                  loading="lazy"
-                />
+                <div className="dashboard-quiz-illustration">
+                  <img
+                    src={mainCard}
+                    alt="Quiz friends"
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </article>
 
@@ -133,7 +137,7 @@ export const DashboardPage = () => {
               <div className="dashboard-streak-card">
                 <div className="dashboard-streak-value">
                   <span>{progress?.overview.currentStreak || 0}</span>
-                  <span className="dashboard-streak-icon" aria-hidden="true">⚡</span>
+                  <span className="dashboard-streak-icon" aria-hidden="true">🔥</span>
                 </div>
                 <p className="dashboard-streak-subtitle">Solve 3 problems to start a streak</p>
                 <div className="dashboard-week-row">
