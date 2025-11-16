@@ -1,10 +1,30 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import asset1 from '../assets/asset1.png';
 import asset2 from '../assets/asset2.png';
 import '../styles/LandingPage.css';
 
 export const LandingPage = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
+
+  const goToLogin = (): void => {
+    if (isAuthenticated) {
+      const destination = user?.role === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
+      navigate(destination);
+      return;
+    }
+    navigate('/login');
+  };
+
+  const goToSignup = (): void => {
+    if (isAuthenticated) {
+      const destination = user?.role === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
+      navigate(destination);
+      return;
+    }
+    navigate('/signup');
+  };
 
   return (
     <div className="landing-container">
@@ -15,13 +35,13 @@ export const LandingPage = () => {
           <div className="landing-header-actions">
             <button
               className="landing-login-button"
-              onClick={() => navigate('/login')}
+              onClick={goToLogin}
             >
               Log in
             </button>
             <button
               className="landing-primary-button"
-              onClick={() => navigate('/signup')}
+              onClick={goToSignup}
             >
               Start for free
             </button>
@@ -48,13 +68,13 @@ export const LandingPage = () => {
         <div className="landing-cta-buttons">
           <button
             className="landing-login-button"
-            onClick={() => navigate('/login')}
+            onClick={goToLogin}
           >
             Log in
           </button>
           <button
             className="landing-primary-button"
-            onClick={() => navigate('/signup')}
+            onClick={goToSignup}
           >
             Sign up
           </button>
