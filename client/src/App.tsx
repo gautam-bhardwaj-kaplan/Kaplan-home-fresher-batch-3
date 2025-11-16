@@ -5,7 +5,11 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { AdminDashboardPage } from './pages/AdminDashboardPage';
+import AdminLayout from "./layouts/AdminLayout";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AdminAnalyticsPage from "./pages/AdminAnalyticsPage";
+import AdminQuestionsPage from "./pages/AdminQuestionsPage";
+import AdminUsersPage from "./pages/AdminUsersPage";
 
 function App() {
   return (
@@ -24,13 +28,18 @@ function App() {
             }
           />
           <Route
-            path="/admin/dashboard"
+            path="/admin"
             element={
               <ProtectedRoute>
-                <AdminDashboardPage />
+                <AdminLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="dashboard" element={<AdminDashboardPage />} />
+            <Route path="analytics" element={<AdminAnalyticsPage />} />
+            <Route path="questions" element={<AdminQuestionsPage />} />
+            <Route path="users" element={<AdminUsersPage />} />
+          </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>
