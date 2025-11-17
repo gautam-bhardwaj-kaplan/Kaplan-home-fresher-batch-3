@@ -397,7 +397,7 @@ export const AdminQuestionsPage = () => {
         <table className="admin-questions-table">
           <thead>
             <tr>
-              <th>#</th>
+              <th>S.No</th>
               <th>Question</th>
               <th>Category</th>
               <th>Difficulty</th>
@@ -417,7 +417,7 @@ export const AdminQuestionsPage = () => {
 
               return (
                 <tr key={q.id}>
-                  <td>{idx + 1}</td>
+                  <td>{(pagination.currentPage - 1) * pagination.itemsPerPage + idx + 1}</td>
                   <td>{q.questionText}</td>
                   <td><span className="admin-badge admin-badge-blue">{q.category}</span></td>
                   <td><span className="admin-badge admin-badge-yellow">{q.difficulty}</span></td>

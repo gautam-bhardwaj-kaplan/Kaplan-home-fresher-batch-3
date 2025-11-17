@@ -7,7 +7,6 @@ import { SignupPage } from './pages/SignupPage';
 import { DashboardPage } from './pages/DashboardPage';
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
-import AdminAnalyticsPage from "./pages/AdminAnalyticsPage";
 import AdminQuestionsPage from "./pages/AdminQuestionsPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 
@@ -36,7 +35,6 @@ function App() {
             }
           >
             <Route path="dashboard" element={<AdminDashboardPage />} />
-            <Route path="analytics" element={<AdminAnalyticsPage />} />
             <Route path="questions" element={<AdminQuestionsPage />} />
             <Route path="users" element={<AdminUsersPage />} />
           </Route>

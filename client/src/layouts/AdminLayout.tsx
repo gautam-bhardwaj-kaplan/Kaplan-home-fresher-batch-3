@@ -33,13 +33,6 @@ export const AdminLayout = () => {
             </button>
 
             <button
-              className={`admin-nav-button ${path === "/admin/analytics" ? "admin-nav-button-active" : ""}`}
-              onClick={() => navigate("/admin/analytics")}
-            >
-              Analytics
-            </button>
-
-            <button
               className={`admin-nav-button ${path === "/admin/questions" ? "admin-nav-button-active" : ""}`}
               onClick={() => navigate("/admin/questions")}
             >
