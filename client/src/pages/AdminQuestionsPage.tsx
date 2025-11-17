@@ -110,8 +110,7 @@ const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: QuestionMod
         acceptedAnswers?: string[];
         difficulty?: Difficulty;
       } = {
-        // Convert YYYY-MM-DD to ISO datetime string for backend
-        scheduledDate: new Date(scheduledDate).toISOString(),
+        scheduledDate:scheduledDate,
         category,
         difficulty,
         questionText,
