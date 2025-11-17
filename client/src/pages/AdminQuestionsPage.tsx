@@ -15,6 +15,8 @@ import type {
   QuestionType,
 } from '../services/admin.questions';
 import '../styles/AdminQuestions.css';
+import deleteIcon from '../assets/deleteIcon.png';
+import editIcon from '../assets/editIcon.png';
 
 type ModalMode = 'create' | 'edit';
 
@@ -79,7 +81,6 @@ const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: QuestionMod
       loadForEdit(questionId);
     }
     if (open && mode === 'create') {
-      // reset state for fresh create
       setQuestionType('MCQ');
       setQuestionText('');
       setCategory('GENERAL');
@@ -286,14 +287,19 @@ export const AdminQuestionsPage = () => {
     }
   };
 
+  const getTomorrowYMD = () => {
+    const t = new Date();
+    t.setDate(t.getDate() + 1);
+    return t.toISOString().split('T')[0];
+  };
+
   const loadCards = async () => {
     try {
       const today = new Date();
-      const ymd = today.toISOString().split('T')[0];
       const [all, active, scheduled, inactive] = await Promise.all([
         listAdminQuestions({ page: 1, limit: 1 }),
         listAdminQuestions({ page: 1, limit: 1, status: 'active' }),
-        listAdminQuestions({ page: 1, limit: 1, dateFrom: ymd }),
+        listAdminQuestions({ page: 1, limit: 1, status: 'active', dateFrom: getTomorrowYMD() }),
         listAdminQuestions({ page: 1, limit: 1, status: 'inactive' }),
       ]);
       setCardTotals({
@@ -302,8 +308,9 @@ export const AdminQuestionsPage = () => {
         scheduled: scheduled.pagination.totalItems,
         inactive: inactive.pagination.totalItems,
       });
-    } catch {
-      // ignore card errors, keep UI usable
+    } catch (err) {
+      alert('Failed to load cards');
+      setCardTotals({ total: 0, active: 0, scheduled: 0, inactive: 0 });
     }
   };
 
@@ -433,8 +440,22 @@ export const AdminQuestionsPage = () => {
                     )}
                   </td>
                   <td className="admin-row-actions">
-                    <button className="admin-action-button" onClick={() => openEdit(q.id)}>Edit</button>
-                    <button className="admin-action-button admin-action-danger" onClick={() => onDelete(q.id)}>Delete</button>
+                    <button
+                      className="admin-action-button"
+                      onClick={() => openEdit(q.id)}
+                      aria-label={`Edit question ${idx + 1}`}
+                      title="Edit"
+                    >
+                      <img src={editIcon} alt="Edit" />
+                    </button>
+                    <button
+                      className="admin-action-button admin-action-danger"
+                      onClick={() => onDelete(q.id)}
+                      aria-label={`Delete question ${idx + 1}`}
+                      title="Delete"
+                    >
+                      <img src={deleteIcon} alt="Delete" />
+                    </button>
                   </td>
                 </tr>
               );

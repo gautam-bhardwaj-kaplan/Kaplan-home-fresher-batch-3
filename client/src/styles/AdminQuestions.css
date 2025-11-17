@@ -68,6 +68,7 @@
   padding: 0.5rem 0.5rem;
   border-bottom: 1px solid #eee;
   text-align: left;
+  vertical-align: middle;
 }
 .admin-questions-table th { color: #444; font-weight: 600; }
 .admin-badge { padding: 0.2rem 0.45rem; border-radius: 9999px; font-size: 12px; }
@@ -75,8 +76,9 @@
 .admin-badge-yellow { background: #fde9cc; color: #8a4b0f; }
 .admin-badge-blue { background: #e7ecff; color: #3247a1; }
 .admin-badge-gray { background: #efefef; color: #555; }
-.admin-row-actions { display: flex; gap: 0.5rem; }
-.admin-action-button { border: none; background: #eeebe8; padding: 0.35rem 0.55rem; border-radius: 8px; cursor: pointer; font-size: 13px; }
+.admin-row-actions { display: inline-flex; gap: 0.4rem; align-items: center; white-space: nowrap; }
+.admin-action-button { border: none; background: #eeebe8; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; }
+.admin-action-button img { width: 16px; height: 16px; display: block; }
 .admin-action-danger { background: #ffe5e5; color: #8a1a1a; }
 
 .admin-modal-backdrop {
