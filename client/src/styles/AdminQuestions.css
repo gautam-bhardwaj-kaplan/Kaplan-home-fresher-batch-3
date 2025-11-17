@@ -41,8 +41,17 @@
   flex-direction: column;
   gap: 0.2rem;
 }
-.admin-questions-card-label { color: #555; font-size: 0.8rem; }
-.admin-questions-card-value { color: #111; font-weight: 700; font-size: 1.1rem; }
+
+.admin-questions-card-label {
+  color: #555;
+  font-size: 0.8rem;
+}
+
+.admin-questions-card-value {
+  color: #111;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
 
 .admin-questions-filters {
   display: grid;
@@ -50,7 +59,9 @@
   gap: 0.5rem;
 }
 
-.admin-input, .admin-select, .admin-date {
+.admin-input,
+.admin-select,
+.admin-date {
   width: 100%;
   padding: 0.45rem 0.6rem;
   border-radius: 8px;
@@ -64,52 +75,162 @@
   border-collapse: collapse;
   font-size: 13px;
 }
-.admin-questions-table th, .admin-questions-table td {
+
+.admin-questions-table th,
+.admin-questions-table td {
   padding: 0.5rem 0.5rem;
   border-bottom: 1px solid #eee;
   text-align: left;
   vertical-align: middle;
 }
-.admin-questions-table th { color: #444; font-weight: 600; }
-.admin-badge { padding: 0.2rem 0.45rem; border-radius: 9999px; font-size: 12px; }
-.admin-badge-green { background: #dbf4e7; color: #106b34; }
-.admin-badge-yellow { background: #fde9cc; color: #8a4b0f; }
-.admin-badge-blue { background: #e7ecff; color: #3247a1; }
-.admin-badge-gray { background: #efefef; color: #555; }
-.admin-row-actions { display: inline-flex; gap: 0.4rem; align-items: center; white-space: nowrap; }
-.admin-action-button { border: none; background: #eeebe8; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; }
-.admin-action-button img { width: 16px; height: 16px; display: block; }
-.admin-action-danger { background: #ffe5e5; color: #8a1a1a; }
+
+.admin-questions-table th {
+  color: #444;
+  font-weight: 600;
+}
+
+.admin-badge {
+  padding: 0.2rem 0.45rem;
+  border-radius: 9999px;
+  font-size: 12px;
+}
+
+.admin-badge-green {
+  background: #dbf4e7;
+  color: #106b34;
+}
+
+.admin-badge-yellow {
+  background: #fde9cc;
+  color: #8a4b0f;
+}
+
+.admin-badge-blue {
+  background: #e7ecff;
+  color: #3247a1;
+}
+
+.admin-badge-gray {
+  background: #efefef;
+  color: #555;
+}
+
+.admin-row-actions {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.admin-action-button {
+  border: none;
+  background: none;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.admin-action-button img {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.admin-action-danger {
+  background: none;
+  color: #8a1a1a;
+}
 
 .admin-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
 }
+
 .admin-modal {
   width: min(620px, 95%);
   background: white;
   border-radius: 12px;
-  box-shadow: 0 25px 50px rgba(26,26,26,0.15);
+  box-shadow: 0 25px 50px rgba(26, 26, 26, 0.15);
   padding: 0.75rem 0.75rem 0.5rem;
 }
+
 .admin-modal-header {
-  display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
 }
-.admin-modal-title { font-size: 1.1rem; font-weight: 700; }
-.admin-modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-.admin-modal-footer { position: sticky; bottom: 0; background: white; display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem; padding-top: 0.5rem; }
-.admin-primary { background: #4F75FE; color: white; border: none; border-radius: 9999px; padding: 0.45rem 0.8rem; font-size: 13px; }
-.admin-secondary { background: #eeebe8; color: #1a1a1a; border: none; border-radius: 9999px; padding: 0.45rem 0.8rem; font-size: 13px; }
-.admin-textarea { grid-column: 1 / -1; resize: vertical; min-height: 70px; }
-.admin-form-row { display: contents; }
-.admin-help { color: #777; font-size: 0.75rem; }
+
+.admin-modal-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.admin-modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.admin-modal-footer {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.admin-primary {
+  background: #4F75FE;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.45rem 0.8rem;
+  font-size: 13px;
+}
+
+.admin-secondary {
+  background: #eeebe8;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.45rem 0.8rem;
+  font-size: 13px;
+}
+
+.admin-textarea {
+  grid-column: 1 / -1;
+  resize: vertical;
+  min-height: 70px;
+}
+
+.admin-form-row {
+  display: contents;
+}
+
+.admin-help {
+  color: #777;
+  font-size: 0.75rem;
+}
 
 @media (max-width: 768px) {
-  .admin-questions-cards { grid-template-columns: 1fr 1fr; }
-  .admin-modal-body { grid-template-columns: 1fr; }
+  .admin-questions-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-modal-body {
+    grid-template-columns: 1fr;
+  }
 }

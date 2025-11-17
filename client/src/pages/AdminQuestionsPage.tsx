@@ -439,23 +439,25 @@ export const AdminQuestionsPage = () => {
                       <span className="admin-badge admin-badge-gray">inactive</span>
                     )}
                   </td>
-                  <td className="admin-row-actions">
-                    <button
-                      className="admin-action-button"
-                      onClick={() => openEdit(q.id)}
-                      aria-label={`Edit question ${idx + 1}`}
-                      title="Edit"
-                    >
-                      <img src={editIcon} alt="Edit" />
-                    </button>
-                    <button
-                      className="admin-action-button admin-action-danger"
-                      onClick={() => onDelete(q.id)}
-                      aria-label={`Delete question ${idx + 1}`}
-                      title="Delete"
-                    >
-                      <img src={deleteIcon} alt="Delete" />
-                    </button>
+                  <td>
+                    <div className="admin-row-actions">
+                      <button
+                        className="admin-action-button"
+                        onClick={() => openEdit(q.id)}
+                        aria-label={`Edit question ${idx + 1}`}
+                        title="Edit"
+                      >
+                        <img src={editIcon} alt="Edit" />
+                      </button>
+                      <button
+                        className="admin-action-button admin-action-danger"
+                        onClick={() => onDelete(q.id)}
+                        aria-label={`Delete question ${idx + 1}`}
+                        title="Delete"
+                      >
+                        <img src={deleteIcon} alt="Delete" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );
