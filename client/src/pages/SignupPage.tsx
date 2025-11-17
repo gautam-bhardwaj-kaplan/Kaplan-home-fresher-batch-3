@@ -19,6 +19,7 @@ export const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const isButtonLoading = isSubmitting || authLoading;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -36,7 +37,6 @@ export const SignupPage = () => {
     }
 
     setIsSubmitting(true);
-    setError(''); 
 
     try {
       await signup({ name, email, password });
@@ -45,6 +45,7 @@ export const SignupPage = () => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Signup failed. Please try again.';
       setError(errorMessage);
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -140,12 +141,12 @@ export const SignupPage = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="auth-primary-button"
-            disabled={isSubmitting || authLoading}
-          >
-            {isSubmitting ? 'Creating account...' : 'Sign up'}
+          <button type="submit" className="auth-primary-button" disabled={isButtonLoading}>
+            {isButtonLoading ? (
+              <span className="auth-button-spinner" role="status" aria-label="Creating account" />
+            ) : (
+              'Sign up'
+            )}
           </button>
         </form>
 

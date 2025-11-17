@@ -105,7 +105,8 @@
 .landing-headline-row {
   display: inline-flex;
   align-items: center;
-  gap: clamp(0.85rem, 1.5vw, 1.5rem);
+  justify-content: center;
+  gap: clamp(1.25rem, 2.5vw, 3rem);
 }
 
 .landing-headline-icon {

@@ -71,7 +71,7 @@ export const ProfilePage = () => {
     <div className="profile-container">
       <header className="profile-header-shell">
         <div className="profile-header-content">
-          <div className="profile-logo">QUIZLY</div>
+          <div className="profile-logo">Pebble</div>
           <div className="profile-header-actions"> 
             <button
               className="profile-nav-button"

@@ -44,7 +44,7 @@ export const LeaderboardPage = () => {
   };
 
   const podium = (data?.leaderboard ?? []).slice(0, 3);
-  const rest = (data?.leaderboard ?? []).slice(3);
+  // const rest = (data?.leaderboard ?? []).slice(3);
 
   const getUserInitials = (name: string) => {
     const parts = name.trim().split(' ');
@@ -64,7 +64,7 @@ export const LeaderboardPage = () => {
     <div className="leaderboard-container">
       <header className="dashboard-header-shell">
         <div className="dashboard-header-content">
-          <div className="dashboard-logo">QUIZLY</div>
+          <div className="dashboard-logo">Pebble</div>
           <div className="dashboard-header-actions">
             <button
               className="dashboard-nav-button"

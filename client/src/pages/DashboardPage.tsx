@@ -67,7 +67,7 @@ export const DashboardPage = () => {
     <div className="dashboard-container">
       <header className="dashboard-header-shell">
         <div className="dashboard-header-content">
-          <div className="dashboard-logo">QUIZLY</div>
+          <div className="dashboard-logo">Pebble</div>
           <div className="dashboard-header-actions"> 
             <button
               className="dashboard-nav-button dashboard-nav-button-active"
