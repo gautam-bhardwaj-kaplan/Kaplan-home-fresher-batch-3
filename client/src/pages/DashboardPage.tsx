@@ -8,6 +8,7 @@ import { Oval } from 'react-loader-spinner';
 import '../styles/DashboardPage.css';
 import mainCard from '../assets/maincard.png';
 import { AppNavbar } from '../components/AppNavbar';
+import fireIcon from '../assets/fire.gif';
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
@@ -151,7 +152,7 @@ export const DashboardPage = () => {
               <div className="dashboard-streak-card">
                 <div className="dashboard-streak-value">
                   <span>{progress?.overview.currentStreak || 0}</span>
-                  <span className="dashboard-streak-icon" aria-hidden="true">🔥</span>
+                  <img src={fireIcon} className="dashboard-streak-fire" alt="Fire" />
                 </div>
                 <p className="dashboard-streak-subtitle">Play a quiz to start a streak</p>
                 <div className="dashboard-week-row">

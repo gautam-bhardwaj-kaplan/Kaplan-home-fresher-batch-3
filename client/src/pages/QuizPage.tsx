@@ -5,6 +5,7 @@ import { getTodayQuestion, submitAnswer } from '../services/question.service';
 import type { Question, Submission, TodayQuestionResponse } from '../types';
 import { Oval } from 'react-loader-spinner';
 import '../styles/QuizPage.css';
+import partyGif from '../assets/party.gif';
 
 export const QuizPage = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export const QuizPage = () => {
   const [error, setError] = useState<string>('');
   const [timeSpent, setTimeSpent] = useState<number>(0);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [showPartyAnimation, setShowPartyAnimation] = useState<boolean>(false);
 
   useEffect(() => {
     const loadQuestion = async () => {
@@ -77,6 +79,12 @@ export const QuizPage = () => {
         explanation: result.submission.explanation,
       });
       setHasAttempted(true);
+      if (result.submission.isCorrect) {
+        setShowPartyAnimation(true);
+        setTimeout(() => {
+          setShowPartyAnimation(false);
+        }, 2000);
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to submit answer';
       setError(errorMessage);
@@ -115,6 +123,11 @@ export const QuizPage = () => {
 
   return (
     <div className="quiz-container">
+      {showPartyAnimation && (
+        <div className="quiz-party-overlay" aria-hidden="true">
+          <img src={partyGif} alt="Celebration" className="quiz-party-animation" />
+        </div>
+      )}
       <header className="quiz-header-shell">
         <div className="quiz-header-content">
           <button className="quiz-back-button" onClick={handleBack}>

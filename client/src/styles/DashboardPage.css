@@ -260,6 +260,11 @@
   font-size: 1.75rem;
 }
 
+.dashboard-streak-fire {
+  width: 30px;
+  height: auto;
+}
+
 .dashboard-streak-subtitle {
   margin: 0.65rem 0 1.5rem;
   color: #5a5550;
