@@ -48,7 +48,7 @@ const createQuestion = async (questionData, userId) => {
 const listQuestions = async (filters) => {
   const {
     page = 1,
-    limit = 20,
+    limit = 10,
     category,
     dateFrom,
     dateTo,
