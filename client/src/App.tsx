@@ -7,6 +7,7 @@ import { SignupPage } from './pages/SignupPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { QuizPage } from './pages/QuizPage';
+import { LeaderboardPage } from './pages/LeaderboardPage';
 
 function App() {
   return (
@@ -29,6 +30,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/leaderboard"
+            element={
+              <ProtectedRoute>
+                <LeaderboardPage />
               </ProtectedRoute>
             }
           />

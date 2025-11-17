@@ -135,3 +135,26 @@ export interface SubmitAnswerResponse {
   newBadges?: Badge[];
   userStats?: UserStats;
 }
+
+export interface LeaderboardEntry {
+  rank: number;
+  userId: string;
+  name: string;
+  profilePicture?: string | null;
+  currentStreak: number;
+  totalPoints: number;
+  badges: number;
+}
+
+export interface LeaderboardCurrentUser {
+  rank: number;
+  currentStreak: number;
+  totalPoints: number;
+}
+
+export interface LeaderboardResponse {
+  leaderboard: LeaderboardEntry[];
+  currentUser: LeaderboardCurrentUser | null;
+  period: 'all' | 'week' | 'month';
+  generatedAt: string;
+}

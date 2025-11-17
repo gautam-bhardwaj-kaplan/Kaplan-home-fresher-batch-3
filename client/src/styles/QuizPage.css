@@ -51,9 +51,9 @@
 .quiz-back-button {
   background-color: transparent;
   border: none;
-  color: #2D2323;
+  color: #4a4a4a;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 9999px;
