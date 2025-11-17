@@ -12,6 +12,7 @@ export interface User {
   accuracy?: number;
   emailNotifications?: boolean;
   notificationTime?: string;
+  createdAt?: string;
   badges?: Array<{
     badgeId: string;
     name: string;
@@ -62,6 +63,7 @@ export interface UserProgress {
     isCorrect: boolean;
     points: number;
     category: string;
+    questionText: string;
   }>;
   streakHistory: Array<{
     date: string;

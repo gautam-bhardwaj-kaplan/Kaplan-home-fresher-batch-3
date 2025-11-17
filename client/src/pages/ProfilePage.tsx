@@ -89,7 +89,16 @@ export const ProfilePage = () => {
                 <h1 className="profile-name">{profile?.name || 'User'}</h1>
                 <p className="profile-email">{profile?.email}</p>
                 <div className="profile-badges-count">
-                  {profile?.badges?.length || 0} Badges Earned
+                  {profile?.badges && profile.badges.length > 0 ? (
+                    `${profile.badges.length} Badge${profile.badges.length !== 1 ? 's' : ''} Earned`
+                  ) : (
+                    profile?.createdAt
+                      ? `Joined ${new Date(profile.createdAt).toLocaleDateString('en-US', {
+                          month: 'long',
+                          year: 'numeric'
+                        })}`
+                      : 'No badges earned yet'
+                  )}
                 </div>
               </div>
             </div>
@@ -154,8 +163,13 @@ export const ProfilePage = () => {
                 {submissionHistory.map((attempt, index) => (
                   <li key={`${attempt.date}-${index}`} className="profile-history-item">
                     <div className="profile-history-main">
-                      <p className="profile-history-category">{attempt.category}</p>
-                      <span className="profile-history-date">{formatDate(attempt.date)}</span>
+                      <div className="profile-history-question-section">
+                        <p className="profile-history-question">{attempt.questionText || 'Question not available'}</p>
+                        <div className="profile-history-tags">
+                          <span className="profile-history-category">{attempt.category}</span>
+                          <span className="profile-history-date">{formatDate(attempt.date)}</span>
+                        </div>
+                      </div>
                     </div>
                     <div className="profile-history-meta">
                       <span className="profile-history-points">+{attempt.points} pts</span>
