@@ -6,6 +6,7 @@ import type { UserProgress } from '../types';
 import { Oval } from 'react-loader-spinner';
 import '../styles/DashboardPage.css';
 import mainCard from '../assets/maincard.png';
+import { AppNavbar } from '../components/AppNavbar';
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
@@ -65,37 +66,7 @@ export const DashboardPage = () => {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header-shell">
-        <div className="dashboard-header-content">
-          <div className="dashboard-logo">Pebble</div>
-          <div className="dashboard-header-actions"> 
-            <button
-              className="dashboard-nav-button dashboard-nav-button-active"
-              onClick={() => navigate('/dashboard')}
-            >
-              Dashboard
-            </button>
-            <button
-              className="dashboard-nav-button"
-              onClick={() => navigate('/leaderboard')}
-            >
-              Leaderboard
-            </button>
-            <button
-              className="dashboard-nav-button"
-              onClick={() => navigate('/profile')}
-            >
-              Profile
-            </button>
-          </div>
-          <div className="dashboard-header-actions">
-            <span className="dashboard-user-name">{user?.name}</span>
-            <button className="dashboard-logout-button" onClick={handleLogout}>
-              Log out
-            </button>
-          </div>
-        </div>
-      </header>
+      <AppNavbar active="dashboard" userName={user?.name} onLogout={handleLogout} />
 
       <main className="dashboard-main">
         {error && (

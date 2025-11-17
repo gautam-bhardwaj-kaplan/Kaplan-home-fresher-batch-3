@@ -128,22 +128,24 @@
 
 .leaderboard-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.5fr);
-  gap: 2.5rem;
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 0.9fr);
+  gap: 2.25rem;
+  align-items: stretch;
 }
 
 .leaderboard-podium-card {
   background-color: #F9F5F0;
   border-radius: 24px;
-  padding: 2rem 1.5rem 1.75rem;
+  padding: 2.75rem 2.25rem 2.25rem;
+  min-height: 420px;
 }
 
 .leaderboard-podium {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 1.75rem;
+  gap: 2.25rem;
+  margin-bottom: 2rem;
 }
 
 .leaderboard-podium-column {
@@ -158,8 +160,8 @@
 }
 
 .leaderboard-avatar {
-  width: 56px;
-  height: 56px;
+  width: 72px;
+  height: 72px;
   border-radius: 9999px;
   background-color: #E4D8CB;
   display: flex;
@@ -170,8 +172,9 @@
 }
 
 .leaderboard-avatar.large {
-  width: 64px;
-  height: 64px;
+  width: 92px;
+  height: 92px;
+  font-size: 1.25rem;
 }
 
 .leaderboard-avatar.small {
@@ -187,12 +190,12 @@
 }
 
 .leaderboard-podium-block {
-  width: 120px;
+  width: 150px;
   border-radius: 20px 20px 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.1rem 0;
+  padding: 1.4rem 0;
 }
 
 .leaderboard-podium-block.first-block {
@@ -218,8 +221,8 @@
 }
 
 .leaderboard-current-user {
-  margin-top: 0.5rem;
-  padding: 0.9rem 1rem;
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
   border-radius: 16px;
   background-color: #FFFFFF;
   border: 1px solid #EFE1D4;
@@ -227,6 +230,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  width: 100%;
 }
 
 .leaderboard-current-rank {
@@ -249,8 +253,9 @@
 .leaderboard-table-card {
   background-color: #FDFBF7;
   border-radius: 24px;
-  padding: 1.5rem 1.25rem;
+  padding: 1.25rem 1.25rem 1.5rem;
   border: 1px solid #EEE4D8;
+  align-self: start;
 }
 
 .leaderboard-table-header {

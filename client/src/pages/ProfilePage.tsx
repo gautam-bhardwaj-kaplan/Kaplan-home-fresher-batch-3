@@ -5,6 +5,7 @@ import { getUserProfile, getUserProgress } from '../services/auth.service';
 import type { User, UserProgress } from '../types';
 import { Oval } from 'react-loader-spinner';
 import '../styles/ProfilePage.css';
+import { AppNavbar } from '../components/AppNavbar';
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
@@ -69,37 +70,7 @@ export const ProfilePage = () => {
 
   return (
     <div className="profile-container">
-      <header className="profile-header-shell">
-        <div className="profile-header-content">
-          <div className="profile-logo">Pebble</div>
-          <div className="profile-header-actions"> 
-            <button
-              className="profile-nav-button"
-              onClick={() => navigate('/dashboard')}
-            >
-              Dashboard
-            </button>
-            <button
-              className="profile-nav-button"
-              onClick={() => navigate('/leaderboard')}
-            >
-              Leaderboard
-            </button>
-            <button
-              className="profile-nav-button profile-nav-button-active"
-              onClick={() => navigate('/profile')}
-            >
-              Profile
-            </button>
-          </div>
-          <div className="profile-header-actions">
-            <span className="profile-user-name">{user?.name}</span>
-            <button className="profile-logout-button" onClick={handleLogout}>
-              Log out
-            </button>
-          </div>
-        </div>
-      </header>
+      <AppNavbar active="profile" userName={user?.name} onLogout={handleLogout} />
 
       <main className="profile-main">
         {error && (

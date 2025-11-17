@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { getLeaderboard, type LeaderboardType, type LeaderboardPeriod } from '../services/leaderboard.service';
 import type { LeaderboardEntry, LeaderboardResponse } from '../types';
 import { Oval } from 'react-loader-spinner';
+import { AppNavbar } from '../components/AppNavbar';
 import '../styles/LeaderboardPage.css';
 
 export const LeaderboardPage = () => {
@@ -39,12 +40,9 @@ export const LeaderboardPage = () => {
     navigate('/');
   };
 
-  const handleNav = (path: string): void => {
-    navigate(path);
-  };
-
-  const podium = (data?.leaderboard ?? []).slice(0, 3);
-  // const rest = (data?.leaderboard ?? []).slice(3);
+  const leaderboardEntries = data?.leaderboard ?? [];
+  const podium = leaderboardEntries.slice(0, 3);
+  const leaderboardTop = leaderboardEntries.slice(0, 10);
 
   const getUserInitials = (name: string) => {
     const parts = name.trim().split(' ');
@@ -62,37 +60,7 @@ export const LeaderboardPage = () => {
 
   return (
     <div className="leaderboard-container">
-      <header className="dashboard-header-shell">
-        <div className="dashboard-header-content">
-          <div className="dashboard-logo">Pebble</div>
-          <div className="dashboard-header-actions">
-            <button
-              className="dashboard-nav-button"
-              onClick={() => handleNav('/dashboard')}
-            >
-              Dashboard
-            </button>
-            <button
-              className="dashboard-nav-button dashboard-nav-button-active"
-              onClick={() => handleNav('/leaderboard')}
-            >
-              Leaderboard
-            </button>
-            <button
-              className="dashboard-nav-button"
-              onClick={() => handleNav('/profile')}
-            >
-              Profile
-            </button>
-          </div>
-          <div className="dashboard-header-actions">
-            <span className="dashboard-user-name">{user?.name}</span>
-            <button className="dashboard-logout-button" onClick={handleLogout}>
-              Log out
-            </button>
-          </div>
-        </div>
-      </header>
+      <AppNavbar active="leaderboard" userName={user?.name} onLogout={handleLogout} />
 
       <main className="leaderboard-main">
         {isLoading ? (
@@ -226,13 +194,13 @@ export const LeaderboardPage = () => {
                   <span>{formatTypeLabel(type)}</span>
                 </div>
 
-                {(data?.leaderboard?.length ?? 0) === 0 ? (
+                {leaderboardTop.length === 0 ? (
                   <div className="leaderboard-empty-table">
                     No players yet. Be the first to appear on the leaderboard!
                   </div>
                 ) : (
                   <ul className="leaderboard-table-list">
-                    {(data?.leaderboard ?? []).map((entry: LeaderboardEntry) => (
+                    {leaderboardTop.map((entry: LeaderboardEntry) => (
                       <li
                         key={entry.userId}
                         className={`leaderboard-table-row ${
