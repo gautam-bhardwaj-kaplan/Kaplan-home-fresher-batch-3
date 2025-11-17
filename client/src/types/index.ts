@@ -91,6 +91,10 @@ export interface Question {
   points: number;
 }
 
+export interface QuestionStats {
+  totalQuestions: number;
+}
+
 export interface Submission {
   id: string;
   submittedAnswer: string;

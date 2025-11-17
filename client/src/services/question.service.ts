@@ -1,5 +1,5 @@
 import { apiCall } from './api';
-import type { TodayQuestionResponse, SubmitAnswerResponse } from '../types';
+import type { TodayQuestionResponse, SubmitAnswerResponse, QuestionStats } from '../types';
 
 export const getTodayQuestion = async (): Promise<TodayQuestionResponse> => {
   const response = await apiCall<TodayQuestionResponse>('get', '/questions/today');
@@ -19,6 +19,11 @@ export const submitAnswer = async (
       timeSpent,
     }
   );
+  return response.data;
+};
+
+export const getQuestionStats = async (): Promise<QuestionStats> => {
+  const response = await apiCall<QuestionStats>('get', '/questions/stats');
   return response.data;
 };
 

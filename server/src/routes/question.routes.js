@@ -23,5 +23,10 @@ router.get('/history',
   QuestionController.getHistory
 );
 
+router.get('/stats',
+  authenticate,
+  QuestionController.getQuestionStats
+);
+
 module.exports = router;
 
