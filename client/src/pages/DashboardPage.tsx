@@ -36,6 +36,10 @@ export const DashboardPage = () => {
     navigate('/');
   };
 
+  const handlePlayQuiz = (): void => {
+    navigate('/quiz');
+  };
+
   if (isLoading) {
     return (
       <div className="dashboard-container">
@@ -115,7 +119,7 @@ export const DashboardPage = () => {
                   <div className="dashboard-quiz-plays">Plays: {progress?.overview.totalAttempts || 0}</div>
                   <button
                     className="dashboard-quiz-button"
-                    onClick={() => navigate('/dashboard')}
+                    onClick={handlePlayQuiz}
                   >
                     Play Now
                   </button>
@@ -136,7 +140,7 @@ export const DashboardPage = () => {
                   <span>{progress?.overview.currentStreak || 0}</span>
                   <span className="dashboard-streak-icon" aria-hidden="true">🔥</span>
                 </div>
-                <p className="dashboard-streak-subtitle">Solve 3 problems to start a streak</p>
+                <p className="dashboard-streak-subtitle">Play a quiz to start a streak</p>
                 <div className="dashboard-week-row">
                   {streakPreview.length === 0 && (
                     ['M', 'T', 'W', 'Th', 'F'].map((day) => (

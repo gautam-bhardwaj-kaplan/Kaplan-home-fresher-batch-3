@@ -79,3 +79,59 @@ export interface StatsChartData {
   labels: string[];
   values: number[];
 }
+
+export interface Question {
+  id: string;
+  date: string;
+  category: string;
+  difficulty: string;
+  questionText: string;
+  questionType: 'MCQ' | 'SHORT_ANSWER';
+  options?: string[];
+  points: number;
+}
+
+export interface Submission {
+  id: string;
+  submittedAnswer: string;
+  isCorrect: boolean;
+  pointsEarned: number;
+  correctAnswer?: string;
+  explanation?: string;
+  submittedAt?: string;
+}
+
+export interface TodayQuestionResponse {
+  question: Question;
+  hasAttempted: boolean;
+  submission: Submission | null;
+}
+
+export interface StreakUpdate {
+  currentStreak: number;
+  longestStreak: number;
+}
+
+export interface Badge {
+  badgeId: string;
+  name: string;
+  earnedAt: string;
+}
+
+export interface UserStats {
+  totalPoints: number;
+  accuracy: number;
+}
+
+export interface SubmitAnswerResponse {
+  submission: {
+    id: string;
+    isCorrect: boolean;
+    pointsEarned: number;
+    correctAnswer: string;
+    explanation?: string;
+  };
+  streakUpdate?: StreakUpdate;
+  newBadges?: Badge[];
+  userStats?: UserStats;
+}
