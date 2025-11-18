@@ -58,11 +58,10 @@ export const apiCall = async <T>(
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
       const errorData = error.response.data;
-      
-      // Backend error format returns: { success: false, error: { message: string, details?: array } }
+
       if (errorData?.error) {
         const errorObj = errorData.error;
-        
+
         if (errorObj.details && Array.isArray(errorObj.details) && errorObj.details.length > 0) {
           const errorMessage = errorObj.details
             .map((detail: { field?: string; message?: string }) => {
@@ -72,12 +71,12 @@ export const apiCall = async <T>(
             .join(', ');
           throw new Error(errorMessage);
         }
-        
+
         if (errorObj.message) {
           throw new Error(errorObj.message);
         }
       }
-      
+
       throw new Error('An error occurred');
     }
     throw error;

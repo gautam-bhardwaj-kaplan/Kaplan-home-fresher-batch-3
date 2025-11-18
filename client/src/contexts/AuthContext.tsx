@@ -32,25 +32,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (credentials: LoginCredentials): Promise<void> => {
-    try {
-      const response = await loginApi(credentials);
-      localStorage.setItem('authToken', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      setUser(response.user);
-    } catch (error) {
-      throw error;
-    }
+    const response = await loginApi(credentials);
+    localStorage.setItem('authToken', response.token);
+    localStorage.setItem('user', JSON.stringify(response.user));
+    setUser(response.user);
   };
 
   const signup = async (data: SignupData): Promise<void> => {
-    try {
-      const response = await signupApi(data);
-      localStorage.setItem('authToken', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      setUser(response.user);
-    } catch (error) {
-      throw error;
-    }
+    const response = await signupApi(data);
+    localStorage.setItem('authToken', response.token);
+    localStorage.setItem('user', JSON.stringify(response.user));
+    setUser(response.user);
   };
 
   const logout = (): void => {
@@ -60,13 +52,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const refreshUser = async (): Promise<void> => {
-    try {
-      const userData = await getUserProfile();
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
-    } catch (error) {
-      throw error;
-    }
+    const userData = await getUserProfile();
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const value: AuthContextType = {
