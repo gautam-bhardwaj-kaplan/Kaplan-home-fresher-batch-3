@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../../config/prisma');
 
 const getAllUsers = async () => {
   return prisma.user.findMany({
@@ -9,7 +8,12 @@ const getAllUsers = async () => {
       email: true,
       role: true,
       isActive: true,
-      createdAt: true
+      createdAt: true,
+      currentStreak: true,
+      longestStreak: true,
+      totalQuestionsAttempted: true,
+      totalCorrectAnswers: true,
+      totalPoints: true,
     },
     orderBy: { createdAt: 'desc' }
   });

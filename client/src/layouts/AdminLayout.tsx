@@ -22,7 +22,7 @@ export const AdminLayout = () => {
       <header className="admin-dashboard-header-shell">
         <div className="admin-dashboard-header-content">
 
-          <div className="admin-dashboard-logo">QUIZLY</div>
+          <div className="admin-dashboard-logo">PEBBLE</div>
 
           <div className="admin-dashboard-header-actions">
             <button

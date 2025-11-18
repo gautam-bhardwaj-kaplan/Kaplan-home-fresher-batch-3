@@ -295,7 +295,6 @@ export const AdminQuestionsPage = () => {
 
   const loadCards = async () => {
     try {
-      const today = new Date();
       const [all, active, scheduled, inactive] = await Promise.all([
         listAdminQuestions({ page: 1, limit: 1 }),
         listAdminQuestions({ page: 1, limit: 1, status: 'active' }),

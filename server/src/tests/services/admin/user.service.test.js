@@ -53,6 +53,12 @@ describe('AdminUserService', () => {
           role: true,
           isActive: true,
           createdAt: true,
+          currentStreak: true,
+          longestStreak: true,
+          totalQuestionsAttempted: true,
+          totalCorrectAnswers: true,
+          totalPoints: true,
+          lastAttemptDate: true,
         },
         orderBy: { createdAt: 'desc' },
       });
