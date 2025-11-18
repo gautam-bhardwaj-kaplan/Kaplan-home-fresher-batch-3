@@ -6,6 +6,7 @@ import type { User, UserProgress } from '../types';
 import { Oval } from 'react-loader-spinner';
 import '../styles/ProfilePage.css';
 import { AppNavbar } from '../components/AppNavbar';
+import { BASE_BADGES } from '../constants/badges';
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ export const ProfilePage = () => {
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const ownedBadges = profile?.badges ?? [];
+  const ownedBadgesMap = new Map(ownedBadges.map((badge) => [badge.badgeId, badge]));
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -121,42 +124,32 @@ export const ProfilePage = () => {
 
           <div className="profile-badges-section">
             <h2 className="profile-section-title">Badges</h2>
-            {profile?.badges && profile.badges.length > 0 ? (
-              <div className="profile-badges-grid">
-                {profile.badges.map((badge) => {
-                  const badgeInitial = badge.name?.charAt(0).toUpperCase() || '🏆';
+            <div className="profile-badges-grid">
+              {BASE_BADGES.map((badge) => {
+                const ownedBadge = ownedBadgesMap.get(badge.badgeId);
+                const isUnlocked = Boolean(ownedBadge);
+                const iconSrc = ownedBadge?.iconUrl || badge.icon;
+                const iconContent = iconSrc ? (
+                  <img src={iconSrc} alt={`${badge.name} badge icon`} loading="lazy" />
+                ) : (
+                  <span aria-hidden="true">{badge.name.charAt(0)}</span>
+                );
 
-                  return (
-                    <div key={badge.badgeId} className="profile-badge-card">
-                      <div className="profile-badge-icon">
-                        {badge.iconUrl ? (
-                          <img src={badge.iconUrl} alt={`${badge.name} icon`} loading="lazy" />
-                        ) : (
-                          <span>{badgeInitial}</span>
-                        )}
-                      </div>
-                      <div className="profile-badge-info">
-                        <div className="profile-badge-header">
-                          <h3 className="profile-badge-name">{badge.name}</h3>
-                        </div>
-                        <p className="profile-badge-date">
-                          Earned on{' '}
-                          {new Date(badge.earnedAt).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric'
-                          })}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="profile-empty-state">
-                No badges earned yet. Keep taking quizzes to unlock achievements!
-              </div>
-            )}
+                return (
+                  <div
+                    key={badge.badgeId}
+                    className={`profile-badge-card ${
+                      isUnlocked ? 'profile-badge-card-earned' : 'profile-badge-card-locked'
+                    }`}
+                    title={badge.description}
+                    aria-label={`${badge.name}${isUnlocked ? '' : ' (locked)'}`}
+                  >
+                    <div className="profile-badge-icon">{iconContent}</div>
+                    <p className="profile-badge-name">{badge.name}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <section className="profile-history-section">
