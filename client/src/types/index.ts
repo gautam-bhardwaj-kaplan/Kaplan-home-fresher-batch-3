@@ -1,3 +1,5 @@
+import { type ReactNode } from 'react';
+
 export interface User {
   id: string;
   email: string;
@@ -163,4 +165,26 @@ export interface LeaderboardResponse {
   currentUser: LeaderboardCurrentUser | null;
   period: 'all' | 'week' | 'month';
   generatedAt: string;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  signup: (data: SignupData) => Promise<void>;
+  logout: () => void;
+  refreshUser: () => Promise<void>;
+}
+
+export type NavSection = 'dashboard' | 'leaderboard' | 'profile';
+
+export interface AppNavbarProps {
+  active: NavSection;
+  userName?: string;
+  onLogout: () => void;
+}
+
+export interface ProtectedRouteProps {
+  children: ReactNode;
 }

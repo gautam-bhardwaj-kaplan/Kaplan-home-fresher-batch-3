@@ -1,16 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import type { User, LoginCredentials, SignupData } from '../types';
+import type { User, LoginCredentials, SignupData, AuthContextType } from '../types';
 import { login as loginApi, signup as signupApi, getUserProfile } from '../services/auth.service';
-
-interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
-  signup: (data: SignupData) => Promise<void>;
-  logout: () => void;
-  refreshUser: () => Promise<void>;
-}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

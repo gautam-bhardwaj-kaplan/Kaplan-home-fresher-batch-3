@@ -1,12 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-
-type NavSection = 'dashboard' | 'leaderboard' | 'profile';
-
-interface AppNavbarProps {
-  active: NavSection;
-  userName?: string;
-  onLogout: () => void;
-}
+import type { NavSection, AppNavbarProps } from '../types';
 
 const navItems: Array<{ key: NavSection; label: string; path: string }> = [
   { key: 'dashboard', label: 'Dashboard', path: '/dashboard' },
