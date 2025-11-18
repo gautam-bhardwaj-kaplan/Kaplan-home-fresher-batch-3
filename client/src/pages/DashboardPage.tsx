@@ -12,7 +12,7 @@ import fireIcon from '../assets/fire.gif';
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
@@ -109,7 +109,7 @@ export const DashboardPage = () => {
 
   return (
     <div className="dashboard-container">
-      <AppNavbar active="dashboard" userName={user?.name} onLogout={handleLogout} />
+      <AppNavbar active="dashboard" onLogout={handleLogout} />
 
       <main className="dashboard-main">
         {error && (

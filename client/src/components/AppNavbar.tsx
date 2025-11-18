@@ -7,7 +7,7 @@ const navItems: Array<{ key: NavSection; label: string; path: string }> = [
   { key: 'profile', label: 'Profile', path: '/profile' },
 ];
 
-export const AppNavbar = ({ active, userName, onLogout }: AppNavbarProps) => {
+export const AppNavbar = ({ active, onLogout }: AppNavbarProps) => {
   const navigate = useNavigate();
 
   return (
@@ -26,9 +26,7 @@ export const AppNavbar = ({ active, userName, onLogout }: AppNavbarProps) => {
             </button>
           ))}
         </div>
-
         <div className="dashboard-header-actions">
-          {userName && <span className="dashboard-user-name">{userName}</span>}
           <button className="dashboard-logout-button" onClick={onLogout}>
             Log out
           </button>
@@ -37,4 +35,3 @@ export const AppNavbar = ({ active, userName, onLogout }: AppNavbarProps) => {
     </header>
   );
 };
-

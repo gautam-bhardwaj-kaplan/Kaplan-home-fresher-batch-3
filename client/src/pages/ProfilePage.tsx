@@ -9,7 +9,7 @@ import { AppNavbar } from '../components/AppNavbar';
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const [profile, setProfile] = useState<User | null>(null);
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -70,7 +70,7 @@ export const ProfilePage = () => {
 
   return (
     <div className="profile-container">
-      <AppNavbar active="profile" userName={user?.name} onLogout={handleLogout} />
+      <AppNavbar active="profile" onLogout={handleLogout} />
 
       <main className="profile-main">
         {error && (
@@ -197,4 +197,3 @@ export const ProfilePage = () => {
     </div>
   );
 };
-

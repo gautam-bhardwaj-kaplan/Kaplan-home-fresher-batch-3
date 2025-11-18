@@ -36,12 +36,6 @@ export const LoginPage = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-header">
-        <Link to="/" className="auth-logo">
-          BACK
-        </Link>
-      </div>
-
       <div className="auth-card">
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-subtitle">Log in to continue your learning journey</p>

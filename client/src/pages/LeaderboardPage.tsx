@@ -60,7 +60,7 @@ export const LeaderboardPage = () => {
 
   return (
     <div className="leaderboard-container">
-      <AppNavbar active="leaderboard" userName={user?.name} onLogout={handleLogout} />
+      <AppNavbar active="leaderboard" onLogout={handleLogout} />
 
       <main className="leaderboard-main">
         {isLoading ? (
@@ -233,5 +233,3 @@ export const LeaderboardPage = () => {
     </div>
   );
 };
-
-
