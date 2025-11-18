@@ -19,6 +19,7 @@ export interface User {
     badgeId: string;
     name: string;
     earnedAt: string;
+    iconUrl?: string;
   }>;
 }
 

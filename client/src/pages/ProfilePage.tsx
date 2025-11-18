@@ -88,18 +88,15 @@ export const ProfilePage = () => {
               <div className="profile-info">
                 <h1 className="profile-name">{profile?.name || 'User'}</h1>
                 <p className="profile-email">{profile?.email}</p>
-                <div className="profile-badges-count">
-                  {profile?.badges && profile.badges.length > 0 ? (
-                    `${profile.badges.length} Badge${profile.badges.length !== 1 ? 's' : ''} Earned`
-                  ) : (
-                    profile?.createdAt
-                      ? `Joined ${new Date(profile.createdAt).toLocaleDateString('en-US', {
-                          month: 'long',
-                          year: 'numeric'
-                        })}`
-                      : 'No badges earned yet'
-                  )}
-                </div>
+                {profile?.createdAt && (
+                  <p className="profile-joined-date">
+                    Joined{' '}
+                    {new Date(profile.createdAt).toLocaleDateString('en-US', {
+                      month: 'long',
+                      year: 'numeric'
+                    })}
+                  </p>
+                )}
               </div>
             </div>
             <div className="profile-stats-overview">
@@ -126,21 +123,34 @@ export const ProfilePage = () => {
             <h2 className="profile-section-title">Badges</h2>
             {profile?.badges && profile.badges.length > 0 ? (
               <div className="profile-badges-grid">
-                {profile.badges.map((badge) => (
-                  <div key={badge.badgeId} className="profile-badge-card">
-                    <div className="profile-badge-icon">🏆</div>
-                    <div className="profile-badge-info">
-                      <h3 className="profile-badge-name">{badge.name}</h3>
-                      <p className="profile-badge-date">
-                        Earned {new Date(badge.earnedAt).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })}
-                      </p>
+                {profile.badges.map((badge) => {
+                  const badgeInitial = badge.name?.charAt(0).toUpperCase() || '🏆';
+
+                  return (
+                    <div key={badge.badgeId} className="profile-badge-card">
+                      <div className="profile-badge-icon">
+                        {badge.iconUrl ? (
+                          <img src={badge.iconUrl} alt={`${badge.name} icon`} loading="lazy" />
+                        ) : (
+                          <span>{badgeInitial}</span>
+                        )}
+                      </div>
+                      <div className="profile-badge-info">
+                        <div className="profile-badge-header">
+                          <h3 className="profile-badge-name">{badge.name}</h3>
+                        </div>
+                        <p className="profile-badge-date">
+                          Earned on{' '}
+                          {new Date(badge.earnedAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div className="profile-empty-state">

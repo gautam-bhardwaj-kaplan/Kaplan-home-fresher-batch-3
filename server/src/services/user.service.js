@@ -109,7 +109,8 @@ const getUserProfile = async (userId) => {
     badges: user.userBadges.map(ub => ({
       badgeId: ub.badge.badgeId,
       name: ub.badge.name,
-      earnedAt: ub.earnedAt
+      earnedAt: ub.earnedAt,
+      iconUrl: ub.badge.iconUrl
     })),
     emailNotifications: user.emailNotifications,
     notificationTime: user.notificationTime,
@@ -149,7 +150,8 @@ const updateUserProfile = async (userId, updateData) => {
     badges: user.userBadges.map(ub => ({
       badgeId: ub.badge.badgeId,
       name: ub.badge.name,
-      earnedAt: ub.earnedAt
+      earnedAt: ub.earnedAt,
+      iconUrl: ub.badge.iconUrl
     })),
     emailNotifications: user.emailNotifications,
     notificationTime: user.notificationTime
