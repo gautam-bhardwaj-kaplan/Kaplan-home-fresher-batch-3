@@ -9,7 +9,7 @@ import partyGif from '../assets/party.gif';
 
 export const QuizPage = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const [question, setQuestion] = useState<Question | null>(null);
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [hasAttempted, setHasAttempted] = useState<boolean>(false);
@@ -134,7 +134,6 @@ export const QuizPage = () => {
             Back
           </button>
           <div className="quiz-header-actions">
-            <span className="quiz-user-name">{user?.name}</span>
             <button className="quiz-logout-button" onClick={handleLogout}>
               Log out
             </button>
