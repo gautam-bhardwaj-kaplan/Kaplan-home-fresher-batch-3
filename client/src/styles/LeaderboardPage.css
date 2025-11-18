@@ -6,6 +6,10 @@
   flex-direction: column;
   padding: 1.5rem 1.5rem 0rem 1.5rem;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem 3rem;
+  }
 }
 
 .leaderboard-main {
@@ -19,6 +23,10 @@
   margin-top: -3.55rem;
   padding: 3rem 2.5rem 4rem;
   overflow-y: auto;
+
+  @media (max-width: 900px) {
+    padding: 2.25rem 1.25rem 3rem;
+  }
 }
 
 .leaderboard-shell {
@@ -31,6 +39,9 @@
   flex-direction: column;
   gap: 2.5rem;
 
+  @media (max-width: 900px) {
+    padding: 2rem 1.75rem 2.5rem;
+  }
 }
 
 .leaderboard-loading {
@@ -55,6 +66,11 @@
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .leaderboard-title {
@@ -75,6 +91,10 @@
   flex-direction: column;
   gap: 0.75rem;
   align-items: flex-end;
+
+  @media (max-width: 768px) {
+    align-items: flex-start;
+  }
 }
 
 .leaderboard-toggle {
@@ -94,11 +114,11 @@
   color: #6b625b;
   cursor: pointer;
   transition: all 0.15s ease-out;
-}
 
-.leaderboard-toggle-button.active {
-  background-color: #2D2323;
-  color: #ffffff;
+  &.active {
+    background-color: #2D2323;
+    color: #ffffff;
+  }
 }
 
 .leaderboard-period-toggle {
@@ -118,12 +138,12 @@
   color: #7a726c;
   cursor: pointer;
   transition: all 0.15s ease-out;
-}
 
-.leaderboard-period-button.active {
-  background-color: #ffffff;
-  color: #1f1a17;
-  box-shadow: 0 4px 10px rgba(26, 26, 26, 0.08);
+  &.active {
+    background-color: #ffffff;
+    color: #1f1a17;
+    box-shadow: 0 4px 10px rgba(26, 26, 26, 0.08);
+  }
 }
 
 .leaderboard-layout {
@@ -131,6 +151,10 @@
   grid-template-columns: minmax(0, 1.8fr) minmax(0, 0.9fr);
   gap: 2.25rem;
   align-items: stretch;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .leaderboard-podium-card {
@@ -153,10 +177,10 @@
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-}
 
-.leaderboard-podium-column.first {
-  transform: translateY(-10px);
+  &.first {
+    transform: translateY(-10px);
+  }
 }
 
 .leaderboard-avatar {
@@ -169,18 +193,18 @@
   justify-content: center;
   font-weight: 600;
   color: #2D2323;
-}
 
-.leaderboard-avatar.large {
-  width: 92px;
-  height: 92px;
-  font-size: 1.25rem;
-}
+  &.large {
+    width: 92px;
+    height: 92px;
+    font-size: 1.25rem;
+  }
 
-.leaderboard-avatar.small {
-  width: 36px;
-  height: 36px;
-  font-size: 0.8rem;
+  &.small {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
 }
 
 .leaderboard-podium-name {
@@ -196,18 +220,18 @@
   align-items: center;
   justify-content: center;
   padding: 1.4rem 0;
-}
 
-.leaderboard-podium-block.first-block {
-  background-color: #FBE4A0;
-}
+  &.first-block {
+    background-color: #FBE4A0;
+  }
 
-.leaderboard-podium-block.second-block {
-  background-color: #E2E5F0;
-}
+  &.second-block {
+    background-color: #E2E5F0;
+  }
 
-.leaderboard-podium-block.third-block {
-  background-color: #F6D4BF;
+  &.third-block {
+    background-color: #F6D4BF;
+  }
 }
 
 .leaderboard-podium-rank {
@@ -236,6 +260,10 @@
 .leaderboard-current-rank {
   font-size: 0.95rem;
   color: #4b433c;
+
+  strong {
+    color: #1f1a17;
+  }
 }
 
 .leaderboard-current-stats {
@@ -243,11 +271,10 @@
   gap: 1rem;
   font-size: 0.9rem;
   color: #6c645d;
-}
 
-.leaderboard-current-stats span strong,
-.leaderboard-current-rank strong {
-  color: #1f1a17;
+  span strong {
+    color: #1f1a17;
+  }
 }
 
 .leaderboard-table-card {
@@ -282,14 +309,14 @@
   padding: 0.55rem 0.5rem;
   border-radius: 12px;
   transition: background-color 0.15s ease-out;
-}
 
-.leaderboard-table-row:hover {
-  background-color: #F5F0EA;
-}
+  &:hover {
+    background-color: #F5F0EA;
+  }
 
-.leaderboard-table-row-current {
-  background-color: #ECE5FF;
+  &.leaderboard-table-row-current {
+    background-color: #ECE5FF;
+  }
 }
 
 .leaderboard-table-user {
@@ -336,34 +363,3 @@
   color: #7c7168;
   text-align: center;
 }
-
-@media (max-width: 900px) {
-  .leaderboard-main {
-    padding: 2.25rem 1.25rem 3rem;
-  }
-
-  .leaderboard-shell {
-    padding: 2rem 1.75rem 2.5rem;
-  }
-
-  .leaderboard-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .leaderboard-container {
-    padding: 1.5rem 1rem 3rem;
-  }
-
-  .leaderboard-header-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .leaderboard-switches {
-    align-items: flex-start;
-  }
-}
-
-

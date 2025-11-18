@@ -5,6 +5,10 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+  }
 }
 
 .auth-header {
@@ -33,6 +37,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
 }
 
 .auth-title {
@@ -41,6 +49,10 @@
   color: #2D2323;
   margin: 0;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+  }
 }
 
 .auth-subtitle {
@@ -177,18 +189,3 @@
     text-decoration: underline;
   }
 }
-
-@media (max-width: 768px) {
-  .auth-container {
-    padding: 1.5rem 1rem;
-  }
-
-  .auth-card {
-    padding: 2rem 1.5rem;
-  }
-
-  .auth-title {
-    font-size: 1.75rem;
-  }
-}
-
