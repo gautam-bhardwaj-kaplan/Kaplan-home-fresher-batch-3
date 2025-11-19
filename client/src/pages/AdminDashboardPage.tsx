@@ -16,6 +16,10 @@ import {
   getAnalyticsOverview,
   type AnalyticsOverviewResponse,
 } from '../services/admin.analytics';
+import { MetricCard } from '../components/MetricCard';
+import { ErrorAlert } from '../components/ErrorAlert';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { getHeatmapColor, CHART_COLORS, formatDateShort } from '../components/helpers/dateUtils';
 import '../styles/AdminDashboard.css';
 
 export const AdminDashboardPage = () => {
@@ -44,20 +48,13 @@ export const AdminDashboardPage = () => {
     };
     loadData();
   }, [dateFrom, dateTo]);
+
   if (loading) {
-    return (
-      <div className="admin-dashboard-loading">
-        <div>Loading dashboard...</div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
-    return (
-      <div style={{ padding: '2rem', color: '#8a1a1a' }}>
-        <div>Error: {error}</div>
-      </div>
-    );
+    return <ErrorAlert message={`Error: ${error}`} />;
   }
 
   if (!data) {
@@ -74,12 +71,12 @@ export const AdminDashboardPage = () => {
     { label: 'Total Attempts', value: overview.totalAttempts.toLocaleString() },
     { label: 'Badges Awarded', value: overview.badgesAwarded.toLocaleString() },
   ];
+
   const firstRowCards = metricCards.slice(0, 3);
   const secondRowCards = metricCards.slice(3);
 
-  // Format daily stats for line chart with multiple metrics
   const dailyEngagementData = dailyStats.map((stat) => ({
-    date: new Date(stat.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: formatDateShort(stat.date),
     'Active Users': stat.activeUsers,
     'Total Attempts': stat.totalAttempts,
     'Accuracy %': stat.accuracy,
@@ -97,21 +94,11 @@ export const AdminDashboardPage = () => {
   }));
 
   const heatmapData = weeklyHeatmap.map((week) => ({
-    week: new Date(week.week).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    week: formatDateShort(week.week),
     accuracy: Number(week.accuracy.toFixed(1)),
     attempts: week.totalAttempts,
     questions: week.totalQuestions,
   }));
-
-  const getHeatmapColor = (accuracy: number) => {
-    if (accuracy >= 80) return '#10b981'; 
-    if (accuracy >= 60) return '#3b82f6'; 
-    if (accuracy >= 40) return '#f59e0b'; 
-    if (accuracy >= 20) return '#ef4444'; 
-    return '#9ca3af';
-  };
-
-  const COLORS = ['#4F75FE', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
   return (
     <div className="admin-dashboard-page">
@@ -155,22 +142,15 @@ export const AdminDashboardPage = () => {
       <div className="admin-dashboard-cards">
         <div className="admin-dashboard-cards-row">
           {firstRowCards.map((card) => (
-            <div key={card.label} className="admin-dashboard-card">
-              <div className="admin-dashboard-card-label">{card.label}</div>
-              <div className="admin-dashboard-card-value">{card.value}</div>
-            </div>
+            <MetricCard key={card.label} label={card.label} value={card.value} />
           ))}
         </div>
         <div className="admin-dashboard-cards-row">
           {secondRowCards.map((card) => (
-            <div key={card.label} className="admin-dashboard-card">
-              <div className="admin-dashboard-card-label">{card.label}</div>
-              <div className="admin-dashboard-card-value">{card.value}</div>
-            </div>
+            <MetricCard key={card.label} label={card.label} value={card.value} />
           ))}
         </div>
       </div>
-
 
       <div className="admin-dashboard-charts">
         <div className="admin-dashboard-chart-container">
@@ -252,7 +232,7 @@ export const AdminDashboardPage = () => {
               />
               <Bar dataKey="count" fill="#4F75FE" name="Users">
                 {streakData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                 ))}
               </Bar>
             </BarChart>
@@ -283,7 +263,6 @@ export const AdminDashboardPage = () => {
           </ResponsiveContainer>
         </div>
       </div>
-
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import { type ReactNode } from 'react';
+
 export interface User {
   id: string;
   email: string;
@@ -78,4 +80,55 @@ export interface UserProgress {
 export interface StatsChartData {
   labels: string[];
   values: number[];
+}
+
+export interface BadgeProps {
+  label: string;
+  variant?: 'green' | 'yellow' | 'blue' | 'gray';
+}
+
+export interface ErrorAlertProps {
+  message: string;
+}
+
+export interface MetricCardProps {
+  label: string;
+  value: string | number;
+}
+
+export interface ModalBackdropProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}
+
+export interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPrevious: () => void;
+  onNext: () => void;
+}
+
+export type ModalMode = 'create' | 'edit';
+
+export interface QuestionModalProps {
+  open: boolean;
+  mode: ModalMode;
+  questionId?: string;
+  onClose: () => void;
+  onSaved: () => void;
+}
+
+export interface QuestionStatsCardsProps {
+  total: number;
+  active: number;
+  scheduled: number;
+  inactive: number;
+}
+
+export interface UserStatsCardsProps {
+  totalUsers: number;
+  activeUsers: number;
+  avgAccuracy: number;
+  longestStreak: number;
 }

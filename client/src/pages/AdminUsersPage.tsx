@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { getAllUsers, type AdminUser } from "../services/admin.users";
+import { UserStatsCards } from "../components/UserStatsCards";
+import { Pagination } from "../components/Pagination";
+import { Badge } from "../components/Badge";
+import { ErrorAlert } from "../components/ErrorAlert";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 import "../styles/AdminQuestions.css";
 
 const ITEMS_PER_PAGE = 10;
@@ -83,28 +88,12 @@ export const AdminUsersPage = () => {
           <div className="admin-questions-title">Users</div>
         </div>
 
-        <div className="admin-questions-cards">
-          <div className="admin-questions-card">
-            <div className="admin-questions-card-label">Total Users</div>
-            <div className="admin-questions-card-value">{totals.totalUsers}</div>
-          </div>
-          <div className="admin-questions-card">
-            <div className="admin-questions-card-label">Active Users</div>
-            <div className="admin-questions-card-value">{totals.activeUsers}</div>
-          </div>
-          <div className="admin-questions-card">
-            <div className="admin-questions-card-label">Avg Accuracy</div>
-            <div className="admin-questions-card-value">
-              {totals.avgAccuracy}%
-            </div>
-          </div>
-          <div className="admin-questions-card">
-            <div className="admin-questions-card-label">Longest Streak</div>
-            <div className="admin-questions-card-value">
-              {totals.longestStreak}
-            </div>
-          </div>
-        </div>
+        <UserStatsCards
+          totalUsers={totals.totalUsers}
+          activeUsers={totals.activeUsers}
+          avgAccuracy={totals.avgAccuracy}
+          longestStreak={totals.longestStreak}
+        />
 
         <div
           className="admin-questions-filters"
@@ -122,11 +111,11 @@ export const AdminUsersPage = () => {
         </div>
       </div>
 
-      {error && <div style={{ color: "#8a1a1a" }}>{error}</div>}
+      {error && <ErrorAlert message={error} />}
       <div className="admin-table-container">
         <div className="admin-table-wrapper">
           {loading ? (
-            <div style={{ padding: "1rem" }}>Loading...</div>
+            <LoadingSpinner />
           ) : (
             <table className="admin-questions-table admin-users-table">
               <thead>
@@ -146,6 +135,9 @@ export const AdminUsersPage = () => {
                     typeof u.createdAt === "string"
                       ? u.createdAt.slice(0, 10)
                       : new Date(u.createdAt).toISOString().slice(0, 10);
+                  const statusVariant = u.isActive ? 'green' : 'gray';
+                  const statusLabel = u.isActive ? 'Active' : 'Inactive';
+
                   return (
                     <tr key={u.id}>
                       <td style={{ whiteSpace: "nowrap" }}>
@@ -163,13 +155,7 @@ export const AdminUsersPage = () => {
                       <td>{u.accuracy}%</td>
                       <td>{u.points}</td>
                       <td>
-                        <span
-                          className={`admin-badge ${
-                            u.isActive ? "admin-badge-green" : "admin-badge-gray"
-                          }`}
-                        >
-                          {u.isActive ? "Active" : "Inactive"}
-                        </span>
+                        <Badge label={statusLabel} variant={statusVariant} />
                       </td>
                     </tr>
                   );
@@ -188,27 +174,15 @@ export const AdminUsersPage = () => {
             </table>
           )}
         </div>
-        <div className="admin-pagination">
-          <button
-            className="admin-action-button"
-            disabled={computed.currentPage <= 1}
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-          >
-            Prev
-          </button>
-          <div style={{ alignSelf: "center" }}>
-            {computed.currentPage} / {computed.totalPages}
-          </div>
-          <button
-            className="admin-action-button"
-            disabled={computed.currentPage >= computed.totalPages}
-            onClick={() => setPage((p) => Math.min(computed.totalPages, p + 1))}
-          >
-            Next
-          </button>
-        </div>
+        <Pagination
+          currentPage={computed.currentPage}
+          totalPages={computed.totalPages}
+          onPrevious={() => setPage((p) => Math.max(1, p - 1))}
+          onNext={() => setPage((p) => Math.min(computed.totalPages, p + 1))}
+        />
       </div>
     </div>
   );
 };
+
 export default AdminUsersPage;
