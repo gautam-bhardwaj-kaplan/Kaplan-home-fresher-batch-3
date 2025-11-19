@@ -97,8 +97,29 @@ const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: QuestionMod
   }, [open, mode, questionId]);
 
   const save = async () => {
-    setLoading(true);
     setError('');
+    
+    if (!scheduledDate) {
+      setError('Scheduled date is required');
+      return;
+    }
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(scheduledDate);
+    selectedDate.setHours(0, 0, 0, 0);
+    
+    if (selectedDate < today) {
+      setError('Scheduled date cannot be in the past');
+      return;
+    }
+    
+    if (!explanation || explanation.trim().length === 0) {
+      setError('Explanation is required');
+      return;
+    }
+    
+    setLoading(true);
     try {
       const payload: Partial<AdminQuestionDetail> & {
         scheduledDate: string;
@@ -110,6 +131,7 @@ const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: QuestionMod
         options?: string[];
         acceptedAnswers?: string[];
         difficulty?: Difficulty;
+        explanation: string;
       } = {
         scheduledDate:scheduledDate,
         category,
@@ -118,6 +140,7 @@ const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: QuestionMod
         correctAnswer,
         questionType,
         points,
+        explanation: explanation.trim(),
       };
 
       if (questionType === 'MCQ') {
@@ -153,92 +176,154 @@ const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: QuestionMod
       <div className="admin-modal">
         <div className="admin-modal-header">
           <div className="admin-modal-title">{mode === 'create' ? 'Add Question' : 'Edit Question'}</div>
-          <button className="admin-secondary" onClick={onClose}>Close</button>
+          <button className="admin-modal-close" onClick={onClose} aria-label="Close">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
         </div>
-        {error && <div style={{ color: '#8a1a1a', marginBottom: '0.5rem' }}>{error}</div>}
+        {error && <div className="admin-error-message">{error}</div>}
         <div className="admin-modal-body">
-          <div>
-            <label>Question Type</label>
-            <select className="admin-select" value={questionType} onChange={(e) => setQuestionType(e.target.value as QuestionType)}>
+          <div className="admin-floating-label-group">
+            <select 
+              className="admin-select" 
+              value={questionType} 
+              onChange={(e) => setQuestionType(e.target.value as QuestionType)}
+            >
+              <option value="" disabled hidden></option>
               <option value="MCQ">Multiple Choice Question</option>
               <option value="SHORT_ANSWER">Short Answer</option>
             </select>
+            <label className={questionType ? 'admin-label-floating' : ''}>Question Type</label>
           </div>
 
-          <div>
-            <label>Difficulty</label>
-            <select className="admin-select" value={difficulty} onChange={(e) => setDifficulty(e.target.value as Difficulty)}>
+          <div className="admin-floating-label-group">
+            <select 
+              className="admin-select" 
+              value={difficulty} 
+              onChange={(e) => setDifficulty(e.target.value as Difficulty)}
+            >
+              <option value="" disabled hidden></option>
               <option value="EASY">Easy</option>
               <option value="MEDIUM">Medium</option>
               <option value="HARD">Hard</option>
             </select>
+            <label className={difficulty ? 'admin-label-floating' : ''}>Difficulty</label>
           </div>
 
-          <div>
-            <label>Category</label>
-            <select className="admin-select" value={category} onChange={(e) => setCategory(e.target.value as QuestionCategory)}>
+          <div className="admin-floating-label-group">
+            <select 
+              className="admin-select" 
+              value={category} 
+              onChange={(e) => setCategory(e.target.value as QuestionCategory)}
+            >
+              <option value="" disabled hidden></option>
               <option value="GENERAL">General</option>
               <option value="MATH">Math</option>
               <option value="ENGLISH">English</option>
               <option value="CODING">Coding</option>
               <option value="SCIENCE">Science</option>
             </select>
+            <label className={category ? 'admin-label-floating' : ''}>Category</label>
           </div>
 
-          <div>
-            <label>Points</label>
-            <input className="admin-input" type="number" min={1} max={100} value={points} onChange={(e) => setPoints(Number(e.target.value))} />
+          <div className="admin-floating-label-group">
+            <input 
+              className="admin-input" 
+              type="number" 
+              min={1} 
+              max={100} 
+              value={points} 
+              onChange={(e) => setPoints(Number(e.target.value))}
+              placeholder=" "
+            />
+            <label className={points ? 'admin-label-floating' : ''}>Points</label>
           </div>
 
-          <div>
-            <label>Schedule Date</label>
-            <input className="admin-date" type="date" value={scheduledDate} onChange={(e) => setScheduledDate(e.target.value)} />
-            <div className="admin-help">YYYY-MM-DD (cannot be in the past)</div>
+          <div className="admin-floating-label-group">
+            <input 
+              className="admin-input admin-date" 
+              type="date" 
+              value={scheduledDate} 
+              onChange={(e) => setScheduledDate(e.target.value)}
+            />
+            <label className="admin-label-floating">Schedule Date</label>
           </div>
 
-          <div className="admin-textarea">
-            <label>Question</label>
-            <textarea className="admin-input" value={questionText} onChange={(e) => setQuestionText(e.target.value)} placeholder="Enter your question here..." />
+          <div className="admin-textarea admin-floating-label-group">
+            <textarea 
+              className="admin-input" 
+              value={questionText} 
+              onChange={(e) => setQuestionText(e.target.value)} 
+              placeholder=" "
+            />
+            <label className={questionText ? 'admin-label-floating' : ''}>Question</label>
           </div>
 
           {questionType === 'MCQ' ? (
-            <>
+            <div className="admin-options-section">
               {options.map((opt, idx) => (
-                <div key={idx}>
-                  <label>{`Option ${idx + 1}`}</label>
-                  <input className="admin-input" value={opt} onChange={(e) => {
-                    const next = [...options];
-                    next[idx] = e.target.value;
-                    setOptions(next);
-                  }} />
+                <div key={idx} className="admin-floating-label-group">
+                  <input 
+                    className="admin-input" 
+                    value={opt} 
+                    onChange={(e) => {
+                      const next = [...options];
+                      next[idx] = e.target.value;
+                      setOptions(next);
+                    }}
+                    placeholder=" "
+                  />
+                  <label className={opt ? 'admin-label-floating' : ''}>{`Option ${idx + 1}`}</label>
                 </div>
               ))}
-              <div>
-                <label>Correct Answer</label>
-                <input className="admin-input" value={correctAnswer} onChange={(e) => setCorrectAnswer(e.target.value)} placeholder="Must match one of the options" />
+              <div className="admin-floating-label-group">
+                <input 
+                  className="admin-input" 
+                  value={correctAnswer} 
+                  onChange={(e) => setCorrectAnswer(e.target.value)} 
+                  placeholder=" "
+                />
+                <label className={correctAnswer ? 'admin-label-floating' : ''}>Correct Answer</label>
               </div>
-            </>
+            </div>
           ) : (
-            <>
-              <div>
-                <label>Correct Answer</label>
-                <input className="admin-input" value={correctAnswer} onChange={(e) => setCorrectAnswer(e.target.value)} />
+            <div className="admin-options-section">
+              <div className="admin-floating-label-group">
+                <input 
+                  className="admin-input" 
+                  value={correctAnswer} 
+                  onChange={(e) => setCorrectAnswer(e.target.value)}
+                  placeholder=" "
+                />
+                <label className={correctAnswer ? 'admin-label-floating' : ''}>Correct Answer</label>
+              </div>
+              <div className="admin-floating-label-group">
+                <input 
+                  className="admin-input" 
+                  value={acceptedAnswers} 
+                  onChange={(e) => setAcceptedAnswers(e.target.value)}
+                  placeholder=" "
+                />
+                <label className={acceptedAnswers ? 'admin-label-floating' : ''}>Accepted Answers (comma-separated)</label>
               </div>
               <div>
-                <label>Accepted Answers (comma-separated)</label>
-                <input className="admin-input" value={acceptedAnswers} onChange={(e) => setAcceptedAnswers(e.target.value)} />
-              </div>
-              <div>
-                <label>
-                  <input type="checkbox" checked={caseSensitive} onChange={(e) => setCaseSensitive(e.target.checked)} /> Case Sensitive
+                <label className="admin-checkbox-label">
+                  <input type="checkbox" checked={caseSensitive} onChange={(e) => setCaseSensitive(e.target.checked)} /> 
+                  <span>Case Sensitive</span>
                 </label>
               </div>
-            </>
+            </div>
           )}
 
-          <div className="admin-textarea">
-            <label>Explanation (optional)</label>
-            <textarea className="admin-input" value={explanation} onChange={(e) => setExplanation(e.target.value)} placeholder="Provide explanation or notes" />
+          <div className="admin-textarea admin-floating-label-group">
+            <textarea 
+              className="admin-input" 
+              value={explanation} 
+              onChange={(e) => setExplanation(e.target.value)} 
+              placeholder=" "
+            />
+            <label className={explanation ? 'admin-label-floating' : ''}>Explanation</label>
           </div>
         </div>
 

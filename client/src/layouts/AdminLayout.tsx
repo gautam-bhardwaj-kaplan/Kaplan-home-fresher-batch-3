@@ -48,7 +48,6 @@ export const AdminLayout = () => {
           </div>
 
           <div className="admin-dashboard-header-actions">
-            <span className="admin-dashboard-user-name">{user?.name}</span>
             <button className="admin-dashboard-logout-button" onClick={handleLogout}>
               Log out
             </button>
