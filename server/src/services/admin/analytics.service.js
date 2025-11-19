@@ -50,9 +50,25 @@ const getOverview = async (queryParams) => {
     where: activeUsersWhere,
   });
 
+  let questionDateFilter = {};
+  if (dateFrom || dateTo) {
+    questionDateFilter.scheduledDate = {};
+    if (dateFrom) {
+      const fromDate = new Date(dateFrom);
+      fromDate.setUTCHours(0, 0, 0, 0);
+      questionDateFilter.scheduledDate.gte = fromDate;
+    }
+    if (dateTo) {
+      const toDate = new Date(dateTo);
+      toDate.setUTCHours(23, 59, 59, 999);
+      questionDateFilter.scheduledDate.lte = toDate;
+    }
+  }
+
   const totalQuestions = await prisma.question.count({
     where: {
       isActive: true,
+      ...questionDateFilter,
     },
   });
 
@@ -83,10 +99,147 @@ const getOverview = async (queryParams) => {
     },
   });
 
-  const averageStreak = activeLearners.length > 0
-    ? activeLearners.reduce((sum, user) => sum + user.currentStreak, 0) / activeLearners.length
+  let badgeDateFilter = {};
+  if (dateFrom || dateTo) {
+    badgeDateFilter.earnedAt = {};
+    if (dateFrom) {
+      const fromDate = new Date(dateFrom);
+      fromDate.setUTCHours(0, 0, 0, 0);
+      badgeDateFilter.earnedAt.gte = fromDate;
+    }
+    if (dateTo) {
+      const toDate = new Date(dateTo);
+      toDate.setUTCHours(23, 59, 59, 999);
+      badgeDateFilter.earnedAt.lte = toDate;
+    }
+  }
+
+  const badgesAwarded = await prisma.userBadge.count({
+    where: badgeDateFilter,
+  });
+
+  const uniqueParticipants = await prisma.submission.findMany({
+    where: submissionDateFilter,
+    select: { userId: true },
+    distinct: ['userId'],
+  });
+
+  const participationRate = totalUsers > 0
+    ? (uniqueParticipants.length / totalUsers) * 100
     : 0;
 
+  const allLearners = await prisma.user.findMany({
+    where: {
+      role: 'LEARNER',
+      isActive: true,
+    },
+    select: {
+      currentStreak: true,
+    },
+  });
+
+  const streakBuckets = {
+    '0': 0,
+    '1-7': 0,
+    '8-14': 0,
+    '15-30': 0,
+    '31-60': 0,
+    '61+': 0,
+  };
+
+  allLearners.forEach((user) => {
+    const streak = user.currentStreak || 0;
+    if (streak === 0) {
+      streakBuckets['0']++;
+    } else if (streak <= 7) {
+      streakBuckets['1-7']++;
+    } else if (streak <= 14) {
+      streakBuckets['8-14']++;
+    } else if (streak <= 30) {
+      streakBuckets['15-30']++;
+    } else if (streak <= 60) {
+      streakBuckets['31-60']++;
+    } else {
+      streakBuckets['61+']++;
+    }
+  });
+
+  const streakDistribution = Object.entries(streakBuckets).map(([range, count]) => ({
+    range,
+    count,
+  }));
+
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  const eightWeeksAgo = new Date(today);
+  eightWeeksAgo.setDate(eightWeeksAgo.getDate() - 56); 
+
+  const weeklyQuestions = await prisma.question.findMany({
+    where: {
+      isActive: true,
+      scheduledDate: {
+        gte: eightWeeksAgo,
+        lte: today,
+      },
+    },
+    select: {
+      id: true,
+      scheduledDate: true,
+      category: true,
+    },
+    orderBy: {
+      scheduledDate: 'asc',
+    },
+  });
+
+  const weeklyHeatmap = new Map();
+  weeklyQuestions.forEach((question) => {
+    const date = new Date(question.scheduledDate);
+    const weekStart = new Date(date);
+    weekStart.setDate(date.getDate() - date.getDay()); 
+    weekStart.setUTCHours(0, 0, 0, 0);
+    const weekKey = weekStart.toISOString().split('T')[0];
+
+    if (!weeklyHeatmap.has(weekKey)) {
+      weeklyHeatmap.set(weekKey, {
+        week: weekKey,
+        totalQuestions: 0,
+        totalAttempts: 0,
+        correctAttempts: 0,
+      });
+    }
+    const weekData = weeklyHeatmap.get(weekKey);
+    weekData.totalQuestions++;
+  });
+
+  for (const [weekKey, weekData] of weeklyHeatmap.entries()) {
+    const weekStart = new Date(weekKey);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 7);
+
+    const weekSubmissions = await prisma.submission.findMany({
+      where: {
+        attemptDate: {
+          gte: weekStart,
+          lt: weekEnd,
+        },
+      },
+      select: {
+        isCorrect: true,
+      },
+    });
+
+    weekData.totalAttempts = weekSubmissions.length;
+    weekData.correctAttempts = weekSubmissions.filter((s) => s.isCorrect).length;
+    weekData.accuracy = weekData.totalAttempts > 0
+      ? (weekData.correctAttempts / weekData.totalAttempts) * 100
+      : 0;
+  }
+
+  const weeklyHeatmapData = Array.from(weeklyHeatmap.values())
+    .sort((a, b) => a.week.localeCompare(b.week));
+
+  let dailyStatsDateFilter;
   if (dateFrom && dateTo) {
     const fromDate = new Date(dateFrom);
     fromDate.setUTCHours(0, 0, 0, 0);
@@ -260,11 +413,14 @@ const getOverview = async (queryParams) => {
       totalQuestions,
       totalAttempts,
       averageAccuracy: Number(averageAccuracy.toFixed(1)),
-      averageStreak: Number(averageStreak.toFixed(1)),
+      participationRate: Number(participationRate.toFixed(1)),
+      badgesAwarded,
     },
     dailyStats,
     categoryBreakdown: categoryStats,
     topPerformers: topPerformersFormatted,
+    streakDistribution,
+    weeklyHeatmap: weeklyHeatmapData,
   };
 };
 
