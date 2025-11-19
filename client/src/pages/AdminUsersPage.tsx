@@ -78,140 +78,135 @@ export const AdminUsersPage = () => {
 
   return (
     <div className="admin-questions-page">
-      <div className="admin-questions-header">
-        <div className="admin-questions-title">Users</div>
-      </div>
+      <div className="admin-questions-sticky-section">
+        <div className="admin-questions-header">
+          <div className="admin-questions-title">Users</div>
+        </div>
 
-      <div className="admin-questions-cards">
-        <div className="admin-questions-card">
-          <div className="admin-questions-card-label">Total Users</div>
-          <div className="admin-questions-card-value">{totals.totalUsers}</div>
-        </div>
-        <div className="admin-questions-card">
-          <div className="admin-questions-card-label">Active Users</div>
-          <div className="admin-questions-card-value">{totals.activeUsers}</div>
-        </div>
-        <div className="admin-questions-card">
-          <div className="admin-questions-card-label">Avg Accuracy</div>
-          <div className="admin-questions-card-value">
-            {totals.avgAccuracy}%
+        <div className="admin-questions-cards">
+          <div className="admin-questions-card">
+            <div className="admin-questions-card-label">Total Users</div>
+            <div className="admin-questions-card-value">{totals.totalUsers}</div>
+          </div>
+          <div className="admin-questions-card">
+            <div className="admin-questions-card-label">Active Users</div>
+            <div className="admin-questions-card-value">{totals.activeUsers}</div>
+          </div>
+          <div className="admin-questions-card">
+            <div className="admin-questions-card-label">Avg Accuracy</div>
+            <div className="admin-questions-card-value">
+              {totals.avgAccuracy}%
+            </div>
+          </div>
+          <div className="admin-questions-card">
+            <div className="admin-questions-card-label">Longest Streak</div>
+            <div className="admin-questions-card-value">
+              {totals.longestStreak}
+            </div>
           </div>
         </div>
-        <div className="admin-questions-card">
-          <div className="admin-questions-card-label">Longest Streak</div>
-          <div className="admin-questions-card-value">
-            {totals.longestStreak}
-          </div>
-        </div>
-      </div>
 
-      <div
-        className="admin-questions-filters"
-        style={{ gridTemplateColumns: "1fr" }}
-      >
-        <input
-          className="admin-input"
-          placeholder="Search by name..."
-          value={search}
-          onChange={(e) => {
-            setPage(1);
-            setSearch(e.target.value);
-          }}
-        />
+        <div
+          className="admin-questions-filters"
+          style={{ gridTemplateColumns: "1fr" }}
+        >
+          <input
+            className="admin-input"
+            placeholder="Search by name..."
+            value={search}
+            onChange={(e) => {
+              setPage(1);
+              setSearch(e.target.value);
+            }}
+          />
+        </div>
       </div>
 
       {error && <div style={{ color: "#8a1a1a" }}>{error}</div>}
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <table className="admin-questions-table">
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Joined</th>
-              <th>Attempts</th>
-              <th>Streak</th>
-              <th>Accuracy</th>
-              <th>Points</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {computed.pageItems.map((u) => {
-              const joined =
-                typeof u.createdAt === "string"
-                  ? u.createdAt.slice(0, 10)
-                  : new Date(u.createdAt).toISOString().slice(0, 10);
-              return (
-                <tr key={u.id}>
-                  <td style={{ whiteSpace: "nowrap" }}>
-                    <div>{u.name}</div>
-                    <div style={{ color: "#777", fontSize: "12px" }}>
-                      {u.email}
-                    </div>
-                  </td>
-                  <td>{joined}</td>
-                  <td>{u.attempts}</td>
-                  <td
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                    }}
-                  >
-                    <span>{u.streak}</span>
-                    {u.streak > 0 && (
-                      <span style={{ fontSize: "14px" }}>🔥</span>
-                    )}
-                  </td>
-                  <td>{u.accuracy}%</td>
-                  <td>{u.points}</td>
-                  <td>
-                    <span
-                      className={`admin-badge ${
-                        u.isActive ? "admin-badge-green" : "admin-badge-gray"
-                      }`}
-                    >
-                      {u.isActive ? "Active" : "Inactive"}
-                    </span>
-                  </td>
+      <div className="admin-table-container">
+        <div className="admin-table-wrapper">
+          {loading ? (
+            <div style={{ padding: "1rem" }}>Loading...</div>
+          ) : (
+            <table className="admin-questions-table admin-users-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Joined</th>
+                  <th>Attempts</th>
+                  <th>Streak</th>
+                  <th>Accuracy</th>
+                  <th>Points</th>
+                  <th>Status</th>
                 </tr>
-              );
-            })}
-            {computed.pageItems.length === 0 && (
-              <tr>
-                <td
-                  colSpan={7}
-                  style={{ textAlign: "center", padding: "1rem" }}
-                >
-                  No users found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      )}
-
-      <div
-        style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}
-      >
-        <button
-          className="admin-action-button"
-          disabled={computed.currentPage <= 1}
-          onClick={() => setPage((p) => Math.max(1, p - 1))}
-        >
-          Prev
-        </button>
-        <div style={{ alignSelf: "center" }}>
-          {computed.currentPage} / {computed.totalPages}
+              </thead>
+              <tbody>
+                {computed.pageItems.map((u) => {
+                  const joined =
+                    typeof u.createdAt === "string"
+                      ? u.createdAt.slice(0, 10)
+                      : new Date(u.createdAt).toISOString().slice(0, 10);
+                  return (
+                    <tr key={u.id}>
+                      <td style={{ whiteSpace: "nowrap" }}>
+                        <div>{u.name}</div>
+                        <div style={{ color: "#777", fontSize: "12px" }}>
+                          {u.email}
+                        </div>
+                      </td>
+                      <td>{joined}</td>
+                      <td>{u.attempts}</td>
+                      <td style={{ whiteSpace: "nowrap" }}>
+                        {u.streak}
+                        {u.streak > 0 && <span style={{ fontSize: "14px" }}> 🔥</span>}
+                      </td>
+                      <td>{u.accuracy}%</td>
+                      <td>{u.points}</td>
+                      <td>
+                        <span
+                          className={`admin-badge ${
+                            u.isActive ? "admin-badge-green" : "admin-badge-gray"
+                          }`}
+                        >
+                          {u.isActive ? "Active" : "Inactive"}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {computed.pageItems.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan={7}
+                      style={{ textAlign: "center", padding: "1rem" }}
+                    >
+                      No users found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
-        <button
-          className="admin-action-button"
-          disabled={computed.currentPage >= computed.totalPages}
-          onClick={() => setPage((p) => Math.min(computed.totalPages, p + 1))}
-        >
-          Next
-        </button>
+        <div className="admin-pagination">
+          <button
+            className="admin-action-button"
+            disabled={computed.currentPage <= 1}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+          >
+            Prev
+          </button>
+          <div style={{ alignSelf: "center" }}>
+            {computed.currentPage} / {computed.totalPages}
+          </div>
+          <button
+            className="admin-action-button"
+            disabled={computed.currentPage >= computed.totalPages}
+            onClick={() => setPage((p) => Math.min(computed.totalPages, p + 1))}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

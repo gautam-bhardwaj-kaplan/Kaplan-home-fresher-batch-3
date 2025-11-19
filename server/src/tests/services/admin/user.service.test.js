@@ -58,7 +58,6 @@ describe('AdminUserService', () => {
           totalQuestionsAttempted: true,
           totalCorrectAnswers: true,
           totalPoints: true,
-          lastAttemptDate: true,
         },
         orderBy: { createdAt: 'desc' },
       });

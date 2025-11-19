@@ -348,132 +348,137 @@ export const AdminQuestionsPage = () => {
 
   return (
     <div className="admin-questions-page">
-      <div className="admin-questions-header">
-        <div className="admin-questions-title">Questions</div>
-        <button className="admin-questions-create-button" onClick={() => setCreateOpen(true)}>+ Add Question</button>
-      </div>
+      <div className="admin-questions-sticky-section">
+        <div className="admin-questions-header">
+          <div className="admin-questions-title">Questions</div>
+          <button className="admin-questions-create-button" onClick={() => setCreateOpen(true)}>+ Add Question</button>
+        </div>
 
-      <div className="admin-questions-cards">
-        <div className="admin-questions-card">
-          <div className="admin-questions-card-label">Total Questions</div>
-          <div className="admin-questions-card-value">{cardTotals.total}</div>
+        <div className="admin-questions-cards">
+          <div className="admin-questions-card">
+            <div className="admin-questions-card-label">Total Questions</div>
+            <div className="admin-questions-card-value">{cardTotals.total}</div>
+          </div>
+          <div className="admin-questions-card">
+            <div className="admin-questions-card-label">Active</div>
+            <div className="admin-questions-card-value">{cardTotals.active}</div>
+          </div>
+          <div className="admin-questions-card">
+            <div className="admin-questions-card-label">Scheduled</div>
+            <div className="admin-questions-card-value">{cardTotals.scheduled}</div>
+          </div>
+          <div className="admin-questions-card">
+            <div className="admin-questions-card-label">Inactive</div>
+            <div className="admin-questions-card-value">{cardTotals.inactive}</div>
+          </div>
         </div>
-        <div className="admin-questions-card">
-          <div className="admin-questions-card-label">Active</div>
-          <div className="admin-questions-card-value">{cardTotals.active}</div>
-        </div>
-        <div className="admin-questions-card">
-          <div className="admin-questions-card-label">Scheduled</div>
-          <div className="admin-questions-card-value">{cardTotals.scheduled}</div>
-        </div>
-        <div className="admin-questions-card">
-          <div className="admin-questions-card-label">Inactive</div>
-          <div className="admin-questions-card-value">{cardTotals.inactive}</div>
-        </div>
-      </div>
 
-      <div className="admin-questions-filters">
-        <input className="admin-input" placeholder="Search questions..." value={search} onChange={(e) => setSearch(e.target.value)} />
-        <select className="admin-select" value={category} onChange={(e) => setCategory(e.target.value as QuestionCategory | '')}>
-          <option value="">All Categories</option>
-          <option value="GENERAL">General</option>
-          <option value="MATH">Math</option>
-          <option value="ENGLISH">English</option>
-          <option value="CODING">Coding</option>
-          <option value="SCIENCE">Science</option>
-        </select>
-        <select className="admin-select" value={status} onChange={(e) => setStatus(e.target.value as 'active' | 'inactive' | '')}>
-          <option value="">All Status</option>
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-        </select>
-        <select className="admin-select" value={difficulty} onChange={(e) => setDifficulty(e.target.value as Difficulty | '')}>
-          <option value="">All Difficulty</option>
-          <option value="EASY">Easy</option>
-          <option value="MEDIUM">Medium</option>
-          <option value="HARD">Hard</option>
-        </select>
+        <div className="admin-questions-filters">
+          <input className="admin-input" placeholder="Search questions..." value={search} onChange={(e) => setSearch(e.target.value)} />
+          <select className="admin-select" value={category} onChange={(e) => setCategory(e.target.value as QuestionCategory | '')}>
+            <option value="">All Categories</option>
+            <option value="GENERAL">General</option>
+            <option value="MATH">Math</option>
+            <option value="ENGLISH">English</option>
+            <option value="CODING">Coding</option>
+            <option value="SCIENCE">Science</option>
+          </select>
+          <select className="admin-select" value={status} onChange={(e) => setStatus(e.target.value as 'active' | 'inactive' | '')}>
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <select className="admin-select" value={difficulty} onChange={(e) => setDifficulty(e.target.value as Difficulty | '')}>
+            <option value="">All Difficulty</option>
+            <option value="EASY">Easy</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HARD">Hard</option>
+          </select>
+        </div>
       </div>
 
       {error && <div style={{ color: '#8a1a1a' }}>{error}</div>}
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <table className="admin-questions-table">
-          <thead>
-            <tr>
-              <th>S.No</th>
-              <th>Question</th>
-              <th>Category</th>
-              <th>Difficulty</th>
-              <th>Scheduled</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((q, idx) => {
-              const today = new Date().toISOString().split('T')[0];
-              const sched = q.scheduledDate ? new Date(q.scheduledDate).toISOString().split('T')[0] : '';
-              let statusLabel: 'inactive' | 'scheduled' | 'published';
-              if (!q.isActive) statusLabel = 'inactive';
-              else if (sched > today) statusLabel = 'scheduled';
-              else statusLabel = 'published';
-
-              return (
-                <tr key={q.id}>
-                  <td>{(pagination.currentPage - 1) * pagination.itemsPerPage + idx + 1}</td>
-                  <td>{q.questionText}</td>
-                  <td><span className="admin-badge admin-badge-blue">{q.category}</span></td>
-                  <td><span className="admin-badge admin-badge-yellow">{q.difficulty}</span></td>
-                  <td>{formatYMD(q.scheduledDate)}</td>
-                  <td>
-                    {statusLabel === 'scheduled' && (
-                      <span className="admin-badge admin-badge-blue">scheduled</span>
-                    )}
-                    {statusLabel === 'published' && (
-                      <span className="admin-badge admin-badge-green">published</span>
-                    )}
-                    {statusLabel === 'inactive' && (
-                      <span className="admin-badge admin-badge-gray">inactive</span>
-                    )}
-                  </td>
-                  <td>
-                    <div className="admin-row-actions">
-                      <button
-                        className="admin-action-button"
-                        onClick={() => openEdit(q.id)}
-                        aria-label={`Edit question ${idx + 1}`}
-                        title="Edit"
-                      >
-                        <img src={editIcon} alt="Edit" />
-                      </button>
-                      <button
-                        className="admin-action-button admin-action-danger"
-                        onClick={() => onDelete(q.id)}
-                        aria-label={`Delete question ${idx + 1}`}
-                        title="Delete"
-                      >
-                        <img src={deleteIcon} alt="Delete" />
-                      </button>
-                    </div>
-                  </td>
+      <div className="admin-table-container">
+        <div className="admin-table-wrapper">
+          {loading ? (
+            <div style={{ padding: '1rem' }}>Loading...</div>
+          ) : (
+            <table className="admin-questions-table">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Question</th>
+                  <th>Category</th>
+                  <th>Difficulty</th>
+                  <th>Scheduled</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
-              );
-            })}
-            {filtered.length === 0 && (
-              <tr>
-                <td colSpan={7} style={{ textAlign: 'center', padding: '1rem' }}>No questions found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      )}
+              </thead>
+              <tbody>
+                {filtered.map((q, idx) => {
+                  const today = new Date().toISOString().split('T')[0];
+                  const sched = q.scheduledDate ? new Date(q.scheduledDate).toISOString().split('T')[0] : '';
+                  let statusLabel: 'inactive' | 'scheduled' | 'published';
+                  if (!q.isActive) statusLabel = 'inactive';
+                  else if (sched > today) statusLabel = 'scheduled';
+                  else statusLabel = 'published';
 
-      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-        <button className="admin-action-button" disabled={pagination.currentPage <= 1} onClick={() => loadQuestions(pagination.currentPage - 1)}>Prev</button>
-        <div style={{ alignSelf: 'center' }}>{pagination.currentPage} / {pagination.totalPages}</div>
-        <button className="admin-action-button" disabled={pagination.currentPage >= pagination.totalPages} onClick={() => loadQuestions(pagination.currentPage + 1)}>Next</button>
+                  return (
+                    <tr key={q.id}>
+                      <td>{(pagination.currentPage - 1) * pagination.itemsPerPage + idx + 1}</td>
+                      <td>{q.questionText}</td>
+                      <td><span className="admin-badge admin-badge-blue">{q.category}</span></td>
+                      <td><span className="admin-badge admin-badge-yellow">{q.difficulty}</span></td>
+                      <td>{formatYMD(q.scheduledDate)}</td>
+                      <td>
+                        {statusLabel === 'scheduled' && (
+                          <span className="admin-badge admin-badge-blue">scheduled</span>
+                        )}
+                        {statusLabel === 'published' && (
+                          <span className="admin-badge admin-badge-green">published</span>
+                        )}
+                        {statusLabel === 'inactive' && (
+                          <span className="admin-badge admin-badge-gray">inactive</span>
+                        )}
+                      </td>
+                      <td>
+                        <div className="admin-row-actions">
+                          <button
+                            className="admin-action-button"
+                            onClick={() => openEdit(q.id)}
+                            aria-label={`Edit question ${idx + 1}`}
+                            title="Edit"
+                          >
+                            <img src={editIcon} alt="Edit" />
+                          </button>
+                          <button
+                            className="admin-action-button admin-action-danger"
+                            onClick={() => onDelete(q.id)}
+                            aria-label={`Delete question ${idx + 1}`}
+                            title="Delete"
+                          >
+                            <img src={deleteIcon} alt="Delete" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {filtered.length === 0 && (
+                  <tr>
+                    <td colSpan={7} style={{ textAlign: 'center', padding: '1rem' }}>No questions found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div className="admin-pagination">
+          <button className="admin-action-button" disabled={pagination.currentPage <= 1} onClick={() => loadQuestions(pagination.currentPage - 1)}>Prev</button>
+          <div style={{ alignSelf: 'center' }}>{pagination.currentPage} / {pagination.totalPages}</div>
+          <button className="admin-action-button" disabled={pagination.currentPage >= pagination.totalPages} onClick={() => loadQuestions(pagination.currentPage + 1)}>Next</button>
+        </div>
       </div>
 
       <QuestionModal
