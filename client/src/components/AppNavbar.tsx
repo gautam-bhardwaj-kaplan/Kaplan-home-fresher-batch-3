@@ -15,17 +15,21 @@ export const AppNavbar = ({ active, onLogout }: AppNavbarProps) => {
       <div className="dashboard-header-content">
         <div className="dashboard-logo">Pebble</div>
 
-        <div className="dashboard-header-actions">
-          {navItems.map((item) => (
-            <button
-              key={item.key}
-              className={`dashboard-nav-button ${active === item.key ? 'dashboard-nav-button-active' : ''}`}
-              onClick={() => navigate(item.path)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
+        <nav className="dashboard-header-actions" aria-label="Primary navigation">
+          <ul className="dashboard-nav-list">
+            {navItems.map((item) => (
+              <li key={item.key}>
+                <button
+                  type="button"
+                  className={`dashboard-nav-button ${active === item.key ? 'dashboard-nav-button-active' : ''}`}
+                  onClick={() => navigate(item.path)}
+                >
+                  {item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
         <div className="dashboard-header-actions">
           <button className="dashboard-logout-button" onClick={onLogout}>
             Log out

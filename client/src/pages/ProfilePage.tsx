@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getUserProfile, getUserProgress } from '../services/auth.service';
@@ -7,6 +7,7 @@ import { Oval } from 'react-loader-spinner';
 import '../styles/ProfilePage.css';
 import { AppNavbar } from '../components/AppNavbar';
 import { BASE_BADGES } from '../constants/badges';
+import { formatMonthYear, formatShortDate } from '../utils/date';
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export const ProfilePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const ownedBadges = profile?.badges ?? [];
-  const ownedBadgesMap = new Map(ownedBadges.map((badge) => [badge.badgeId, badge]));
+  const ownedBadgesMap = useMemo(() => new Map(ownedBadges.map((badge) => [badge.badgeId, badge])), [ownedBadges]);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -64,12 +65,6 @@ export const ProfilePage = () => {
   }
 
   const submissionHistory = (progress?.recentActivity ?? []).slice(0, 20);
-  const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
 
   return (
     <div className="profile-container">
@@ -93,11 +88,7 @@ export const ProfilePage = () => {
                 <p className="profile-email">{profile?.email}</p>
                 {profile?.createdAt && (
                   <p className="profile-joined-date">
-                    Joined{' '}
-                    {new Date(profile.createdAt).toLocaleDateString('en-US', {
-                      month: 'long',
-                      year: 'numeric'
-                    })}
+                    Joined {formatMonthYear(profile.createdAt)}
                   </p>
                 )}
               </div>
@@ -170,7 +161,7 @@ export const ProfilePage = () => {
                         <p className="profile-history-question">{attempt.questionText || 'Question not available'}</p>
                         <div className="profile-history-tags">
                           <span className="profile-history-category">{attempt.category}</span>
-                          <span className="profile-history-date">{formatDate(attempt.date)}</span>
+                          <span className="profile-history-date">{formatShortDate(attempt.date)}</span>
                         </div>
                       </div>
                     </div>
