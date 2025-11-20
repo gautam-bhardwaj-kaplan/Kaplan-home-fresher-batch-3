@@ -23,18 +23,18 @@
   margin-bottom: 1.25rem;
   position: relative;
   z-index: 2;
-}
 
-.admin-dashboard-header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 0.85rem 1.25rem 0.85rem 1.75rem;
-  background-color: #ffffff;
-  border-radius: 9999px;
-  box-shadow: 0 25px 50px rgba(26, 26, 26, 0.08);
-  width: min(960px, 100%);
+  & .admin-dashboard-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.85rem 1.25rem 0.85rem 1.75rem;
+    background-color: #ffffff;
+    border-radius: 9999px;
+    box-shadow: 0 25px 50px rgba(26, 26, 26, 0.08);
+    width: min(960px, 100%);
+  }
 }
 
 .admin-dashboard-logo {
@@ -61,11 +61,11 @@
   padding: 0.5rem 1rem;
   border-radius: 9999px;
   transition: all 0.2s;
-}
 
-.admin-nav-button:hover {
-  background-color: #eeebe8;
-  color: #1a1a1a;
+  &:hover {
+    background-color: #eeebe8;
+    color: #1a1a1a;
+  }
 }
 
 .admin-dashboard-logout-button {
@@ -78,10 +78,10 @@
   padding: 0.85rem 2.1rem;
   border-radius: 9999px;
   transition: transform 0.2s;
-}
 
-.admin-dashboard-logout-button:hover {
-  transform: scale(1.04);
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 .admin-dashboard-main {
@@ -135,10 +135,10 @@
   font-size: 1rem;
   cursor: pointer;
   transition: transform 0.2s;
-}
 
-.admin-dashboard-primary-button:hover {
-  transform: scale(1.04);
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 .admin-dashboard-secondary-button {
@@ -150,10 +150,10 @@
   font-size: 1rem;
   cursor: pointer;
   transition: transform 0.2s;
-}
 
-.admin-dashboard-secondary-button:hover {
-  transform: scale(1.04);
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 .admin-dashboard-page {
@@ -208,41 +208,41 @@
   flex-direction: column;
   gap: 0.25rem;
   min-width: 180px;
-}
 
-.admin-dashboard-filter-group label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #555;
+  & label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+  }
 }
 
 .admin-dashboard-filter-actions {
   display: flex;
   gap: 0.5rem;
   margin-left: auto;
-}
 
-.admin-dashboard-filter-actions .admin-secondary {
-  background: #4F75FE;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1.5rem;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(79, 117, 254, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+  & .admin-secondary {
+    background: #4F75FE;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(79, 117, 254, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-.admin-dashboard-filter-actions .admin-secondary:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(79, 117, 254, 0.35);
-}
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(79, 117, 254, 0.35);
+    }
 
-.admin-dashboard-filter-actions .admin-secondary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+  }
 }
 
 .admin-dashboard-card {
@@ -253,26 +253,25 @@
   flex-direction: column;
   gap: 0.25rem;
   transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  & .admin-dashboard-card-label {
+    color: #555;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  & .admin-dashboard-card-value {
+    color: #111;
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
 }
 
-.admin-dashboard-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.admin-dashboard-card-label {
-  color: #555;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.admin-dashboard-card-value {
-  color: #111;
-  font-weight: 700;
-  font-size: 1.4rem;
-}
-
-/* Charts Container */
 .admin-dashboard-charts {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -286,37 +285,37 @@
   padding: 1.25rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid #e5e7eb;
-}
 
-.admin-dashboard-chart-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #2D2323;
-  margin: 0 0 1rem 0;
-}
+  & .admin-dashboard-chart-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2D2323;
+    margin: 0 0 1rem 0;
+  }
 
-.admin-dashboard-help {
-  font-size: 0.8rem;
-  color: #6b7280;
-  margin: 0.15rem 0 0;
-}
+  & .admin-dashboard-help {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin: 0.15rem 0 0;
+  }
 
-.admin-dashboard-chart-container .recharts-wrapper {
-  font-family: inherit;
-}
+  & .recharts-wrapper {
+    font-family: inherit;
+  }
 
-.admin-dashboard-chart-container .recharts-cartesian-axis-tick-value {
-  fill: #6b7280;
-  font-size: 11px;
-}
+  & .recharts-cartesian-axis-tick-value {
+    fill: #6b7280;
+    font-size: 11px;
+  }
 
-.admin-dashboard-chart-container .recharts-legend-wrapper {
-  padding-top: 0.5rem;
-}
+  & .recharts-legend-wrapper {
+    padding-top: 0.5rem;
+  }
 
-.admin-dashboard-chart-container .recharts-legend-item-text {
-  color: #374151;
-  font-size: 12px;
+  & .recharts-legend-item-text {
+    color: #374151;
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -335,7 +334,7 @@
     gap: 1rem;
   }
 
-   .admin-dashboard-main {
+  .admin-dashboard-main {
     padding: 2.25rem 1.25rem 3rem;
   }
 
