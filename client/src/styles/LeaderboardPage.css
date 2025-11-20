@@ -1,0 +1,365 @@
+.leaderboard-container {
+  min-height: 100vh;
+  height: 100vh;
+  background-color: #F5EFE7;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem 3rem;
+  }
+}
+
+.leaderboard-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  background-color: white;
+  border-radius: 36px 36px 0 0;
+  margin-top: -3.55rem;
+  padding: 3rem 2.5rem 4rem;
+  overflow-y: auto;
+
+  @media (max-width: 900px) {
+    padding: 2.25rem 1.25rem 3rem;
+  }
+}
+
+.leaderboard-shell {
+  width: min(1100px, 100%);
+  background-color: #ffffff;
+  border-radius: 32px;
+  padding: 2.5rem 3rem 3rem;
+  box-shadow: 0 10px 30px rgba(26, 26, 26, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+
+  @media (max-width: 900px) {
+    padding: 2rem 1.75rem 2.5rem;
+  }
+}
+
+.leaderboard-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.leaderboard-error {
+  background-color: #fee;
+  color: #c33;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.leaderboard-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.leaderboard-title {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #1f1a17;
+}
+
+.leaderboard-subtitle {
+  margin: 0.3rem 0 0;
+  font-size: 0.95rem;
+  color: #867b72;
+}
+
+.leaderboard-switches {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end;
+
+  @media (max-width: 768px) {
+    align-items: flex-start;
+  }
+}
+
+.leaderboard-toggle {
+  display: inline-flex;
+  padding: 0.2rem;
+  border-radius: 9999px;
+  background-color: #F4EFE9;
+}
+
+.leaderboard-toggle-button {
+  border: none;
+  background: transparent;
+  padding: 0.45rem 1.1rem;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b625b;
+  cursor: pointer;
+  transition: all 0.15s ease-out;
+
+  &.active {
+    background-color: #2D2323;
+    color: #ffffff;
+  }
+}
+
+.leaderboard-period-toggle {
+  display: inline-flex;
+  padding: 0.18rem;
+  border-radius: 9999px;
+  background-color: #F5F2EE;
+}
+
+.leaderboard-period-button {
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #7a726c;
+  cursor: pointer;
+  transition: all 0.15s ease-out;
+
+  &.active {
+    background-color: #ffffff;
+    color: #1f1a17;
+    box-shadow: 0 4px 10px rgba(26, 26, 26, 0.08);
+  }
+}
+
+.leaderboard-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 0.9fr);
+  gap: 2.25rem;
+  align-items: stretch;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leaderboard-podium-card {
+  background-color: #F9F5F0;
+  border-radius: 24px;
+  padding: 2.75rem 2.25rem 2.25rem;
+  min-height: 420px;
+}
+
+.leaderboard-podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.25rem;
+  margin-bottom: 2rem;
+}
+
+.leaderboard-podium-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  &.first {
+    transform: translateY(-10px);
+  }
+}
+
+.leaderboard-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 9999px;
+  background-color: #E4D8CB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #2D2323;
+
+  &.large {
+    width: 92px;
+    height: 92px;
+    font-size: 1.25rem;
+  }
+
+  &.small {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
+}
+
+.leaderboard-podium-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #3a3430;
+}
+
+.leaderboard-podium-block {
+  width: 150px;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem 0;
+
+  &.first-block {
+    background-color: #FBE4A0;
+  }
+
+  &.second-block {
+    background-color: #E2E5F0;
+  }
+
+  &.third-block {
+    background-color: #F6D4BF;
+  }
+}
+
+.leaderboard-podium-rank {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #E87839;
+}
+
+.leaderboard-podium-trophy {
+  font-size: 1.8rem;
+}
+
+.leaderboard-current-user {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  background-color: #FFFFFF;
+  border: 1px solid #EFE1D4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.leaderboard-current-rank {
+  font-size: 0.95rem;
+  color: #4b433c;
+
+  strong {
+    color: #1f1a17;
+  }
+}
+
+.leaderboard-current-stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #6c645d;
+
+  span strong {
+    color: #1f1a17;
+  }
+}
+
+.leaderboard-table-card {
+  background-color: #FDFBF7;
+  border-radius: 24px;
+  padding: 1.25rem 1.25rem 1.5rem;
+  border: 1px solid #EEE4D8;
+  align-self: start;
+}
+
+.leaderboard-table-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #867b72;
+  margin-bottom: 0.9rem;
+}
+
+.leaderboard-table-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.leaderboard-table-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 0.5rem;
+  border-radius: 12px;
+  transition: background-color 0.15s ease-out;
+
+  &:hover {
+    background-color: #F5F0EA;
+  }
+
+  &.leaderboard-table-row-current {
+    background-color: #ECE5FF;
+  }
+}
+
+.leaderboard-table-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.leaderboard-table-rank {
+  width: 1.4rem;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #8b8178;
+}
+
+.leaderboard-table-user-main {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.leaderboard-table-name {
+  font-size: 0.95rem;
+  color: #2d2323;
+}
+
+.leaderboard-table-score {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2a40a2;
+}
+
+.leaderboard-table-value {
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.leaderboard-empty-table {
+  padding: 1.5rem 1rem;
+  border-radius: 16px;
+  background-color: #FFFDFC;
+  border: 1px dashed #E0D1C3;
+  font-size: 0.95rem;
+  color: #7c7168;
+  text-align: center;
+}

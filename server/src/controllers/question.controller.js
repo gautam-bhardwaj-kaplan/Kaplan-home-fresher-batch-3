@@ -56,9 +56,22 @@ const getHistory = async (req, res) => {
   }
 };
 
+const getQuestionStats = async (_req, res) => {
+  try {
+    const stats = await QuestionService.getQuestionStats();
+    res.status(200).json({
+      success: true,
+      data: stats
+    });
+  } catch (error) {
+    handleError(res, error, 'Failed to get question stats', 500);
+  }
+};
+
 exports.QuestionController = {
   getTodayQuestion,
   submitAnswer,
-  getHistory
+  getHistory,
+  getQuestionStats
 };
 

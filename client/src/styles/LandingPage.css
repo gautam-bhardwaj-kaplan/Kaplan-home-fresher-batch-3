@@ -5,6 +5,10 @@
   flex-direction: column;
   padding: 1.50rem 1.5rem 0;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.25rem 3rem;
+  }
 }
 
 .landing-header-shell {
@@ -25,6 +29,12 @@
   border-radius: 9999px;
   box-shadow: 0 25px 50px rgba(26, 26, 26, 0.08);
   width: min(960px, 100%);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
 }
 
 .landing-logo {
@@ -71,6 +81,11 @@
   &:hover {
     transform: scale(1.04);
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .landing-hero {
@@ -105,7 +120,8 @@
 .landing-headline-row {
   display: inline-flex;
   align-items: center;
-  gap: clamp(0.85rem, 1.5vw, 1.5rem);
+  justify-content: center;
+  gap: clamp(1.25rem, 2.5vw, 3rem);
 }
 
 .landing-headline-icon {
@@ -125,27 +141,9 @@
   display: flex;
   gap: 1rem;
   align-items: center;
-}
 
-@media (max-width: 768px) {
-  .landing-container {
-    padding: 2rem 1.25rem 3rem;
-  }
-
-  .landing-header {
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-  }
-
-  .landing-cta-buttons {
+  @media (max-width: 768px) {
     flex-direction: column;
     width: 100%;
   }
-
-  .landing-primary-button {
-    width: 100%;
-    justify-content: center;
-  }
 }
-

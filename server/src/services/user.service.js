@@ -109,10 +109,12 @@ const getUserProfile = async (userId) => {
     badges: user.userBadges.map(ub => ({
       badgeId: ub.badge.badgeId,
       name: ub.badge.name,
-      earnedAt: ub.earnedAt
+      earnedAt: ub.earnedAt,
+      iconUrl: ub.badge.iconUrl
     })),
     emailNotifications: user.emailNotifications,
-    notificationTime: user.notificationTime
+    notificationTime: user.notificationTime,
+    createdAt: user.createdAt
   };
 };
 
@@ -148,7 +150,8 @@ const updateUserProfile = async (userId, updateData) => {
     badges: user.userBadges.map(ub => ({
       badgeId: ub.badge.badgeId,
       name: ub.badge.name,
-      earnedAt: ub.earnedAt
+      earnedAt: ub.earnedAt,
+      iconUrl: ub.badge.iconUrl
     })),
     emailNotifications: user.emailNotifications,
     notificationTime: user.notificationTime
@@ -171,7 +174,8 @@ const getUserProgress = async (userId) => {
         include: {
           question: {
             select: {
-              category: true
+              category: true,
+              questionText: true
             }
           }
         },
@@ -219,7 +223,8 @@ const getUserProgress = async (userId) => {
     date: submission.attemptDate.toISOString().split('T')[0],
     isCorrect: submission.isCorrect,
     points: submission.pointsEarned,
-    category: submission.question.category
+    category: submission.question.category,
+    questionText: submission.question.questionText
   }));
 
   const today = new Date();

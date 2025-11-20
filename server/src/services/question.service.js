@@ -215,6 +215,18 @@ const submitAnswer = async (userId, questionId, answerData) => {
   };
 };
 
+const getQuestionStats = async () => {
+  const totalQuestions = await prisma.question.count({
+    where: {
+      isActive: true
+    }
+  });
+
+  return {
+    totalQuestions
+  };
+};
+
 const getHistory = async (userId, queryParams) => {
   const { page, limit, category, dateFrom, dateTo } = queryParams;
   const skip = (page - 1) * limit;
@@ -312,6 +324,7 @@ const getHistory = async (userId, queryParams) => {
 exports.QuestionService = {
   getTodayQuestion,
   submitAnswer,
-  getHistory
+  getHistory,
+  getQuestionStats
 };
 
