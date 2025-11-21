@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #EEE9DF;
+  background-color: white;
 
   .loading-spinner {
     display: inline-flex;

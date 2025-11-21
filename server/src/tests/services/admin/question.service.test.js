@@ -128,7 +128,7 @@ describe('AdminQuestionService', () => {
 
       expect(result.questions).toEqual(questions);
       expect(result.pagination.currentPage).toBe(1);
-      expect(result.pagination.itemsPerPage).toBe(20);
+      expect(result.pagination.itemsPerPage).toBe(10);
       expect(result.pagination.totalItems).toBe(1);
     });
 

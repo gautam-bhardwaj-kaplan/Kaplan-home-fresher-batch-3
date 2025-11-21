@@ -5,13 +5,14 @@ import '../styles/AuthPage.css';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { login, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { login, isAuthenticated, isLoading: authLoading, user } = useAuth();
 
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
-      navigate('/dashboard', { replace: true });
+      const destination = user?.role === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
+      navigate(destination, { replace: true });
     }
-  }, [isAuthenticated, authLoading, navigate]);
+  }, [isAuthenticated, authLoading, user, navigate]);
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -25,7 +26,10 @@ export const LoginPage = () => {
     try {
       await login({ email, password });
       setError('');
-      navigate('/dashboard');
+      const stored = localStorage.getItem('user');
+      const parsed = stored ? JSON.parse(stored) : user;
+      const destination = parsed?.role === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
+      navigate(destination);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Login failed. Please try again.';
       setError(errorMessage);

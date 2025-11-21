@@ -5,6 +5,10 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { DashboardPage } from './pages/DashboardPage';
+import AdminLayout from "./layouts/AdminLayout";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AdminQuestionsPage from "./pages/AdminQuestionsPage";
+import AdminUsersPage from "./pages/AdminUsersPage";
 import { ProfilePage } from './pages/ProfilePage';
 import { QuizPage } from './pages/QuizPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
@@ -49,6 +53,18 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+          <Route path="dashboard" element={<AdminDashboardPage />} />
+          <Route path="questions" element={<AdminQuestionsPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>

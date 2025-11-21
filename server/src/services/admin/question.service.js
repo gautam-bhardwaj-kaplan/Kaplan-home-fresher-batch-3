@@ -48,7 +48,7 @@ const createQuestion = async (questionData, userId) => {
 const listQuestions = async (filters) => {
   const {
     page = 1,
-    limit = 20,
+    limit = 10,
     category,
     dateFrom,
     dateTo,
@@ -144,6 +144,9 @@ const getQuestionById = async (questionId) => {
 
 const updateQuestion = async (questionId, updateData) => {
   const { id, createdAt, updatedAt, createdById, ...safeUpdateData } = updateData;
+  if (safeUpdateData.scheduledDate) {
+    safeUpdateData.scheduledDate = new Date(safeUpdateData.scheduledDate);
+  }
 
   try {
     const question = await prisma.question.update({
