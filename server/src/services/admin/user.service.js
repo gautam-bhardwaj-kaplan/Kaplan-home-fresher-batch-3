@@ -1,7 +1,8 @@
 const prisma = require('../../config/prisma');
+const { calculateUserStatus } = require('../../utils/userStatus');
 
 const getAllUsers = async () => {
-  return prisma.user.findMany({
+  const users = await prisma.user.findMany({
     select: {
       id: true,
       name: true,
@@ -17,6 +18,11 @@ const getAllUsers = async () => {
     },
     orderBy: { createdAt: 'desc' }
   });
+
+  return users.map(user => ({
+    ...user,
+    status: calculateUserStatus(user.totalQuestionsAttempted)
+  }));
 };
 
 const updateUserRole = async (userId, newRole) => {

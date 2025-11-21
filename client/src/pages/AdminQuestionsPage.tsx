@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, useCallback } from 'react';
 import {
   listAdminQuestions,
   deleteAdminQuestion,
+  updateAdminQuestion,
   type AdminQuestionListItem,
   type ListFilters,
   type QuestionCategory,
@@ -17,6 +18,7 @@ import { formatYMD, getTomorrowYMD, getDateStatus } from '../components/helpers/
 import '../styles/AdminQuestions.css';
 import deleteIcon from '../assets/deleteIcon.png';
 import editIcon from '../assets/editIcon.png';
+import activateIcon from '../assets/activateIcon.png';
 
 export const AdminQuestionsPage = () => {
   const [questions, setQuestions] = useState<AdminQuestionListItem[]>([]);
@@ -93,6 +95,18 @@ export const AdminQuestionsPage = () => {
       await loadCards();
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Delete failed';
+      alert(msg);
+    }
+  };
+
+  const onActivate = async (id: string) => {
+    if (!confirm('Activate this question?')) return;
+    try {
+      await updateAdminQuestion(id, { isActive: true });
+      await loadQuestions(pagination.currentPage);
+      await loadCards();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Activation failed';
       alert(msg);
     }
   };
@@ -195,7 +209,7 @@ export const AdminQuestionsPage = () => {
                       <td><Badge label={q.difficulty || 'Unknown'} variant="yellow" /></td>
                       <td>{formatYMD(q.scheduledDate)}</td>
                       <td>
-                        <Badge label={statusLabel} variant={statusVariant} />
+                        <Badge label={!q.isActive ? 'Inactive' : statusLabel} variant={!q.isActive ? 'gray' : statusVariant} />
                       </td>
                       <td>
                         <div className="admin-row-actions">
@@ -207,14 +221,25 @@ export const AdminQuestionsPage = () => {
                           >
                             <img src={editIcon} alt="Edit" />
                           </button>
-                          <button
-                            className="admin-action-button admin-action-danger"
-                            onClick={() => onDelete(q.id)}
-                            aria-label={`Delete question ${idx + 1}`}
-                            title="Delete"
-                          >
-                            <img src={deleteIcon} alt="Delete" />
-                          </button>
+                          {q.isActive ? (
+                            <button
+                              className="admin-action-button admin-action-danger"
+                              onClick={() => onDelete(q.id)}
+                              aria-label={`Delete question ${idx + 1}`}
+                              title="Delete"
+                            >
+                              <img src={deleteIcon} alt="Delete" />
+                            </button>
+                          ) : (
+                            <button
+                              className="admin-action-button admin-action-activate"
+                              onClick={() => onActivate(q.id)}
+                              aria-label={`Activate question ${idx + 1}`}
+                              title="Activate"
+                            >
+                              <img src={activateIcon} alt="Activate" />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

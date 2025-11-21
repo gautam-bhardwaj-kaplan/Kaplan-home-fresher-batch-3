@@ -64,7 +64,7 @@ export const AdminUsersPage = () => {
 
   const totals = useMemo(() => {
     const totalUsers = users.length;
-    const activeUsers = users.filter((u) => u.isActive).length;
+    const activeUsers = users.filter((u) => u.status === 'ACTIVE').length;
     const accuracies = users.map((u) => {
       const attempts = u.totalQuestionsAttempted || 0;
       const correct = u.totalCorrectAnswers || 0;
@@ -135,8 +135,6 @@ export const AdminUsersPage = () => {
                     typeof u.createdAt === "string"
                       ? u.createdAt.slice(0, 10)
                       : new Date(u.createdAt).toISOString().slice(0, 10);
-                  const statusVariant = u.isActive ? 'green' : 'gray';
-                  const statusLabel = u.isActive ? 'Active' : 'Inactive';
 
                   return (
                     <tr key={u.id}>
@@ -155,7 +153,7 @@ export const AdminUsersPage = () => {
                       <td>{u.accuracy}%</td>
                       <td>{u.points}</td>
                       <td>
-                        <Badge label={statusLabel} variant={statusVariant} />
+                        <Badge label={u.status} variant={u.status === 'ACTIVE' ? 'green' : 'gray'} />
                       </td>
                     </tr>
                   );
