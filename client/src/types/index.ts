@@ -134,6 +134,8 @@ export interface UserStatsCardsProps {
   activeUsers: number;
   avgAccuracy: number;
   longestStreak: number;
+}
+
 export interface Question {
   id: string;
   date: string;

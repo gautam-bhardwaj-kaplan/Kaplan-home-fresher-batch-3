@@ -53,6 +53,18 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+          <Route path="dashboard" element={<AdminDashboardPage />} />
+          <Route path="questions" element={<AdminQuestionsPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>
