@@ -131,6 +131,15 @@
   }
 }
 
+.admin-input-error {
+  border-color: #dc2626;
+}
+
+.admin-input-error:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
 textarea.admin-input {
   min-height: 100px;
   resize: vertical;
@@ -607,5 +616,87 @@ textarea.admin-input {
 
   .admin-options-section {
     grid-template-columns: 1fr;
+  }
+}
+
+.admin-required {
+  color: #dc2626;
+  font-weight: 600;
+  margin-left: 0.2rem;
+}
+
+.admin-field-error {
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.admin-floating-label-group-error {
+  min-height: 4.5rem;
+}
+
+.admin-options-header {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.admin-action-activate {
+  background: none;
+  color: #059669;
+}
+
+.admin-add-option {
+  grid-column: 1 / -1;
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 2px dashed #0369a1;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #e0f2fe;
+    border-color: #0284c7;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.admin-remove-option {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  padding: 0;
+
+  &:hover {
+    background: #fca5a5;
+    color: #991b1b;
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
   }
 }

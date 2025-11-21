@@ -66,14 +66,11 @@ export const AdminDashboardPage = () => {
   const metricCards = [
     { label: 'Total Users', value: overview.totalUsers.toLocaleString() },
     { label: 'Participation Rate', value: `${overview.participationRate.toFixed(1)}%` },
-    { label: 'Questions Live', value: overview.totalQuestions.toLocaleString() },
     { label: 'Avg Accuracy', value: `${overview.averageAccuracy.toFixed(1)}%` },
-    { label: 'Total Attempts', value: overview.totalAttempts.toLocaleString() },
     { label: 'Badges Awarded', value: overview.badgesAwarded.toLocaleString() },
   ];
 
-  const firstRowCards = metricCards.slice(0, 3);
-  const secondRowCards = metricCards.slice(3);
+  const firstRowCards = metricCards;
 
   const dailyEngagementData = dailyStats.map((stat) => ({
     date: formatDateShort(stat.date),
@@ -142,11 +139,6 @@ export const AdminDashboardPage = () => {
       <div className="admin-dashboard-cards">
         <div className="admin-dashboard-cards-row">
           {firstRowCards.map((card) => (
-            <MetricCard key={card.label} label={card.label} value={card.value} />
-          ))}
-        </div>
-        <div className="admin-dashboard-cards-row">
-          {secondRowCards.map((card) => (
             <MetricCard key={card.label} label={card.label} value={card.value} />
           ))}
         </div>

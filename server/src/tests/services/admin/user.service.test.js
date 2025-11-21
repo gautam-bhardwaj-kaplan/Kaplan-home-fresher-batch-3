@@ -11,6 +11,12 @@ jest.mock('@prisma/client', () => {
   };
 });
 
+jest.mock('../../../utils/userStatus', () => ({
+  calculateUserStatus: jest.fn((totalAttempts) => {
+    return totalAttempts === 0 ? 'INACTIVE' : 'ACTIVE';
+  }),
+}));
+
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const AdminUserService = require('../../../services/admin/user.service');
@@ -21,7 +27,7 @@ describe('AdminUserService', () => {
   });
 
   describe('getAllUsers', () => {
-    it('returns all users with selected fields', async () => {
+    it('returns all users with selected fields and computed status', async () => {
       const users = [
         {
           id: 'u1',
@@ -30,6 +36,11 @@ describe('AdminUserService', () => {
           role: 'LEARNER',
           isActive: true,
           createdAt: new Date('2024-01-01'),
+          currentStreak: 0,
+          longestStreak: 0,
+          totalQuestionsAttempted: 5,
+          totalCorrectAnswers: 3,
+          totalPoints: 50,
         },
         {
           id: 'u2',
@@ -38,13 +49,21 @@ describe('AdminUserService', () => {
           role: 'ADMIN',
           isActive: true,
           createdAt: new Date('2024-01-02'),
+          currentStreak: 2,
+          longestStreak: 5,
+          totalQuestionsAttempted: 0,
+          totalCorrectAnswers: 0,
+          totalPoints: 0,
         },
       ];
       prisma.user.findMany.mockResolvedValue(users);
 
       const result = await AdminUserService.getAllUsers();
 
-      expect(result).toEqual(users);
+      expect(result).toEqual([
+        { ...users[0], status: 'ACTIVE' },
+        { ...users[1], status: 'INACTIVE' },
+      ]);
       expect(prisma.user.findMany).toHaveBeenCalledWith({
         select: {
           id: true,

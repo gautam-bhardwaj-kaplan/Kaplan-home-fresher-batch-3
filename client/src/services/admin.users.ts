@@ -6,6 +6,7 @@ export interface AdminUser {
   email: string;
   role: 'LEARNER' | 'ADMIN';
   isActive: boolean;
+  status: 'ACTIVE' | 'INACTIVE';
   createdAt: string;
   currentStreak?: number;
   longestStreak?: number;

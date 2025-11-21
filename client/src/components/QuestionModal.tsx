@@ -12,11 +12,25 @@ import { ModalBackdrop } from './ModalBackdrop';
 import { formatYMD } from './helpers/dateUtils';
 import { type QuestionModalProps } from '../types';
 
-const defaultOptions = ['', '', '', ''];
+const defaultOptions = ['', ''];
+
+interface FieldErrors {
+  questionType?: string;
+  questionText?: string;
+  category?: string;
+  difficulty?: string;
+  points?: string;
+  scheduledDate?: string;
+  options?: string[];
+  correctAnswer?: string;
+  acceptedAnswers?: string;
+  explanation?: string;
+}
 
 export const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: QuestionModalProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const [questionType, setQuestionType] = useState<QuestionType>('MCQ');
   const [questionText, setQuestionText] = useState('');
@@ -29,6 +43,19 @@ export const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: Ques
   const [acceptedAnswers, setAcceptedAnswers] = useState<string>('');
   const [caseSensitive, setCaseSensitive] = useState<boolean>(false);
   const [explanation, setExplanation] = useState<string>('');
+
+  const addOption = () => {
+    if (options.length < 4) {
+      setOptions([...options, '']);
+    }
+  };
+
+  const removeOption = (index: number) => {
+    if (options.length > 2) {
+      const newOptions = options.filter((_, i) => i !== index);
+      setOptions(newOptions);
+    }
+  };
 
   useEffect(() => {
     const loadForEdit = async (id: string) => {
@@ -71,29 +98,59 @@ export const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: Ques
       setCaseSensitive(false);
       setExplanation('');
       setError('');
+      setFieldErrors({});
     }
   }, [open, mode, questionId]);
 
   const save = async () => {
     setError('');
+    setFieldErrors({});
+    const errors: FieldErrors = {};
 
-    if (!scheduledDate) {
-      setError('Scheduled date is required');
-      return;
+    if (!questionText || questionText.trim().length === 0) {
+      errors.questionText = 'Question is required';
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const selectedDate = new Date(scheduledDate);
-    selectedDate.setHours(0, 0, 0, 0);
+    if (!scheduledDate) {
+      errors.scheduledDate = 'Scheduled date is required';
+    } else {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const selectedDate = new Date(scheduledDate);
+      selectedDate.setHours(0, 0, 0, 0);
 
-    if (selectedDate < today) {
-      setError('Scheduled date cannot be in the past');
-      return;
+      if (selectedDate < today) {
+        errors.scheduledDate = 'Scheduled date cannot be in the past';
+      }
     }
 
     if (!explanation || explanation.trim().length === 0) {
-      setError('Explanation is required');
+      errors.explanation = 'Explanation is required';
+    }
+
+    if (questionType === 'MCQ') {
+      const nonEmptyOptions = options.filter((o) => o && o.trim().length > 0);
+      if (nonEmptyOptions.length < 2) {
+        errors.options = ['At least 2 options are required'];
+        setFieldErrors(errors);
+        setError('Please fix the field errors below');
+        return;
+      }
+
+      if (!correctAnswer || correctAnswer.trim().length === 0) {
+        errors.correctAnswer = 'Correct answer is required';
+      } else if (!nonEmptyOptions.includes(correctAnswer.trim())) {
+        errors.correctAnswer = 'Correct answer must match one of the provided options';
+      }
+    } else {
+      if (!correctAnswer || correctAnswer.trim().length === 0) {
+        errors.correctAnswer = 'Correct answer is required';
+      }
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setError('Please fix the field errors below');
       return;
     }
 
@@ -114,8 +171,8 @@ export const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: Ques
         scheduledDate,
         category,
         difficulty,
-        questionText,
-        correctAnswer,
+        questionText: questionText.trim(),
+        correctAnswer: correctAnswer.trim(),
         questionType,
         points,
         explanation: explanation.trim(),
@@ -218,28 +275,33 @@ export const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: Ques
 
           <div className="admin-floating-label-group">
             <input 
-              className="admin-input admin-date" 
+              className={`admin-input admin-date ${fieldErrors.scheduledDate ? 'admin-input-error' : ''}`}
               type="date" 
               value={scheduledDate} 
               onChange={(e) => setScheduledDate(e.target.value)}
             />
-            <label className="admin-label-floating">Schedule Date</label>
+            <label className="admin-label-floating">Schedule Date <span className="admin-required">*</span></label>
+            {fieldErrors.scheduledDate && <div className="admin-field-error">{fieldErrors.scheduledDate}</div>}
           </div>
 
           <div className="admin-textarea admin-floating-label-group">
             <textarea 
-              className="admin-input" 
+              className={`admin-input ${fieldErrors.questionText ? 'admin-input-error' : ''}`}
               value={questionText} 
               onChange={(e) => setQuestionText(e.target.value)} 
               placeholder=" "
             />
-            <label className={questionText ? 'admin-label-floating' : ''}>Question</label>
+            <label className={questionText ? 'admin-label-floating' : ''}>Question <span className="admin-required">*</span></label>
+            {fieldErrors.questionText && <div className="admin-field-error">{fieldErrors.questionText}</div>}
           </div>
 
           {questionType === 'MCQ' ? (
             <div className="admin-options-section">
+              <div className="admin-options-header">
+                <span>Options <span className="admin-required">*</span> </span>
+              </div>
               {options.map((opt, idx) => (
-                <div key={idx} className="admin-floating-label-group">
+                <div key={idx} className="admin-floating-label-group" style={{ position: 'relative' }}>
                   <input 
                     className="admin-input" 
                     value={opt} 
@@ -251,28 +313,52 @@ export const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: Ques
                     placeholder=" "
                   />
                   <label className={opt ? 'admin-label-floating' : ''}>{`Option ${idx + 1}`}</label>
+                  {options.length > 2 && (
+                    <button
+                      type="button"
+                      onClick={() => removeOption(idx)}
+                      className="admin-remove-option"
+                      title="Remove option"
+                      aria-label={`Remove option ${idx + 1}`}
+                    >
+                      ✕
+                    </button>
+                  )}
                 </div>
               ))}
-              <div className="admin-floating-label-group">
+              {options.length < 4 && (
+                <button
+                  type="button"
+                  onClick={addOption}
+                  className="admin-add-option"
+                  title="Add option"
+                >
+                  + Add Option
+                </button>
+              )}
+              {fieldErrors.options && <div className="admin-field-error">{fieldErrors.options[0]}</div>}
+              <div className={`admin-floating-label-group ${fieldErrors.correctAnswer ? 'admin-floating-label-group-error' : ''}`}>
                 <input 
-                  className="admin-input" 
+                  className={`admin-input ${fieldErrors.correctAnswer ? 'admin-input-error' : ''}`}
                   value={correctAnswer} 
                   onChange={(e) => setCorrectAnswer(e.target.value)} 
                   placeholder=" "
                 />
-                <label className={correctAnswer ? 'admin-label-floating' : ''}>Correct Answer</label>
+                <label className={correctAnswer ? 'admin-label-floating' : ''}>Correct Answer <span className="admin-required">*</span></label>
+                {fieldErrors.correctAnswer && <div className="admin-field-error">{fieldErrors.correctAnswer}</div>}
               </div>
             </div>
           ) : (
             <div className="admin-options-section">
-              <div className="admin-floating-label-group">
+              <div className={`admin-floating-label-group ${fieldErrors.correctAnswer ? 'admin-floating-label-group-error' : ''}`}>
                 <input 
-                  className="admin-input" 
+                  className={`admin-input ${fieldErrors.correctAnswer ? 'admin-input-error' : ''}`}
                   value={correctAnswer} 
                   onChange={(e) => setCorrectAnswer(e.target.value)}
                   placeholder=" "
                 />
-                <label className={correctAnswer ? 'admin-label-floating' : ''}>Correct Answer</label>
+                <label className={correctAnswer ? 'admin-label-floating' : ''}>Correct Answer <span className="admin-required">*</span></label>
+                {fieldErrors.correctAnswer && <div className="admin-field-error">{fieldErrors.correctAnswer}</div>}
               </div>
               <div className="admin-floating-label-group">
                 <input 
@@ -292,14 +378,15 @@ export const QuestionModal = ({ open, mode, questionId, onClose, onSaved }: Ques
             </div>
           )}
 
-          <div className="admin-textarea admin-floating-label-group">
+          <div className={`admin-textarea admin-floating-label-group ${fieldErrors.explanation ? 'admin-floating-label-group-error' : ''}`}>
             <textarea 
-              className="admin-input" 
+              className={`admin-input ${fieldErrors.explanation ? 'admin-input-error' : ''}`}
               value={explanation} 
               onChange={(e) => setExplanation(e.target.value)} 
               placeholder=" "
             />
-            <label className={explanation ? 'admin-label-floating' : ''}>Explanation</label>
+            <label className={explanation ? 'admin-label-floating' : ''}>Explanation <span className="admin-required">*</span></label>
+            {fieldErrors.explanation && <div className="admin-field-error">{fieldErrors.explanation}</div>}
           </div>
         </div>
 
