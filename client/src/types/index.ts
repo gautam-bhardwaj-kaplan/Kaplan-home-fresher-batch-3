@@ -14,10 +14,12 @@ export interface User {
   accuracy?: number;
   emailNotifications?: boolean;
   notificationTime?: string;
+  createdAt?: string;
   badges?: Array<{
     badgeId: string;
     name: string;
     earnedAt: string;
+    iconUrl?: string;
   }>;
 }
 
@@ -64,6 +66,7 @@ export interface UserProgress {
     isCorrect: boolean;
     points: number;
     category: string;
+    questionText: string;
   }>;
   streakHistory: Array<{
     date: string;
@@ -131,4 +134,107 @@ export interface UserStatsCardsProps {
   activeUsers: number;
   avgAccuracy: number;
   longestStreak: number;
+export interface Question {
+  id: string;
+  date: string;
+  category: string;
+  difficulty: string;
+  questionText: string;
+  questionType: 'MCQ' | 'SHORT_ANSWER';
+  options?: string[];
+  points: number;
+}
+
+export interface QuestionStats {
+  totalQuestions: number;
+}
+
+export interface Submission {
+  id: string;
+  submittedAnswer: string;
+  isCorrect: boolean;
+  pointsEarned: number;
+  correctAnswer?: string;
+  explanation?: string;
+  submittedAt?: string;
+}
+
+export interface TodayQuestionResponse {
+  question: Question;
+  hasAttempted: boolean;
+  submission: Submission | null;
+}
+
+export interface StreakUpdate {
+  currentStreak: number;
+  longestStreak: number;
+}
+
+export interface Badge {
+  badgeId: string;
+  name: string;
+  earnedAt: string;
+}
+
+export interface UserStats {
+  totalPoints: number;
+  accuracy: number;
+}
+
+export interface SubmitAnswerResponse {
+  submission: {
+    id: string;
+    isCorrect: boolean;
+    pointsEarned: number;
+    correctAnswer: string;
+    explanation?: string;
+  };
+  streakUpdate?: StreakUpdate;
+  newBadges?: Badge[];
+  userStats?: UserStats;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  userId: string;
+  name: string;
+  profilePicture?: string | null;
+  currentStreak: number;
+  totalPoints: number;
+  badges: number;
+}
+
+export interface LeaderboardCurrentUser {
+  rank: number;
+  currentStreak: number;
+  totalPoints: number;
+}
+
+export interface LeaderboardResponse {
+  leaderboard: LeaderboardEntry[];
+  currentUser: LeaderboardCurrentUser | null;
+  period: 'all' | 'week' | 'month';
+  generatedAt: string;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  signup: (data: SignupData) => Promise<void>;
+  logout: () => void;
+  refreshUser: () => Promise<void>;
+}
+
+export type NavSection = 'dashboard' | 'leaderboard' | 'profile';
+
+export interface AppNavbarProps {
+  active: NavSection;
+  userName?: string;
+  onLogout: () => void;
+}
+
+export interface ProtectedRouteProps {
+  children: ReactNode;
 }

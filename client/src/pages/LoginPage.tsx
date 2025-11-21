@@ -18,11 +18,11 @@ export const LoginPage = () => {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const isButtonLoading = isSubmitting || authLoading;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
       await login({ email, password });
       setError('');
@@ -33,18 +33,13 @@ export const LoginPage = () => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Login failed. Please try again.';
       setError(errorMessage);
+    } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
     <div className="auth-container">
-      <div className="auth-header">
-        <Link to="/" className="auth-logo">
-          BACK
-        </Link>
-      </div>
-
       <div className="auth-card">
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-subtitle">Log in to continue your learning journey</p>
@@ -88,12 +83,12 @@ export const LoginPage = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="auth-primary-button"
-            disabled={isSubmitting || authLoading}
-          >
-            {isSubmitting ? 'Logging in...' : 'Log in'}
+          <button type="submit" className="auth-primary-button" disabled={isButtonLoading}>
+            {isButtonLoading ? (
+              <span className="auth-button-spinner" role="status" aria-label="Logging in" />
+            ) : (
+              'Log in'
+            )}
           </button>
         </form>
 

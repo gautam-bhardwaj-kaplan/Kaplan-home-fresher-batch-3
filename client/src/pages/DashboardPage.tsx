@@ -2,22 +2,31 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getUserProgress } from '../services/auth.service';
+import { getQuestionStats } from '../services/question.service';
 import type { UserProgress } from '../types';
 import { Oval } from 'react-loader-spinner';
 import '../styles/DashboardPage.css';
+import mainCard from '../assets/maincard.png';
+import { AppNavbar } from '../components/AppNavbar';
+import fireIcon from '../assets/fire.gif';
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [totalQuestions, setTotalQuestions] = useState<number>(0);
 
   useEffect(() => {
     const loadProgress = async () => {
       try {
-        const progressData = await getUserProgress();
+        const [progressData, questionStats] = await Promise.all([
+          getUserProgress(),
+          getQuestionStats(),
+        ]);
         setProgress(progressData);
+        setTotalQuestions(questionStats.totalQuestions);
         setError('');
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to load progress';
@@ -33,6 +42,10 @@ export const DashboardPage = () => {
   const handleLogout = (): void => {
     logout();
     navigate('/');
+  };
+
+  const handlePlayQuiz = (): void => {
+    navigate('/quiz');
   };
 
   if (isLoading) {
@@ -55,20 +68,48 @@ export const DashboardPage = () => {
   }
 
   const accuracy = progress?.overview.accuracy || 0;
+  const totalPoints = progress?.overview.totalPoints || 0;
+  const streakHistory = progress?.streakHistory ?? [];
+  const recentActivity = progress?.recentActivity ?? [];
+  const todayKey = new Date().toISOString().split('T')[0];
+  const streakPreview = (() => {
+    const historyMap = new Map(streakHistory.map((day) => [day.date, day]));
+
+    const todayActivity = recentActivity.find((activity) => activity.date === todayKey);
+    if (todayActivity) {
+      historyMap.set(todayKey, {
+        date: todayKey,
+        hasAttempt: true,
+        isCorrect: todayActivity.isCorrect,
+      });
+    } else if (!historyMap.has(todayKey)) {
+      historyMap.set(todayKey, {
+        date: todayKey,
+        hasAttempt: false,
+        isCorrect: false,
+      });
+    }
+
+    const days: typeof streakHistory = [];
+    for (let offset = 4; offset >= 0; offset -= 1) {
+      const date = new Date();
+      date.setDate(date.getDate() - offset);
+      const dateKey = date.toISOString().split('T')[0];
+      const entry =
+        historyMap.get(dateKey) ??
+        {
+          date: dateKey,
+          hasAttempt: false,
+          isCorrect: false,
+        };
+      days.push(entry);
+    }
+    return days;
+  })();
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <div className="dashboard-header-content">
-          <div className="dashboard-logo">QUIZLY</div>
-          <div className="dashboard-header-actions">
-            <span className="dashboard-user-name">{user?.name}</span>
-            <button className="dashboard-logout-button" onClick={handleLogout}>
-              Log out
-            </button>
-          </div>
-        </div>
-      </header>
+      <AppNavbar active="dashboard" onLogout={handleLogout} />
 
       <main className="dashboard-main">
         {error && (
@@ -76,56 +117,73 @@ export const DashboardPage = () => {
             {error}
           </div>
         )}
-        
-        <div className="dashboard-hero">
-          <h1 className="dashboard-welcome">
-            Welcome back, {user?.name}!
-          </h1>
-          <p className="dashboard-subtitle">
-            Continue your learning journey and track your progress
-          </p>
-        </div>
 
-        <div className="dashboard-stats-grid">
-          <div className="dashboard-stat-card">
-            <div className="dashboard-stat-label">Current Streak</div>
-            <div className="dashboard-stat-value">{progress?.overview.currentStreak || 0}</div>
-            <div className="dashboard-stat-unit">days</div>
+        <section className="dashboard-content-shell">
+          <div className="dashboard-primary-layout">
+            <article className="dashboard-quiz-card">
+              <div className="dashboard-quiz-content">
+                <div className="dashboard-quiz-text-section">
+                  <h1 className="dashboard-quiz-title">Quiz of the Day</h1>
+                  <div className="dashboard-quiz-description-container">
+                    <p className="dashboard-quiz-description">Play our daily general knowledge trivia quiz.</p>
+                    <p className="dashboard-quiz-description">
+                      Today's quiz is Quiz of the Day no. {totalQuestions || 0}.
+                    </p>
+                  </div>
+                  <div className="dashboard-quiz-plays">Plays: {progress?.overview.totalAttempts || 0}</div>
+                  <button
+                    className="dashboard-quiz-button"
+                    onClick={handlePlayQuiz}
+                  >
+                    Play Now
+                  </button>
+                </div>
+                <div className="dashboard-quiz-illustration">
+                  <img
+                    src={mainCard}
+                    alt="Quiz friends"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </article>
+
+            <aside className="dashboard-side-stack">
+              <div className="dashboard-streak-card">
+                <div className="dashboard-streak-value">
+                  <span>{progress?.overview.currentStreak || 0}</span>
+                  <img src={fireIcon} className="dashboard-streak-fire" alt="Fire" />
+                </div>
+                <p className="dashboard-streak-subtitle">Play a quiz to start a streak</p>
+                <div className="dashboard-week-row">
+                  {streakPreview.map((day, index) => {
+                    const label = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' });
+                    const isCorrectAttempt = day.hasAttempt && day.isCorrect;
+                    return (
+                      <span
+                        key={`${day.date}-${index}`}
+                        className={`dashboard-week-day ${isCorrectAttempt ? 'dashboard-week-day-active' : ''}`}
+                      >
+                        {label}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="dashboard-pill-grid">
+                <div className="dashboard-pill-card">
+                  <p className="dashboard-pill-label">Total Points</p>
+                  <p className="dashboard-pill-value">{totalPoints}</p>
+                </div>
+                <div className="dashboard-pill-card">
+                  <p className="dashboard-pill-label">Accuracy</p>
+                  <p className="dashboard-pill-value">{Math.round(accuracy)}%</p>
+                </div>
+              </div>
+            </aside>
           </div>
-
-          <div className="dashboard-stat-card">
-            <div className="dashboard-stat-label">Longest Streak</div>
-            <div className="dashboard-stat-value">{progress?.overview.longestStreak || 0}</div>
-            <div className="dashboard-stat-unit">days</div>
-          </div>
-
-          <div className="dashboard-stat-card">
-            <div className="dashboard-stat-label">Total Points</div>
-            <div className="dashboard-stat-value">{progress?.overview.totalPoints || 0}</div>
-            <div className="dashboard-stat-unit">points</div>
-          </div>
-
-          <div className="dashboard-stat-card">
-            <div className="dashboard-stat-label">Accuracy</div>
-            <div className="dashboard-stat-value">{Math.round(accuracy)}%</div>
-            <div className="dashboard-stat-unit">
-              {progress?.overview.totalAttempts || 0} questions
-            </div>
-          </div>
-        </div>
-
-        <div className="dashboard-actions">
-          <button
-            className="dashboard-primary-button"
-          >
-            Start Quiz
-          </button>
-          <button
-            className="dashboard-secondary-button"
-          >
-            View Leaderboard
-          </button>
-        </div>
+        </section>
       </main>
     </div>
   );

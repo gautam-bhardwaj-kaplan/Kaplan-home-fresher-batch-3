@@ -24,10 +24,20 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+    const status = error.response?.status;
+    const requestUrl = error.config?.url || '';
+    const isAuthEndpoint =
+      requestUrl.includes('/users/login') || requestUrl.includes('/users/signup');
+
+    if (status === 401 && !isAuthEndpoint) {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('user');
+        if (window.location.pathname !== '/login') {
+          window.location.href = '/login';
+        }
+      }
     }
     return Promise.reject(error);
   }
@@ -48,11 +58,10 @@ export const apiCall = async <T>(
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
       const errorData = error.response.data;
-      
-      // Backend error format returns: { success: false, error: { message: string, details?: array } }
+
       if (errorData?.error) {
         const errorObj = errorData.error;
-        
+
         if (errorObj.details && Array.isArray(errorObj.details) && errorObj.details.length > 0) {
           const errorMessage = errorObj.details
             .map((detail: { field?: string; message?: string }) => {
@@ -62,12 +71,12 @@ export const apiCall = async <T>(
             .join(', ');
           throw new Error(errorMessage);
         }
-        
+
         if (errorObj.message) {
           throw new Error(errorObj.message);
         }
       }
-      
+
       throw new Error('An error occurred');
     }
     throw error;

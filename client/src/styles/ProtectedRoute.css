@@ -5,7 +5,7 @@
   align-items: center;
   background-color: white;
 
-  & .loading-spinner {
+  .loading-spinner {
     display: inline-flex;
     align-items: center;
     justify-content: center;

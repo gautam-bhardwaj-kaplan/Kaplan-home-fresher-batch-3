@@ -9,6 +9,9 @@ import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import AdminQuestionsPage from "./pages/AdminQuestionsPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
+import { ProfilePage } from './pages/ProfilePage';
+import { QuizPage } from './pages/QuizPage';
+import { LeaderboardPage } from './pages/LeaderboardPage';
 
 function App() {
   return (
@@ -27,17 +30,29 @@ function App() {
             }
           />
           <Route
-            path="/admin"
+            path="/profile"
             element={
               <ProtectedRoute>
-                <AdminLayout />
+                <ProfilePage />
               </ProtectedRoute>
             }
-          >
-            <Route path="dashboard" element={<AdminDashboardPage />} />
-            <Route path="questions" element={<AdminQuestionsPage />} />
-            <Route path="users" element={<AdminUsersPage />} />
-          </Route>
+          />
+          <Route
+            path="/leaderboard"
+            element={
+              <ProtectedRoute>
+                <LeaderboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/quiz"
+            element={
+              <ProtectedRoute>
+                <QuizPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>

@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const PORT = process.env.PORT;
+const prisma = require('./src/config/prisma');
 const adminQuestionsRouter = require('./src/routes/admin/question.routes');
 const adminUsersRouter = require('./src/routes/admin/user.routes');
 const adminAnalyticsRouter = require('./src/routes/admin/analytics.routes');
@@ -26,4 +27,22 @@ app.use('/api/admin/analytics',adminAnalyticsRouter);
 app.use("/api/questions", questionRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+const server = app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  server.close(async () => {
+    console.log('HTTP server closed');
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', async () => {
+  console.log('SIGINT signal received: closing HTTP server');
+  server.close(async () => {
+    console.log('HTTP server closed');
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+});

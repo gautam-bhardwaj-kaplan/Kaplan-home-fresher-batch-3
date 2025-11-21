@@ -5,22 +5,11 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem 1.5rem;
-}
+  justify-content: center;
 
-.auth-header {
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 2rem;
-}
-
-.auth-logo {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #1a1a1a;
-  text-decoration: none;
-  display: inline-block;
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+  }
 }
 
 .auth-card {
@@ -33,6 +22,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
 }
 
 .auth-title {
@@ -41,6 +34,10 @@
   color: #2D2323;
   margin: 0;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+  }
 }
 
 .auth-subtitle {
@@ -131,6 +128,10 @@
   transition: transform 0.2s;
   margin-top: 0.5rem;
   width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
   &:hover:not(:disabled) {
     transform: scale(1.02);
@@ -139,6 +140,21 @@
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+}
+
+.auth-button-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: auth-spin 0.6s linear infinite;
+}
+
+@keyframes auth-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -158,18 +174,3 @@
     text-decoration: underline;
   }
 }
-
-@media (max-width: 768px) {
-  .auth-container {
-    padding: 1.5rem 1rem;
-  }
-
-  .auth-card {
-    padding: 2rem 1.5rem;
-  }
-
-  .auth-title {
-    font-size: 1.75rem;
-  }
-}
-
