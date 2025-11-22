@@ -65,7 +65,7 @@ export const SignupPage = () => {
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="auth-form-group">
             <label htmlFor="name" className="auth-label">
-              Name
+              Name <span className="required-asterisk">*</span>
             </label>
             <input
               id="name"
@@ -85,7 +85,7 @@ export const SignupPage = () => {
 
           <div className="auth-form-group">
             <label htmlFor="email" className="auth-label">
-              Email
+              Email <span className="required-asterisk">*</span>
             </label>
             <input
               id="email"
@@ -101,7 +101,7 @@ export const SignupPage = () => {
 
           <div className="auth-form-group">
             <label htmlFor="password" className="auth-label">
-              Password
+              Password <span className="required-asterisk">*</span>
             </label>
             <input
               id="password"
@@ -121,7 +121,7 @@ export const SignupPage = () => {
 
           <div className="auth-form-group">
             <label htmlFor="confirmPassword" className="auth-label">
-              Confirm Password
+              Confirm Password <span className="required-asterisk">*</span>
             </label>
             <input
               id="confirmPassword"
