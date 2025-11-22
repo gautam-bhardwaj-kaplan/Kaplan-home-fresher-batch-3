@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getTodayQuestion, submitAnswer } from '../services/question.service';
 import type { Question, Submission, TodayQuestionResponse } from '../types';
-import { Oval } from 'react-loader-spinner';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import '../styles/QuizPage.css';
 import partyGif from '../assets/party.gif';
 
@@ -105,18 +105,7 @@ export const QuizPage = () => {
   if (isLoading) {
     return (
       <div className="quiz-container">
-        <div className="quiz-loading" role="status" aria-live="polite" aria-busy="true">
-          <Oval
-            height={56}
-            width={56}
-            color="#1f2937"
-            secondaryColor="#9ca3af"
-            strokeWidth={4}
-            strokeWidthSecondary={4}
-            ariaLabel="loading"
-            visible
-          />
-        </div>
+        <LoadingSpinner containerClassName="quiz-loading" />
       </div>
     );
   }

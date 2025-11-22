@@ -240,3 +240,10 @@ export interface AppNavbarProps {
 export interface ProtectedRouteProps {
   children: ReactNode;
 }
+
+export interface LoadingSpinnerProps {
+  size?: number;
+  color?: string;
+  secondaryColor?: string;
+  containerClassName?: string;
+}

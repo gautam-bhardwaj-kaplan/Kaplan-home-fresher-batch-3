@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getUserProfile, getUserProgress } from '../services/auth.service';
 import type { User, UserProgress } from '../types';
-import { Oval } from 'react-loader-spinner';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import '../styles/ProfilePage.css';
 import { AppNavbar } from '../components/AppNavbar';
 import { BASE_BADGES } from '../constants/badges';
@@ -48,18 +48,7 @@ export const ProfilePage = () => {
   if (isLoading) {
     return (
       <div className="profile-container">
-        <div className="profile-loading" role="status" aria-live="polite" aria-busy="true">
-          <Oval
-            height={56}
-            width={56}
-            color="#1f2937"
-            secondaryColor="#9ca3af"
-            strokeWidth={4}
-            strokeWidthSecondary={4}
-            ariaLabel="loading"
-            visible
-          />
-        </div>
+        <LoadingSpinner containerClassName="profile-loading" />
       </div>
     );
   }

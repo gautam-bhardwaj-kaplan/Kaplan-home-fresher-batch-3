@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getLeaderboard, type LeaderboardType, type LeaderboardPeriod } from '../services/leaderboard.service';
 import type { LeaderboardEntry, LeaderboardResponse } from '../types';
-import { Oval } from 'react-loader-spinner';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import { AppNavbar } from '../components/AppNavbar';
 import '../styles/LeaderboardPage.css';
 
@@ -64,18 +64,7 @@ export const LeaderboardPage = () => {
 
       <main className="leaderboard-main">
         {isLoading ? (
-          <div className="leaderboard-loading" role="status" aria-live="polite" aria-busy="true">
-            <Oval
-              height={56}
-              width={56}
-              color="#1f2937"
-              secondaryColor="#9ca3af"
-              strokeWidth={4}
-              strokeWidthSecondary={4}
-              ariaLabel="loading"
-              visible
-            />
-          </div>
+          <LoadingSpinner containerClassName="leaderboard-loading" />
         ) : (
           <section className="leaderboard-shell">
             {error && (
