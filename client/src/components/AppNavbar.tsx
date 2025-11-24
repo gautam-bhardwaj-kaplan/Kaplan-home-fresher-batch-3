@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import type { NavSection, AppNavbarProps } from '../types';
@@ -14,12 +15,38 @@ const adminNavItems: Array<{ key: NavSection; label: string; path: string }> = [
   { key: 'admin-users', label: 'Users', path: '/admin/users' },
 ];
 
-export const AppNavbar = ({ active, onLogout, mode }: AppNavbarProps) => {
+export const AppNavbar = ({ active, onLogout, mode, userName }: AppNavbarProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const displayName = (userName ?? user?.name ?? 'User').trim() || 'User';
   
   const isAdmin = mode === 'admin' || user?.role === 'ADMIN';
   const navItems = isAdmin ? adminNavItems : userNavItems;
+  const initials = displayName
+    .split(' ')
+    .map((part) => part.charAt(0).toUpperCase())
+    .join('')
+    .slice(0, 2) || 'U';
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    setMenuOpen(false);
+    onLogout();
+  };
 
   return (
     <header className="dashboard-header-shell">
@@ -42,9 +69,26 @@ export const AppNavbar = ({ active, onLogout, mode }: AppNavbarProps) => {
           </ul>
         </nav>
         <div className="dashboard-header-actions">
-          <button className="dashboard-logout-button" onClick={onLogout}>
-            Log out
-          </button>
+          <div className="dashboard-user-menu" ref={menuRef}>
+            <button
+              type="button"
+              className="dashboard-user-avatar"
+              onClick={() => setMenuOpen((prev) => !prev)}
+              aria-label="Account menu"
+              aria-expanded={menuOpen}
+            >
+              {initials}
+            </button>
+            {menuOpen && (
+              <div className="dashboard-user-dropdown" role="menu">
+                <span className="dashboard-user-dropdown-label">Signed in as</span>
+                <span className="dashboard-user-name">{displayName.charAt(0).toUpperCase() + displayName.slice(1)}</span>
+                <button type="button" className="dashboard-user-logout" onClick={handleLogout}>
+                  Log out
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

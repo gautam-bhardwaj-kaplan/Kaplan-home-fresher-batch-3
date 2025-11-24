@@ -1,11 +1,12 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Oval } from 'react-loader-spinner';
 import '../styles/ProtectedRoute.css';
 import type { ProtectedRouteProps } from '../types';
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const location = useLocation();
 
   if (isLoading) {
     return (
@@ -28,6 +29,10 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (user?.role === 'ADMIN' && !location.pathname.startsWith('/admin')) {
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
   return <>{children}</>;
