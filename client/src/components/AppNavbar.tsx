@@ -1,14 +1,25 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import type { NavSection, AppNavbarProps } from '../types';
 
-const navItems: Array<{ key: NavSection; label: string; path: string }> = [
+const userNavItems: Array<{ key: NavSection; label: string; path: string }> = [
   { key: 'dashboard', label: 'Dashboard', path: '/dashboard' },
   { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard' },
   { key: 'profile', label: 'Profile', path: '/profile' },
 ];
 
-export const AppNavbar = ({ active, onLogout }: AppNavbarProps) => {
+const adminNavItems: Array<{ key: NavSection; label: string; path: string }> = [
+  { key: 'admin-dashboard', label: 'Dashboard', path: '/admin/dashboard' },
+  { key: 'admin-questions', label: 'Questions', path: '/admin/questions' },
+  { key: 'admin-users', label: 'Users', path: '/admin/users' },
+];
+
+export const AppNavbar = ({ active, onLogout, mode }: AppNavbarProps) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  
+  const isAdmin = mode === 'admin' || user?.role === 'ADMIN';
+  const navItems = isAdmin ? adminNavItems : userNavItems;
 
   return (
     <header className="dashboard-header-shell">

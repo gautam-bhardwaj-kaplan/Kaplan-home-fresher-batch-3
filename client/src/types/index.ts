@@ -229,12 +229,13 @@ export interface AuthContextType {
   refreshUser: () => Promise<void>;
 }
 
-export type NavSection = 'dashboard' | 'leaderboard' | 'profile';
+export type NavSection = 'dashboard' | 'leaderboard' | 'profile' | 'admin-dashboard' | 'admin-questions' | 'admin-users';
 
 export interface AppNavbarProps {
   active: NavSection;
   userName?: string;
   onLogout: () => void;
+  mode?: 'user' | 'admin';
 }
 
 export interface ProtectedRouteProps {

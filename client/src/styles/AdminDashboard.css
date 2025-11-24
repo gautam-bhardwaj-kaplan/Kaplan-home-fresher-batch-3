@@ -66,6 +66,11 @@
     background-color: #eeebe8;
     color: #1a1a1a;
   }
+
+  &.admin-nav-button-active {
+    background-color: #2D2323;
+    color: #fff;
+  }
 }
 
 .admin-dashboard-logout-button {
