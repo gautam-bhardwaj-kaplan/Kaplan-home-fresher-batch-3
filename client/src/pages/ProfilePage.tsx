@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getUserProfile, getUserProgress } from '../services/auth.service';
 import type { User, UserProgress } from '../types';
-import { LoadingSpinner } from '../components/LoadingSpinner';
+import { LoadingSpinner, AppNavbar, BadgeCard, SubmissionHistoryItem } from '../components';
 import '../styles/ProfilePage.css';
-import { AppNavbar } from '../components/AppNavbar';
 import { BASE_BADGES } from '../constants/badges';
-import { formatMonthYear, formatShortDate } from '../utils/date';
+import { formatMonthYear } from '../utils/date';
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
@@ -107,26 +106,12 @@ export const ProfilePage = () => {
             <div className="profile-badges-grid">
               {BASE_BADGES.map((badge) => {
                 const ownedBadge = ownedBadgesMap.get(badge.badgeId);
-                const isUnlocked = Boolean(ownedBadge);
-                const iconSrc = ownedBadge?.iconUrl || badge.icon;
-                const iconContent = iconSrc ? (
-                  <img src={iconSrc} alt={`${badge.name} badge icon`} loading="lazy" />
-                ) : (
-                  <span aria-hidden="true">{badge.name.charAt(0)}</span>
-                );
-
                 return (
-                  <div
+                  <BadgeCard
                     key={badge.badgeId}
-                    className={`profile-badge-card ${
-                      isUnlocked ? 'profile-badge-card-earned' : 'profile-badge-card-locked'
-                    }`}
-                    title={badge.description}
-                    aria-label={`${badge.name}${isUnlocked ? '' : ' (locked)'}`}
-                  >
-                    <div className="profile-badge-icon">{iconContent}</div>
-                    <p className="profile-badge-name">{badge.name}</p>
-                  </div>
+                    badge={badge}
+                    ownedBadge={ownedBadge}
+                  />
                 );
               })}
             </div>
@@ -144,23 +129,11 @@ export const ProfilePage = () => {
             ) : (
               <ul className="profile-history-list">
                 {submissionHistory.map((attempt, index) => (
-                  <li key={`${attempt.date}-${index}`} className="profile-history-item">
-                    <div className="profile-history-main">
-                      <div className="profile-history-question-section">
-                        <p className="profile-history-question">{attempt.questionText || 'Question not available'}</p>
-                        <div className="profile-history-tags">
-                          <span className="profile-history-category">{attempt.category}</span>
-                          <span className="profile-history-date">{formatShortDate(attempt.date)}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="profile-history-meta">
-                      <span className="profile-history-points">+{attempt.points} pts</span>
-                      <span className={`profile-history-status ${attempt.isCorrect ? 'correct' : 'incorrect'}`}>
-                        {attempt.isCorrect ? '✓ Correct' : '✗ Incorrect'}
-                      </span>
-                    </div>
-                  </li>
+                  <SubmissionHistoryItem
+                    key={`${attempt.date}-${index}`}
+                    attempt={attempt}
+                    index={index}
+                  />
                 ))}
               </ul>
             )}

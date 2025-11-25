@@ -1,6 +1,7 @@
 import { useState, type FormEvent, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { FormInput, LoadingButton } from '../components';
 import '../styles/AuthPage.css';
 
 export const SignupPage = () => {
@@ -63,85 +64,59 @@ export const SignupPage = () => {
         )}
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="auth-form-group">
-            <label htmlFor="name" className="auth-label">
-              Name <span className="required-asterisk">*</span>
-            </label>
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value.replace(/\d+/g, ''))}
-              className="auth-input"
-              placeholder="Enter your name"
-              required
-              minLength={2}
-              maxLength={50}
-              pattern="^[^0-9]*$"
-              title="Name cannot contain numbers"
-              disabled={isSubmitting || authLoading}
-            />
-          </div>
+          <FormInput
+            label="Name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value.replace(/\d+/g, ''))}
+            placeholder="Enter your name"
+            required
+            minLength={2}
+            maxLength={50}
+            pattern="^[^0-9]*$"
+            title="Name cannot contain numbers"
+            disabled={isSubmitting || authLoading}
+          />
 
-          <div className="auth-form-group">
-            <label htmlFor="email" className="auth-label">
-              Email <span className="required-asterisk">*</span>
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="auth-input"
-              placeholder="Enter your email"
-              required
-              disabled={isSubmitting || authLoading}
-            />
-          </div>
+          <FormInput
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+            disabled={isSubmitting || authLoading}
+          />
 
-          <div className="auth-form-group">
-            <label htmlFor="password" className="auth-label">
-              Password <span className="required-asterisk">*</span>
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="auth-input"
-              placeholder="Create a password"
-              required
-              minLength={8}
-              disabled={isSubmitting || authLoading}
-            />
-            <small className="auth-hint">
-              Must contain uppercase, lowercase, number, and special character
-            </small>
-          </div>
+          <FormInput
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Create a password"
+            required
+            minLength={8}
+            hint="Must contain uppercase, lowercase, number, and special character"
+            disabled={isSubmitting || authLoading}
+          />
 
-          <div className="auth-form-group">
-            <label htmlFor="confirmPassword" className="auth-label">
-              Confirm Password <span className="required-asterisk">*</span>
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="auth-input"
-              placeholder="Confirm your password"
-              required
-              disabled={isSubmitting || authLoading}
-            />
-          </div>
+          <FormInput
+            label="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm your password"
+            required
+            disabled={isSubmitting || authLoading}
+          />
 
-          <button type="submit" className="auth-primary-button" disabled={isButtonLoading}>
-            {isButtonLoading ? (
-              <span className="auth-button-spinner" role="status" aria-label="Creating account" />
-            ) : (
-              'Sign up'
-            )}
-          </button>
+          <LoadingButton
+            isLoading={isButtonLoading}
+            loadingText="Creating account"
+            disabled={isButtonLoading}
+          >
+            Sign up
+          </LoadingButton>
         </form>
 
         <p className="auth-footer-text">

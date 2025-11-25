@@ -248,3 +248,24 @@ export interface LoadingSpinnerProps {
   secondaryColor?: string;
   containerClassName?: string;
 }
+
+export type StreakDay = {
+  date: string;
+  hasAttempt: boolean;
+  isCorrect?: boolean;
+};
+
+export type RecentActivity = {
+  date: string;
+  isCorrect: boolean;
+  points: number;
+  category: string;
+  questionText: string;
+};
+
+export type OwnedBadge = {
+  badgeId: string;
+  name: string;
+  earnedAt: string;
+  iconUrl?: string;
+};
