@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { getTodayQuestion, submitAnswer } from '../services/question.service';
 import type { Question, Submission, TodayQuestionResponse } from '../types';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -9,7 +8,6 @@ import partyGif from '../assets/party.gif';
 
 export const QuizPage = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
   const [question, setQuestion] = useState<Question | null>(null);
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [hasAttempted, setHasAttempted] = useState<boolean>(false);
@@ -97,10 +95,6 @@ export const QuizPage = () => {
     navigate('/dashboard');
   };
 
-  const handleLogout = (): void => {
-    logout();
-    navigate('/');
-  };
 
   if (isLoading) {
     return (
@@ -119,12 +113,10 @@ export const QuizPage = () => {
       )}
       <header className="quiz-header-shell">
         <div className="quiz-header-content">
-          <button className="quiz-back-button" onClick={handleBack}>
-            Back
-          </button>
+          <div className="quiz-logo">Pebble</div>
           <div className="quiz-header-actions">
-            <button className="quiz-logout-button" onClick={handleLogout}>
-              Log out
+            <button className="quiz-back-button" onClick={handleBack}>
+              Back
             </button>
           </div>
         </div>
@@ -202,7 +194,7 @@ export const QuizPage = () => {
                   <div className={`quiz-result-badge ${submission?.isCorrect ? 'quiz-result-correct' : 'quiz-result-incorrect'}`}>
                     {submission?.isCorrect ? '✓ Correct!' : '✗ Incorrect'}
                   </div>
-                  
+
                   <div className="quiz-result-details">
                     <p className="quiz-result-answer">
                       <strong>Your answer:</strong> {submission?.submittedAnswer}
