@@ -4,11 +4,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { getUserProgress } from '../services/auth.service';
 import { getQuestionStats } from '../services/question.service';
 import type { UserProgress } from '../types';
-import { Oval } from 'react-loader-spinner';
+import { LoadingSpinner, AppNavbar, StreakCard } from '../components';
 import '../styles/DashboardPage.css';
 import mainCard from '../assets/maincard.png';
-import { AppNavbar } from '../components/AppNavbar';
-import fireIcon from '../assets/fire.gif';
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
@@ -51,18 +49,7 @@ export const DashboardPage = () => {
   if (isLoading) {
     return (
       <div className="dashboard-container">
-        <div className="dashboard-loading" role="status" aria-live="polite" aria-busy="true">
-          <Oval
-            height={56}
-            width={56}
-            color="#1f2937"
-            secondaryColor="#9ca3af"
-            strokeWidth={4}
-            strokeWidthSecondary={4}
-            ariaLabel="loading"
-            visible
-          />
-        </div>
+        <LoadingSpinner containerClassName="dashboard-loading" />
       </div>
     );
   }
@@ -149,27 +136,10 @@ export const DashboardPage = () => {
             </article>
 
             <aside className="dashboard-side-stack">
-              <div className="dashboard-streak-card">
-                <div className="dashboard-streak-value">
-                  <span>{progress?.overview.currentStreak || 0}</span>
-                  <img src={fireIcon} className="dashboard-streak-fire" alt="Fire" />
-                </div>
-                <p className="dashboard-streak-subtitle">Play a quiz to start a streak</p>
-                <div className="dashboard-week-row">
-                  {streakPreview.map((day, index) => {
-                    const label = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' });
-                    const isCorrectAttempt = day.hasAttempt && day.isCorrect;
-                    return (
-                      <span
-                        key={`${day.date}-${index}`}
-                        className={`dashboard-week-day ${isCorrectAttempt ? 'dashboard-week-day-active' : ''}`}
-                      >
-                        {label}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
+              <StreakCard
+                currentStreak={progress?.overview.currentStreak || 0}
+                streakPreview={streakPreview}
+              />
 
               <div className="dashboard-pill-grid">
                 <div className="dashboard-pill-card">

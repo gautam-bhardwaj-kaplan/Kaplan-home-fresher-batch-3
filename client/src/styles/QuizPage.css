@@ -66,7 +66,7 @@
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 9999px;
   transition: all 0.2s;
   display: flex;
@@ -95,20 +95,12 @@
   }
 }
 
-.quiz-logout-button {
-  background-color: #eeebe8;
-  border: none;
+.quiz-logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: #1a1a1a;
-  font-size: 0.95rem;
-  font-weight: 400;
-  cursor: pointer;
-  padding: 0.85rem 2.1rem;
-  border-radius: 9999px;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.04);
-  }
 }
 
 .quiz-main {

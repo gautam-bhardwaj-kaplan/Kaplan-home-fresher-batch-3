@@ -1,10 +1,11 @@
-import { Outlet, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { AppNavbar } from "../components/AppNavbar";
 import "../styles/AdminDashboard.css";
+import "../styles/DashboardPage.css";
 
 export const AdminLayout = () => {
   const { user, logout, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
@@ -12,48 +13,20 @@ export const AdminLayout = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
   };
 
   const path = location.pathname;
+  let activeSection: 'admin-dashboard' | 'admin-questions' | 'admin-users' = 'admin-dashboard';
+  
+  if (path === "/admin/questions") {
+    activeSection = 'admin-questions';
+  } else if (path === "/admin/users") {
+    activeSection = 'admin-users';
+  }
 
   return (
     <div className="admin-dashboard-container">
-      <header className="admin-dashboard-header-shell">
-        <div className="admin-dashboard-header-content">
-
-          <div className="admin-dashboard-logo">PEBBLE</div>
-
-          <div className="admin-dashboard-header-actions">
-            <button
-              className={`admin-nav-button ${path === "/admin/dashboard" ? "admin-nav-button-active" : ""}`}
-              onClick={() => navigate("/admin/dashboard")}
-            >
-              Dashboard
-            </button>
-
-            <button
-              className={`admin-nav-button ${path === "/admin/questions" ? "admin-nav-button-active" : ""}`}
-              onClick={() => navigate("/admin/questions")}
-            >
-              Questions
-            </button>
-
-            <button
-              className={`admin-nav-button ${path === "/admin/users" ? "admin-nav-button-active" : ""}`}
-              onClick={() => navigate("/admin/users")}
-            >
-              Users
-            </button>
-          </div>
-
-          <div className="admin-dashboard-header-actions">
-            <button className="admin-dashboard-logout-button" onClick={handleLogout}>
-              Log out
-            </button>
-          </div>
-        </div>
-      </header>
+      <AppNavbar active={activeSection} onLogout={handleLogout} mode="admin" />
 
       <main className="admin-dashboard-main">
         <section className="admin-dashboard-content-shell">

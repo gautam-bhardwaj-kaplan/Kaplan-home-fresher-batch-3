@@ -1,6 +1,7 @@
 import { useState, type FormEvent, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { FormInput, LoadingButton } from '../components';
 import '../styles/AuthPage.css';
 
 export const LoginPage = () => {
@@ -51,45 +52,33 @@ export const LoginPage = () => {
         )}
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="auth-form-group">
-            <label htmlFor="email" className="auth-label">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="auth-input"
-              placeholder="Enter your email"
-              required
-              disabled={isSubmitting || authLoading}
-            />
-          </div>
+          <FormInput
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+            disabled={isSubmitting || authLoading}
+          />
 
-          <div className="auth-form-group">
-            <label htmlFor="password" className="auth-label">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="auth-input"
-              placeholder="Enter your password"
-              required
-              disabled={isSubmitting || authLoading}
-            />
-          </div>
+          <FormInput
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            required
+            disabled={isSubmitting || authLoading}
+          />
 
-          <button type="submit" className="auth-primary-button" disabled={isButtonLoading}>
-            {isButtonLoading ? (
-              <span className="auth-button-spinner" role="status" aria-label="Logging in" />
-            ) : (
-              'Log in'
-            )}
-          </button>
+          <LoadingButton
+            isLoading={isButtonLoading}
+            loadingText="Logging in"
+            disabled={isButtonLoading}
+          >
+            Log in
+          </LoadingButton>
         </form>
 
         <p className="auth-footer-text">

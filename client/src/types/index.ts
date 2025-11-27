@@ -229,14 +229,43 @@ export interface AuthContextType {
   refreshUser: () => Promise<void>;
 }
 
-export type NavSection = 'dashboard' | 'leaderboard' | 'profile';
+export type NavSection = 'dashboard' | 'leaderboard' | 'profile' | 'admin-dashboard' | 'admin-questions' | 'admin-users';
 
 export interface AppNavbarProps {
   active: NavSection;
   userName?: string;
   onLogout: () => void;
+  mode?: 'user' | 'admin';
 }
 
 export interface ProtectedRouteProps {
   children: ReactNode;
 }
+
+export interface LoadingSpinnerProps {
+  size?: number;
+  color?: string;
+  secondaryColor?: string;
+  containerClassName?: string;
+}
+
+export type StreakDay = {
+  date: string;
+  hasAttempt: boolean;
+  isCorrect?: boolean;
+};
+
+export type RecentActivity = {
+  date: string;
+  isCorrect: boolean;
+  points: number;
+  category: string;
+  questionText: string;
+};
+
+export type OwnedBadge = {
+  badgeId: string;
+  name: string;
+  earnedAt: string;
+  iconUrl?: string;
+};

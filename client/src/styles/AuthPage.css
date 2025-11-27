@@ -88,6 +88,12 @@
   color: #2D2323;
 }
 
+.required-asterisk {
+  color: #c33;
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+
 .auth-input {
   width: 100%;
   padding: 0.85rem 1.25rem;

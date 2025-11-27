@@ -118,6 +118,70 @@
   font-weight: 500;
 }
 
+.dashboard-user-menu {
+  position: relative;
+}
+
+.dashboard-user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ecc9d8;
+  color: black;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.dashboard-user-avatar:hover {
+  transform: scale(1.05);
+}
+
+.dashboard-user-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  background-color: #fff;
+  border: 1px solid #f0ece6;
+  border-radius: 18px;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 18px 35px rgba(26, 26, 26, 0.12);
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  z-index: 10;
+}
+
+.dashboard-user-dropdown-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b39b89;
+}
+
+.dashboard-user-logout {
+  margin-top: 0.5rem;
+  background-color: #F5F2EE;
+  border: none;
+  color: #2d2323;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.dashboard-user-logout:hover {
+  transform: translateY(-1px);
+}
+
 .dashboard-logout-button {
   background-color: #eeebe8;
   border: none;
@@ -354,18 +418,42 @@
 
 .dashboard-week-day {
   flex: 1;
-  text-align: center;
-  padding: 0.45rem 0.35rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  background-color: #F4EFE9;
-  color: #8a7f77;
-  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
 
-  &.dashboard-week-day-active {
-    background-color: #2D2323;
-    color: #fff;
-  }
+.dashboard-week-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  border: 2px solid #D8D3CD;
+  background-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.dashboard-week-dot.correct {
+  background-color: #2BBE63;
+  border-color: #2BBE63;
+}
+
+.dashboard-week-dot.incorrect {
+  background-color: #E84646;
+  border-color: #E84646;
+}
+
+.dashboard-week-dot.unattempted {
+  background-color: transparent;
+}
+
+.dashboard-week-label {
+  font-size: 0.75rem;
+  color: #A0978F;
+  letter-spacing: 0.04em;
 }
 
 .dashboard-pill-grid {
